@@ -1,0 +1,34 @@
+# Render Blueprint — deploy web app + use existing Postgres
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Before deploy:
+# 1. Create/link Postgres on Render (or use existing dpg-... instance)
+# 2. Run locally: npm run db:push-render && npm run db:seed-hr-render
+# 3. Set AUTH_SECRET in Render dashboard (openssl rand -base64 32)
+
+services:
+  - type: web
+    name: school-management-system
+    runtime: node
+    plan: free
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm start
+    healthCheckPath: /login
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: school-sms-db
+          property: connectionString
+      - key: AUTH_SECRET
+        sync: false
+      - key: NEXTAUTH_URL
+        sync: false
+
+databases:
+  - name: school-sms-db
+    plan: free
+    databaseName: health_system_2pbp
+    # If using an EXISTING Render Postgres, skip creating this and set DATABASE_URL manually:
+    # postgresql://USER:PASS@HOST/DB?sslmode=require&schema=school_sms
