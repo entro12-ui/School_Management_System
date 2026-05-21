@@ -13,10 +13,10 @@ import {
 import { formatCurrency } from "@/lib/utils";
 import {
   createSemesterInvoice,
-  markSemesterFullyPaid,
   recordSemesterPayment,
   syncBranchSemesterInvoices,
 } from "@/lib/actions/finance";
+import { markSemesterPaidCash } from "@/lib/actions/payment-proof";
 import type { StudentPaymentRow } from "@/lib/services/finance";
 
 const STATUS_BADGE: Record<string, string> = {
@@ -332,6 +332,9 @@ function SemesterCell({
               })}
             </p>
           )}
+          {sem.status === PaymentStatus.PAID && sem.reference && (
+            <p className="text-xs text-slate-500">Ref: {sem.reference}</p>
+          )}
         </>
       )}
       {sem.status === "LOCKED" && (
@@ -365,8 +368,8 @@ function buildPaymentActions(row: StudentPaymentRow): PaymentActionOption[] {
     if (!canPaySemester(sem) || !sem?.paymentId) continue;
     const label = formatSemesterLabel(sem.term);
     actions.push({
-      value: `mark:${sem.paymentId}`,
-      label: `${label} — fully paid`,
+      value: `mark_cash:${sem.paymentId}`,
+      label: `${label} — paid (cash)`,
       group: "paid",
     });
     actions.push({
@@ -382,8 +385,8 @@ function buildPaymentActions(row: StudentPaymentRow): PaymentActionOption[] {
 
   if (unpaidIds.length >= 2) {
     actions.push({
-      value: `mark_all:${unpaidIds.join(",")}`,
-      label: "Full year — both semesters fully paid",
+      value: `mark_all_cash:${unpaidIds.join(",")}`,
+      label: "Full year — both semesters paid (cash)",
       group: "paid",
     });
   }
@@ -490,16 +493,16 @@ function SemesterActions({
   const invoiceActions = actions.filter((a) => a.group === "invoice");
 
   function handleAction(value: string) {
-    if (value.startsWith("mark:")) {
-      run(() => markSemesterFullyPaid(value.slice(5)));
-    } else if (value.startsWith("mark_all:")) {
-      const ids = value.slice(9).split(",").filter(Boolean);
+    if (value.startsWith("mark_cash:")) {
+      run(() => markSemesterPaidCash(value.slice(10)));
+    } else if (value.startsWith("mark_all_cash:")) {
+      const ids = value.slice(14).split(",").filter(Boolean);
       run(async () => {
         for (const id of ids) {
-          const res = await markSemesterFullyPaid(id);
+          const res = await markSemesterPaidCash(id);
           if (!res.success) return res;
         }
-        return { success: true, message: "Full year marked as fully paid." };
+        return { success: true, message: "Full year marked as paid (cash)." };
       });
     } else if (value.startsWith("record:")) {
       const paymentId = value.slice(7);
@@ -531,7 +534,7 @@ function SemesterActions({
         Choose action…
       </option>
       {paidActions.length > 0 && (
-        <optgroup label="Mark fully paid">
+        <optgroup label="Mark paid (cash at office)">
           {paidActions.map((a) => (
             <option key={a.value} value={a.value}>
               {a.label}

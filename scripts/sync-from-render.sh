@@ -4,28 +4,15 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-cd "$ROOT"
 
-if [[ -f .env.render ]]; then
-  set -a
-  # shellcheck disable=SC1091
-  source .env.render
-  set +a
-fi
+# shellcheck source=scripts/lib/render-env.sh
+source "$ROOT/scripts/lib/render-env.sh"
+render_env_init "$ROOT"
 
-RENDER_URL="${RENDER_DATABASE_URL:-}"
-LOCAL_URL="${LOCAL_DATABASE_URL:-postgresql://postgres:password@localhost:5434/school_management}"
-
-if [[ -z "$RENDER_URL" ]]; then
-  echo "Set RENDER_DATABASE_URL in .env.render (from Render dashboard)."
-  exit 1
-fi
-
-SCHEMA="${PRISMA_SCHEMA:-school_sms}"
 DUMP="$ROOT/prisma/.render-dump.dump"
 
 echo "→ Checking Render database…"
-if ! pg_isready -d "$RENDER_URL" -t 15 >/dev/null 2>&1; then
+if ! pg_isready -d "$RENDER_PG" -t 15 >/dev/null 2>&1; then
   echo "✗ Cannot reach Render Postgres."
   echo "  Open https://dashboard.render.com → your database → Resume / check status."
   echo "  Free tier may need 30–60s after resume before connections work."
@@ -33,13 +20,13 @@ if ! pg_isready -d "$RENDER_URL" -t 15 >/dev/null 2>&1; then
 fi
 
 echo "→ Checking local database (localhost:5434)…"
-if ! pg_isready -d "$LOCAL_URL" -t 5 >/dev/null 2>&1; then
+if ! pg_isready -d "$LOCAL_PG" -t 5 >/dev/null 2>&1; then
   echo "✗ Local Postgres not running. Run: docker compose up -d"
   exit 1
 fi
 
 echo "→ Dumping schema \"$SCHEMA\" from Render…"
-pg_dump "$RENDER_URL" \
+pg_dump "$RENDER_PG" \
   --schema="$SCHEMA" \
   --no-owner \
   --no-acl \
@@ -47,9 +34,9 @@ pg_dump "$RENDER_URL" \
   --file="$DUMP"
 
 echo "→ Restoring into local database (replaces existing $SCHEMA data)…"
-psql "$LOCAL_URL" -v ON_ERROR_STOP=1 -c "CREATE SCHEMA IF NOT EXISTS \"$SCHEMA\";"
+psql "$LOCAL_PG" -v ON_ERROR_STOP=1 -c "CREATE SCHEMA IF NOT EXISTS \"$SCHEMA\";"
 pg_restore \
-  --dbname="$LOCAL_URL" \
+  --dbname="$LOCAL_PG" \
   --schema="$SCHEMA" \
   --clean \
   --if-exists \
@@ -57,13 +44,7 @@ pg_restore \
   --no-acl \
   "$DUMP"
 
-echo "→ Verifying row counts…"
-psql "$LOCAL_URL" -v ON_ERROR_STOP=1 <<SQL
-SELECT 'User' AS entity, COUNT(*)::text AS rows FROM "$SCHEMA"."User"
-UNION ALL SELECT 'Student', COUNT(*)::text FROM "$SCHEMA"."Student"
-UNION ALL SELECT 'Payment', COUNT(*)::text FROM "$SCHEMA"."Payment"
-UNION ALL SELECT 'Branch', COUNT(*)::text FROM "$SCHEMA"."Branch";
-SQL
+render_verify_counts "$LOCAL_PG" "Local"
 
 echo ""
 echo "✓ Sync complete. Keep DATABASE_URL in .env pointed at localhost:5434"

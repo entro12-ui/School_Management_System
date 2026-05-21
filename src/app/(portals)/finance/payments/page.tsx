@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { FinancePaymentsTable } from "@/components/finance/payments-table";
 import { auth } from "@/lib/auth";
@@ -6,6 +7,7 @@ import {
   canManageFinance,
   getFinancePaymentsSheet,
 } from "@/lib/services/finance";
+import { getPendingPaymentProofs } from "@/lib/services/payment-proofs";
 import { UserRole } from "@prisma/client";
 import { redirect } from "next/navigation";
 
@@ -18,7 +20,10 @@ export default async function FinancePaymentsPage() {
   const branchId =
     session.user.role === UserRole.SUPER_ADMIN ? undefined : session.user.branchId ?? undefined;
 
-  const rows = await getFinancePaymentsSheet(branchId);
+  const [rows, pendingReceipts] = await Promise.all([
+    getFinancePaymentsSheet(branchId),
+    getPendingPaymentProofs(branchId),
+  ]);
 
   const invoicedCount = rows.filter((r) =>
     r.semesters.some((s) => s.paymentId !== null)
@@ -33,8 +38,18 @@ export default async function FinancePaymentsPage() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-900">Student payments</h1>
         <p className="mt-1 text-slate-500">
-          Registered students are billed each semester (every 5 months). Semester 2 opens only
-          after Semester 1 is fully paid.
+          <strong>Cash:</strong> mark paid here when the family pays at the office.{" "}
+          <strong>Online:</strong> review uploaded receipts on{" "}
+          <Link href="/finance/receipts" className="text-indigo-600 hover:underline">
+            Online receipts
+          </Link>
+          {pendingReceipts.length > 0 && (
+            <span className="font-medium text-amber-700">
+              {" "}
+              ({pendingReceipts.length} pending)
+            </span>
+          )}
+          .
         </p>
         {rows.length > 0 && invoicedCount === 0 && (
           <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-800">

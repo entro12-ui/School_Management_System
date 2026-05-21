@@ -1,6 +1,7 @@
 import { PortalShell } from "@/components/layout/portal-shell";
 import { ChildTabs } from "@/components/parent/child-tabs";
 import { NoChildrenMessage } from "@/components/parent/no-children";
+import { PaymentProofSubmitForm } from "@/components/fees/payment-proof-submit-form";
 import { ParentFeesTable } from "@/components/parent/parent-fees-table";
 import { auth } from "@/lib/auth";
 import { PARENT_NAV } from "@/lib/nav/parent-nav";
@@ -48,8 +49,8 @@ export default async function ParentFeesPage({
     >
       <h1 className="mb-2 text-2xl font-bold text-slate-900">Fees & payments</h1>
       <p className="mb-6 text-slate-500">
-        Semester tuition for {child.firstName} (every 5 months). Semester 2 appears only after
-        Semester 1 is fully paid at the finance office.
+        Pay online and upload a bank receipt for finance to approve, or pay cash at the school
+        office. Semester 2 opens after Semester 1 is fully paid.
       </p>
 
       <ChildTabs linkedChildren={children} activeChildId={child.id} basePath="/parent/fees" />
@@ -76,17 +77,46 @@ export default async function ParentFeesPage({
           No fee records yet for {child.firstName}.
         </p>
       ) : (
-        <ParentFeesTable
-          payments={payments.map((p) => ({
-            id: p.id,
-            name: p.name,
-            amount: p.amount,
-            paidAmount: p.paidAmount,
-            status: p.status,
-            dueDate: p.dueDate?.toISOString() ?? null,
-            scholarship: p.scholarship,
-          }))}
-        />
+        <>
+          <div className="mb-6 space-y-4">
+            {payments
+              .filter((p) => p.canPayOnline)
+              .map((p) => (
+                <article
+                  key={p.id}
+                  className="rounded-xl border border-indigo-100 bg-white p-4"
+                >
+                  <p className="text-sm font-medium text-slate-900">{p.name}</p>
+                  <p className="text-xs text-slate-500">
+                    Outstanding {formatCurrency(p.outstanding)}
+                  </p>
+                  <PaymentProofSubmitForm
+                    paymentId={p.id}
+                    feeName={p.name}
+                    outstanding={p.outstanding}
+                  />
+                </article>
+              ))}
+            {payments.some((p) => p.pendingProof) && (
+              <p className="rounded-lg bg-amber-50 px-4 py-2 text-sm text-amber-800">
+                A payment receipt is awaiting finance review. You will be notified when it is
+                approved.
+              </p>
+            )}
+          </div>
+
+          <ParentFeesTable
+            payments={payments.map((p) => ({
+              id: p.id,
+              name: p.name,
+              amount: p.amount,
+              paidAmount: p.paidAmount,
+              status: p.status,
+              dueDate: p.dueDate?.toISOString() ?? null,
+              scholarship: p.scholarship,
+            }))}
+          />
+        </>
       )}
     </PortalShell>
   );

@@ -6,6 +6,7 @@ import { STUDENT_NAV } from "@/lib/nav/student-nav";
 import { getStudentDashboardCharts } from "@/lib/services/dashboard-charts";
 import { getStudentByUserId } from "@/lib/services/student";
 import { BookOpen, Calendar, FileText, TrendingUp, Wallet } from "lucide-react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -62,7 +63,7 @@ export default async function StudentPortalPage() {
             Track semester GPA and university readiness indicators.
           </CardContent>
         </Card>
-        <Card>
+        <Card className="transition-shadow hover:shadow-md">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5 text-indigo-600" />
@@ -70,8 +71,16 @@ export default async function StudentPortalPage() {
             </CardTitle>
             <CardDescription>Official academic record</CardDescription>
           </CardHeader>
-          <CardContent className="text-sm text-slate-600">
-            Request PDF transcripts for university applications.
+          <CardContent>
+            <p className="text-sm text-slate-600">
+              PDF, HTML, and CSV downloads for university applications.
+            </p>
+            <Link
+              href="/student/transcript"
+              className="mt-3 inline-block text-sm font-medium text-indigo-600 hover:underline"
+            >
+              Open transcript →
+            </Link>
           </CardContent>
         </Card>
         <Card className="md:col-span-2">

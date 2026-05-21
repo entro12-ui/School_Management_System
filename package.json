@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "prisma generate && next dev",
+    "dev:clean": "rm -rf .next && prisma generate && next dev",
+    "postinstall": "prisma generate",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
@@ -17,6 +19,8 @@
     "db:sync-from-render": "bash scripts/sync-from-render.sh",
     "db:push-render": "bash scripts/push-schema-to-render.sh",
     "db:sync-to-render": "bash scripts/sync-to-render.sh",
+    "db:deploy-render": "bash scripts/deploy-local-to-render.sh",
+    "db:compare-render": "bash -c 'set -a && [ -f .env.render ] && . ./.env.render && set +a && npx tsx prisma/compare-local-render.ts'",
     "db:seed-hr-render": "bash scripts/seed-hr-render.sh",
     "db:sync-hr-to-render": "bash scripts/sync-hr-to-render.sh",
     "db:ensure-hr-manager": "tsx prisma/ensure-hr-manager.ts",
@@ -27,6 +31,7 @@
     "db:migrate-payments": "tsx prisma/migrate-semester-payments.ts",
     "db:migrate-photo": "tsx prisma/migrate-photo-url.ts",
     "db:setup": "prisma db push && tsx prisma/seed.ts",
+    "db:payment-proofs": "prisma db push && prisma generate",
     "db:studio": "prisma studio"
   },
   "dependencies": {

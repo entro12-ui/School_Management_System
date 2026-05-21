@@ -1,3 +1,5 @@
+import { PaymentStatus } from "@prisma/client";
+import { PAYMENT_PROOF_STATUS } from "@/lib/finance/payment-proof-constants";
 import { prisma } from "@/lib/prisma";
 import { formatGradeLevel } from "@/lib/grade-utils";
 import { formatSemesterLabel } from "@/lib/semester-fees";
@@ -126,6 +128,11 @@ export async function getChildFeesForParent(studentId: string) {
     include: {
       feeStructure: { select: { name: true } },
       academicYear: { select: { name: true } },
+      proofs: {
+        where: { status: PAYMENT_PROOF_STATUS.PENDING_REVIEW },
+        take: 1,
+        select: { id: true },
+      },
     },
     orderBy: [{ academicYear: { startDate: "desc" } }, { term: "asc" }],
   });
@@ -145,20 +152,32 @@ export async function getChildFeesForParent(studentId: string) {
   }
 
   return {
-    payments: payments.map((p) => ({
-      id: p.id,
-      name: `${formatSemesterLabel(p.term)} · ${p.academicYear.name}${
-        p.feeStructure?.name ? ` · ${p.feeStructure.name}` : ""
-      }`,
-      amount: Number(p.amount),
-      paidAmount: Number(p.paidAmount),
-      status: p.status,
-      dueDate: p.dueDate,
-      paidAt: p.paidAt,
-      scholarship: p.scholarship,
-      reference: p.reference,
-      term: p.term,
-    })),
+    payments: payments.map((p) => {
+      const amount = Number(p.amount);
+      const paidAmount = Number(p.paidAmount);
+      const outstanding = Math.max(0, amount - paidAmount);
+      return {
+        id: p.id,
+        name: `${formatSemesterLabel(p.term)} · ${p.academicYear.name}${
+          p.feeStructure?.name ? ` · ${p.feeStructure.name}` : ""
+        }`,
+        amount,
+        paidAmount,
+        outstanding,
+        status: p.status,
+        dueDate: p.dueDate,
+        paidAt: p.paidAt,
+        paidChannel: p.paidChannel,
+        scholarship: p.scholarship,
+        reference: p.reference,
+        term: p.term,
+        pendingProof: p.proofs.length > 0,
+        canPayOnline:
+          outstanding > 0 &&
+          p.status !== PaymentStatus.PAID &&
+          p.proofs.length === 0,
+      };
+    }),
     totals: { totalDue, totalPaid, outstanding },
   };
 }

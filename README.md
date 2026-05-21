@@ -45,6 +45,27 @@ npm run db:push
 npm run db:seed
 ```
 
+### Sync localhost → Render (production database)
+
+Copy `.env.render.example` to `.env.render`, paste your Render Postgres external URL, then after working locally:
+
+```bash
+npm run db:deploy-render
+```
+
+This updates the schema on Render and copies **all** local `school_sms` data. See [docs/DATABASE-RENDER.md](docs/DATABASE-RENDER.md).
+
+### Render production environment variables
+
+| Variable | Value |
+|----------|--------|
+| `DATABASE_URL` | **Internal** Postgres URL + `?schema=school_sms` (on the Web Service only) |
+| `NEXTAUTH_URL` | Your public app URL, e.g. `https://school-management-system.onrender.com` |
+| `AUTH_SECRET` | New random secret for production (`openssl rand -base64 32`) |
+| `NODE_ENV` | `production` |
+
+Use **External** URL only in `.env.render` on your laptop for `npm run db:deploy-render` — not on the deployed web service.
+
 ### 4. Run
 
 ```bash

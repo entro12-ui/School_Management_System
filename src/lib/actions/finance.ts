@@ -1,6 +1,6 @@
 "use server";
 
-import { AcademicTerm, PaymentStatus, UserRole } from "@prisma/client";
+import { AcademicTerm, FeePaymentChannel, PaymentStatus, UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
@@ -26,7 +26,9 @@ const recordPaymentSchema = z.object({
 function revalidateFinance() {
   revalidatePath("/finance");
   revalidatePath("/finance/payments");
+  revalidatePath("/finance/receipts");
   revalidatePath("/parent/fees");
+  revalidatePath("/student/fees");
 }
 
 export async function syncBranchSemesterInvoices(): Promise<ActionResult> {
@@ -109,6 +111,7 @@ export async function recordSemesterPayment(formData: FormData): Promise<ActionR
       paidAmount: newPaid,
       status,
       paidAt: fullyPaid ? new Date() : payment.paidAt,
+      paidChannel: fullyPaid ? FeePaymentChannel.CASH : payment.paidChannel,
       reference: reference?.trim() || payment.reference,
     },
   });
@@ -150,6 +153,7 @@ export async function markSemesterFullyPaid(paymentId: string): Promise<ActionRe
       paidAmount: total,
       status: PaymentStatus.PAID,
       paidAt: new Date(),
+      paidChannel: FeePaymentChannel.CASH,
     },
   });
 
@@ -158,7 +162,7 @@ export async function markSemesterFullyPaid(paymentId: string): Promise<ActionRe
   }
 
   revalidateFinance();
-  return { success: true, message: "Semester tuition marked as fully paid." };
+  return { success: true, message: "Semester tuition marked as fully paid (cash)." };
 }
 
 export async function createSemesterInvoice(
