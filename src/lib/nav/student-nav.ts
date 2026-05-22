@@ -7,4 +7,5 @@ export const STUDENT_NAV: NavItemConfig[] = [
   { href: "/student/exams", label: "Exams", icon: "ClipboardList" },
   { href: "/student/gpa", label: "GPA", icon: "BarChart3" },
   { href: "/student/transcript", label: "Transcript", icon: "FileText" },
+  { href: "/student/library", label: "Library", icon: "BookOpen" },
 ];

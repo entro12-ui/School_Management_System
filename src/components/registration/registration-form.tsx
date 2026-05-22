@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import type { ActionResult } from "@/lib/actions/registration";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -68,10 +69,10 @@ export function RegistrationForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Password *">
-          <Input name="password" type="password" minLength={8} required />
+          <PasswordInput name="password" minLength={8} required />
         </Field>
         <Field label="Confirm password *">
-          <Input name="confirmPassword" type="password" minLength={8} required />
+          <PasswordInput name="confirmPassword" minLength={8} required />
         </Field>
       </div>
 

@@ -2,6 +2,7 @@ import {
   PrismaClient,
   UserRole,
   GradeBand,
+  LibraryBorrowerType,
   SeniorStream,
   AttendanceStatus,
   PaymentStatus,
@@ -25,6 +26,9 @@ async function main() {
   await prisma.gradeRecord.deleteMany();
   await prisma.assessment.deleteMany();
   await prisma.attendanceRecord.deleteMany();
+  await prisma.libraryReadingLog.deleteMany();
+  await prisma.libraryFine.deleteMany();
+  await prisma.bookReservation.deleteMany();
   await prisma.bookIssue.deleteMany();
   await prisma.book.deleteMany();
   await prisma.systemSetting.deleteMany();
@@ -210,6 +214,18 @@ async function main() {
     },
   });
 
+  const studentGrade10User = await prisma.user.create({
+    data: {
+      email: "student.grade10@school.et",
+      passwordHash: await hash(),
+      firstName: "Daniel",
+      lastName: "Tadesse",
+      role: UserRole.STUDENT,
+      branchId: branchBishoftu.id,
+      mustChangePassword: false,
+    },
+  });
+
   await prisma.staffProfile.createMany({
     data: [
       {
@@ -276,9 +292,10 @@ async function main() {
 
   await prisma.student.create({
     data: {
+      userId: studentGrade10User.id,
       branchId: branchBishoftu.id,
       classId: grade10Class.id,
-      studentId: "STU-2025-002",
+      studentId: "STU-DEMO-002",
       firstName: "Daniel",
       lastName: "Tadesse",
       gradeBand: GradeBand.SENIOR_HIGH,
@@ -437,15 +454,87 @@ async function main() {
     },
   });
 
-  await prisma.book.create({
+  const bookMath = await prisma.book.create({
     data: {
       branchId: branchAddis.id,
       title: "Ethiopian National Curriculum — Grade 5 Math",
       author: "MoE",
       category: "Textbook",
+      subject: "Mathematics",
+      gradeBand: GradeBand.PRIMARY,
+      barcode: "BK-MATH-G5-001",
+      shelfLocation: "A-12",
       totalCopies: 30,
       available: 28,
     },
+  });
+
+  await prisma.book.createMany({
+    data: [
+      {
+        branchId: branchAddis.id,
+        title: "English Reader — Grade 5",
+        author: "MoE",
+        category: "Textbook",
+        subject: "Language",
+        gradeBand: GradeBand.PRIMARY,
+        barcode: "BK-ENG-G5-001",
+        shelfLocation: "B-04",
+        totalCopies: 25,
+        available: 24,
+      },
+      {
+        branchId: branchAddis.id,
+        title: "Science Discovery (Reference)",
+        author: "Pearson",
+        category: "Reference",
+        subject: "Science",
+        gradeBand: GradeBand.JUNIOR_HIGH,
+        barcode: "BK-SCI-REF-001",
+        totalCopies: 10,
+        available: 10,
+      },
+      {
+        branchId: branchAddis.id,
+        title: "Digital Encyclopedia — Primary",
+        author: "EduSync",
+        category: "Digital",
+        isDigital: true,
+        digitalUrl: "https://simple.wikipedia.org/wiki/Main_Page",
+        gradeBand: GradeBand.PRIMARY,
+        totalCopies: 1,
+        available: 1,
+      },
+      {
+        branchId: branchAddis.id,
+        title: "Picture Book — ABC Animals",
+        author: "Kids Press",
+        category: "Picture book",
+        gradeBand: GradeBand.KG,
+        barcode: "BK-KG-ABC-001",
+        shelfLocation: "KG-01",
+        totalCopies: 15,
+        available: 15,
+      },
+    ],
+  });
+
+  const dueSoon = new Date();
+  dueSoon.setDate(dueSoon.getDate() + 7);
+  await prisma.bookIssue.create({
+    data: {
+      branchId: branchAddis.id,
+      bookId: bookMath.id,
+      borrowerUserId: studentUser.id,
+      borrowerType: LibraryBorrowerType.STUDENT,
+      studentId: student.id,
+      dueDate: dueSoon,
+      notes: "Demo loan — return via librarian portal",
+    },
+  });
+  await prisma.book.update({
+    where: { id: bookMath.id },
+    data: { available: 27 },
   });
 
   await prisma.announcement.create({
@@ -491,10 +580,14 @@ async function main() {
     hr: hrAddis.email,
     parent: parentUser.email,
     student: studentUser.email,
+    studentGrade10: studentGrade10User.email,
   });
 }
 
 async function seedHrModule(branchId: string, hrUserId: string) {
+  const { ensureHrRbacDefaults } = await import("../src/lib/services/hr");
+  await ensureHrRbacDefaults();
+
   const deptAdmin = await prisma.hrDepartment.create({
     data: {
       branchId,

@@ -77,6 +77,14 @@ const DEMO_USERS: DemoUser[] = [
     department: "Library",
   },
   {
+    email: "hr.addis@school.et",
+    firstName: "Selam",
+    lastName: "Tadesse",
+    role: UserRole.HR_OFFICER,
+    branchCode: "ADDIS",
+    department: "Human Resources",
+  },
+  {
     email: "parent@school.et",
     firstName: "Abebe",
     lastName: "Kebede",
@@ -98,7 +106,7 @@ const DEMO_USERS: DemoUser[] = [
     firstName: "Daniel",
     lastName: "Tadesse",
     role: UserRole.STUDENT,
-    branchCode: "ADDIS",
+    branchCode: "BISH",
     gradeLevel: 10,
     stream: SeniorStream.NATURAL_SCIENCE,
     studentCode: "STU-DEMO-002",
@@ -113,8 +121,45 @@ function staffPrefix(role: UserRole): string {
       return "F";
     case UserRole.LIBRARIAN:
       return "L";
+    case UserRole.HR_OFFICER:
+      return "HR";
     default:
       return "S";
+  }
+}
+
+async function ensureHrManagerDemo(userId: string, branchId: string, email: string) {
+  const { ensureHrRbacDefaults } = await import("../src/lib/services/hr");
+  const { HR_MANAGER_ROLE_NAME } = await import("../src/lib/hr/permissions");
+  const { provisionHrEmployeeForUser } = await import(
+    "../src/lib/services/hr-employee-provision"
+  );
+
+  await ensureHrRbacDefaults();
+
+  const existingEmp = await prisma.hrEmployee.findFirst({ where: { userId } });
+  if (!existingEmp) {
+    await prisma.$transaction(async (tx) => {
+      await provisionHrEmployeeForUser(tx, {
+        userId,
+        branchId,
+        email,
+        firstName: "Selam",
+        lastName: "Tadesse",
+        asHrManager: true,
+      });
+    });
+  } else {
+    const managerRole = await prisma.hrRole.findUnique({
+      where: { name: HR_MANAGER_ROLE_NAME },
+    });
+    if (managerRole) {
+      await prisma.hrUserRole.upsert({
+        where: { userId_roleId: { userId, roleId: managerRole.id } },
+        create: { userId, roleId: managerRole.id },
+        update: {},
+      });
+    }
   }
 }
 
@@ -271,6 +316,9 @@ async function main() {
         case UserRole.FINANCE_OFFICER:
         case UserRole.LIBRARIAN:
           await ensureStaffProfile(user.id, branchId, demo.role, demo.department);
+          break;
+        case UserRole.HR_OFFICER:
+          await ensureHrManagerDemo(user.id, branchId, demo.email);
           break;
         case UserRole.PARENT:
           await ensureParentProfile(user.id);

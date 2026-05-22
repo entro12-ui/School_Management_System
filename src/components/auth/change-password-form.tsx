@@ -5,7 +5,8 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Field, Input } from "@/components/ui/input";
+import { Field } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { changePassword } from "@/lib/actions/enrollment";
 import { ROLE_HOME } from "@/lib/auth/roles";
 import { GraduationCap } from "lucide-react";
@@ -72,27 +73,24 @@ export function ChangePasswordForm() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Field label="Current password (one-time password) *">
-            <Input
+            <PasswordInput
               name="currentPassword"
-              type="password"
               required
               autoComplete="current-password"
               placeholder="Paste OTP from approval email"
             />
           </Field>
           <Field label="New password (min. 8 characters) *">
-            <Input
+            <PasswordInput
               name="newPassword"
-              type="password"
               minLength={8}
               required
               autoComplete="new-password"
             />
           </Field>
           <Field label="Confirm new password *">
-            <Input
+            <PasswordInput
               name="confirmPassword"
-              type="password"
               minLength={8}
               required
               autoComplete="new-password"

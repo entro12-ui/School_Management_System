@@ -73,6 +73,24 @@ enum BookStatus {
   DAMAGED
 }
 
+enum LibraryBorrowerType {
+  STUDENT
+  TEACHER
+}
+
+enum BookReservationStatus {
+  PENDING
+  READY
+  FULFILLED
+  CANCELLED
+}
+
+enum LibraryFineStatus {
+  PENDING
+  PAID
+  WAIVED
+}
+
 enum AssessmentType {
   DAILY_REPORT
   PLAY_BASED
@@ -123,8 +141,11 @@ model Branch {
   feeStructures   FeeStructure[]
   payments        Payment[]
   attendance      AttendanceRecord[]
-  books           Book[]
-  bookIssues      BookIssue[]
+  books              Book[]
+  bookIssues         BookIssue[]
+  bookReservations   BookReservation[]
+  libraryFines       LibraryFine[]
+  libraryReadingLogs LibraryReadingLog[]
   announcements   Announcement[]
   auditLogs            AuditLog[]
   registrationRequests RegistrationRequest[]
@@ -186,6 +207,9 @@ model User {
   hrPerformanceReviews   HrPerformanceReview[]     @relation("PerformanceReviewer")
   paymentProofsSubmitted PaymentProof[]            @relation("PaymentProofSubmitter")
   paymentProofsReviewed  PaymentProof[]            @relation("PaymentProofReviewer")
+  libraryBorrowals       BookIssue[]               @relation("LibraryBorrower")
+  libraryReservations    BookReservation[]         @relation("LibraryReservationBorrower")
+  libraryFines           LibraryFine[]             @relation("LibraryFineBorrower")
 
   @@index([role])
   @@index([branchId])
@@ -360,8 +384,10 @@ model Student {
   grades     GradeRecord[]
   attendance AttendanceRecord[]
   payments   Payment[]
-  bookIssues BookIssue[]
-  gpaRecords GpaRecord[]
+  bookIssues       BookIssue[]
+  bookReservations BookReservation[]
+  readingLogs      LibraryReadingLog[]
+  gpaRecords       GpaRecord[]
 
   @@unique([branchId, studentId])
   @@index([gradeBand, gradeLevel])
@@ -521,36 +547,113 @@ model PaymentProof {
 // ─── Library ──────────────────────────────────────────────────────────────────
 
 model Book {
-  id          String     @id @default(cuid())
-  branchId    String
-  isbn        String?
-  title       String
-  author      String?
-  category    String?
-  isDigital   Boolean    @default(false)
-  totalCopies Int        @default(1)
-  available   Int        @default(1)
-  status      BookStatus @default(AVAILABLE)
-  createdAt   DateTime   @default(now())
+  id            String     @id @default(cuid())
+  branchId      String
+  isbn          String?
+  barcode       String?
+  title         String
+  author        String?
+  subject       String?
+  category      String?
+  gradeBand     GradeBand?
+  shelfLocation String?
+  description   String?
+  digitalUrl    String?
+  isDigital     Boolean    @default(false)
+  totalCopies   Int        @default(1)
+  available     Int        @default(1)
+  status        BookStatus @default(AVAILABLE)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(now()) @updatedAt
 
-  branch Branch      @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  issues BookIssue[]
+  branch       Branch            @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  issues       BookIssue[]
+  reservations BookReservation[]
+  readingLogs  LibraryReadingLog[]
+
+  @@unique([branchId, barcode])
+  @@index([gradeBand])
+  @@index([subject])
 }
 
 model BookIssue {
-  id         String    @id @default(cuid())
-  branchId   String
-  bookId     String
-  studentId  String
-  issuedAt   DateTime  @default(now())
-  dueDate    DateTime
-  returnedAt DateTime?
-  fineAmount Decimal?  @db.Decimal(10, 2)
-  notes      String?
+  id               String              @id @default(cuid())
+  branchId         String
+  bookId           String
+  borrowerUserId   String
+  borrowerType     LibraryBorrowerType
+  studentId        String?
+  issuedAt         DateTime            @default(now())
+  dueDate          DateTime
+  returnedAt       DateTime?
+  fineAmount       Decimal?            @db.Decimal(10, 2)
+  finePaid         Boolean             @default(false)
+  notes            String?
 
-  branch  Branch  @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  book    Book    @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  branch   Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  borrower User     @relation("LibraryBorrower", fields: [borrowerUserId], references: [id], onDelete: Cascade)
+  student  Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  fines    LibraryFine[]
+
+  @@index([borrowerUserId, returnedAt])
+  @@index([studentId])
+}
+
+model BookReservation {
+  id               String                @id @default(cuid())
+  branchId         String
+  bookId           String
+  borrowerUserId   String
+  studentId        String?
+  status           BookReservationStatus @default(PENDING)
+  reservedAt       DateTime              @default(now())
+  readyAt          DateTime?
+  expiresAt        DateTime?
+  notes            String?
+
+  branch   Branch  @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  book     Book    @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  borrower User    @relation("LibraryReservationBorrower", fields: [borrowerUserId], references: [id], onDelete: Cascade)
+  student  Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([bookId, status])
+  @@index([borrowerUserId, status])
+}
+
+model LibraryFine {
+  id               String            @id @default(cuid())
+  branchId         String
+  issueId          String
+  borrowerUserId   String
+  amount           Decimal           @db.Decimal(10, 2)
+  paidAmount       Decimal           @default(0) @db.Decimal(10, 2)
+  status           LibraryFineStatus @default(PENDING)
+  paidAt           DateTime?
+  createdAt        DateTime          @default(now())
+
+  branch   Branch    @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  issue    BookIssue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  borrower User      @relation("LibraryFineBorrower", fields: [borrowerUserId], references: [id], onDelete: Cascade)
+
+  @@index([borrowerUserId, status])
+}
+
+model LibraryReadingLog {
+  id          String   @id @default(cuid())
+  branchId    String
+  studentId   String
+  bookId      String?
+  bookTitle   String
+  completedAt DateTime @default(now())
+  term        String?
+  badgeLevel  String?
+
+  branch  Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  student Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  book    Book?    @relation(fields: [bookId], references: [id], onDelete: SetNull)
+
+  @@index([studentId])
 }
 
 // ─── Communication ────────────────────────────────────────────────────────────

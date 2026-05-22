@@ -30,7 +30,7 @@
     "db:ensure-demo": "tsx prisma/ensure-demo-login.ts",
     "db:migrate-payments": "tsx prisma/migrate-semester-payments.ts",
     "db:migrate-photo": "tsx prisma/migrate-photo-url.ts",
-    "db:setup": "prisma db push && tsx prisma/seed.ts",
+    "db:setup": "prisma db push && tsx prisma/seed.ts && tsx prisma/ensure-demo-login.ts",
     "db:payment-proofs": "prisma db push && prisma generate",
     "db:studio": "prisma studio"
   },

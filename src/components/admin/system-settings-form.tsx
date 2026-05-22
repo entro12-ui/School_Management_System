@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { updateSystemSettings } from "@/lib/actions/admin-settings";
 import type { SystemSettings } from "@/lib/system-settings";
 
@@ -122,9 +123,8 @@ export function SystemSettingsForm({ settings }: { settings: SystemSettings }) {
             </Select>
           </Field>
           <Field label="SMS API key">
-            <Input
+            <PasswordInput
               name="smsApiKey"
-              type="password"
               placeholder={settings.hasSmsApiKey ? "•••••••• (leave blank to keep)" : "Enter API key"}
               autoComplete="off"
               disabled={pending}
