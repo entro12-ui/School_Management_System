@@ -2,13 +2,16 @@ import { INTEGRATED_MODULES } from "@/lib/organization-hierarchy";
 
 export function HomeFeatures() {
   return (
-    <section id="features" className="scroll-mt-28 mt-20">
-      <div className="max-w-2xl">
-        <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
+    <section id="features" className="scroll-mt-28 mt-16 sm:mt-20">
+      <div className="text-center sm:text-left">
+        <span className="text-xs font-bold uppercase tracking-wider text-rose-600">
           Integrated modules
-        </p>
-        <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
-          Everything branches need day to day
+        </span>
+        <h2 className="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl">
+          One record,{" "}
+          <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+            every module
+          </span>
         </h2>
         <p className="mt-2 text-slate-600">
           Academic, attendance, finance, and library share one student record — no
@@ -20,7 +23,7 @@ export function HomeFeatures() {
         {INTEGRATED_MODULES.map((mod, i) => (
           <article
             key={mod.id}
-            className={`rounded-2xl border border-slate-200 bg-white p-6 shadow-sm ${
+            className={`rounded-2xl border border-indigo-100/80 bg-white p-6 shadow-lg shadow-indigo-100/30 ${
               i === 0 ? "sm:col-span-2 sm:flex sm:gap-8 sm:p-8" : ""
             }`}
           >

@@ -37,13 +37,16 @@ const CENTRAL = {
 
 export function HomePortalsGrid() {
   return (
-    <section id="portals" className="scroll-mt-28 mt-20">
-      <div className="max-w-2xl">
-        <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
+    <section id="portals" className="scroll-mt-28 mt-16 sm:mt-20">
+      <div className="text-center sm:text-left">
+        <span className="text-xs font-bold uppercase tracking-wider text-violet-700">
           Role portals
-        </p>
-        <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
-          Sign in to the right workspace
+        </span>
+        <h2 className="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl">
+          Pick your{" "}
+          <span className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
+            workspace
+          </span>
         </h2>
         <p className="mt-2 text-slate-600">
           Each role has a dedicated portal. Demo accounts are available on the sign-in page.
@@ -126,7 +129,7 @@ function PortalCard({
   return (
     <Link
       href={href}
-      className="group block rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+      className="group block rounded-2xl border border-white bg-white/90 p-4 shadow-md ring-1 ring-indigo-100/80 transition hover:-translate-y-0.5 hover:shadow-xl hover:ring-indigo-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
     >
       <div className="flex items-start gap-3">
         <div

@@ -4,32 +4,33 @@ import { Button } from "@/components/ui/button";
 
 export function HomeCta({ dashboardHref }: { dashboardHref: string }) {
   return (
-    <section className="mt-20 overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 p-8 text-white shadow-xl shadow-indigo-300/25 sm:p-10">
-      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+    <section className="relative mt-16 overflow-hidden rounded-3xl sm:mt-20">
+      <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500" />
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIuMDgiLz48L2c+PC9zdmc+')] opacity-60" />
+      <div className="relative flex flex-col gap-6 p-8 text-white sm:p-10 md:flex-row md:items-center md:justify-between">
         <div className="max-w-xl">
-          <h2 className="text-2xl font-bold sm:text-3xl">Ready for your branch?</h2>
-          <p className="mt-3 leading-relaxed text-indigo-100">
-            Leadership dashboards, MoE-ready exports, and real-time KPIs — start from
-            central office or sign in to your role portal.
+          <h2 className="text-2xl font-extrabold sm:text-3xl">Start in minutes</h2>
+          <p className="mt-3 text-indigo-100 leading-relaxed">
+            Try every portal with demo accounts — one password, every role.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Link href={dashboardHref}>
-            <Button
-              size="lg"
-              className="bg-white text-indigo-700 hover:bg-indigo-50"
-            >
-              Open dashboard
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
           <Link href="/login">
             <Button
               size="lg"
-              variant="outline"
-              className="border-white/40 bg-transparent text-white hover:bg-white/10"
+              className="rounded-xl bg-white font-semibold text-indigo-700 shadow-xl hover:bg-indigo-50"
             >
-              Sign in
+              Sign in now
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
+          <Link href={dashboardHref}>
+            <Button
+              size="lg"
+              variant="outline"
+              className="rounded-xl border-white/50 bg-white/10 text-white hover:bg-white/20"
+            >
+              Dashboard
             </Button>
           </Link>
         </div>
@@ -40,70 +41,31 @@ export function HomeCta({ dashboardHref }: { dashboardHref: string }) {
 
 export function HomeFooter() {
   return (
-    <footer className="mt-16 border-t border-slate-200 pt-10 pb-12">
-      <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+    <footer className="mt-14 border-t border-indigo-100/80 pt-10 pb-10">
+      <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white">
-            <GraduationCap className="h-4 w-4" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 text-white">
+            <GraduationCap className="h-5 w-5" />
           </div>
           <div>
-            <p className="font-semibold text-slate-900">EduSync SMS</p>
-            <p className="text-xs text-slate-500">School Management · Ethiopia</p>
+            <p className="font-bold text-slate-900">EduSync SMS</p>
+            <p className="text-xs text-slate-500">KG–12 · Multi-branch Ethiopia</p>
           </div>
         </div>
-
-        <div className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3">
-          <div>
-            <p className="font-semibold text-slate-900">Product</p>
-            <ul className="mt-3 space-y-2 text-slate-600">
-              <li>
-                <a href="#organization" className="hover:text-indigo-600">
-                  How it works
-                </a>
-              </li>
-              <li>
-                <a href="#portals" className="hover:text-indigo-600">
-                  Portals
-                </a>
-              </li>
-              <li>
-                <a href="#programs" className="hover:text-indigo-600">
-                  Programs
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <p className="font-semibold text-slate-900">Access</p>
-            <ul className="mt-3 space-y-2 text-slate-600">
-              <li>
-                <Link href="/login" className="hover:text-indigo-600">
-                  Sign in
-                </Link>
-              </li>
-              <li>
-                <Link href="/register" className="hover:text-indigo-600">
-                  Register
-                </Link>
-              </li>
-              <li>
-                <Link href="/admin/organization" className="hover:text-indigo-600">
-                  Hierarchy (admin)
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="col-span-2 sm:col-span-1">
-            <p className="font-semibold text-slate-900">Demo</p>
-            <p className="mt-3 text-slate-600">
-              Use <span className="font-mono text-slate-800">demo1234</span> on the login
-              page for all demo accounts.
-            </p>
-          </div>
+        <div className="flex flex-wrap gap-6 text-sm">
+          <Link href="/login" className="font-medium text-indigo-600 hover:underline">
+            Sign in
+          </Link>
+          <Link href="/register" className="font-medium text-indigo-600 hover:underline">
+            Register
+          </Link>
+          <a href="#portals" className="text-slate-600 hover:text-indigo-600">
+            Portals
+          </a>
         </div>
       </div>
-      <p className="mt-10 text-center text-xs text-slate-400">
-        © {new Date().getFullYear()} EduSync SMS · Multi-branch KG–12
+      <p className="mt-8 text-center text-xs text-slate-400">
+        © {new Date().getFullYear()} EduSync SMS
       </p>
     </footer>
   );

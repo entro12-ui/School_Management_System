@@ -37,13 +37,16 @@ const PROGRAMS = [
 
 export function HomePrograms() {
   return (
-    <section id="programs" className="scroll-mt-28 mt-20">
+    <section id="programs" className="scroll-mt-28 mt-16 sm:mt-20">
       <div className="text-center">
-        <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
+        <span className="text-xs font-bold uppercase tracking-wider text-cyan-700">
           Academic programs
-        </p>
-        <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
-          Grade bands on every branch
+        </span>
+        <h2 className="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl">
+          KG through{" "}
+          <span className="bg-gradient-to-r from-amber-500 to-rose-500 bg-clip-text text-transparent">
+            Grade 12
+          </span>
         </h2>
         <p className="mx-auto mt-2 max-w-lg text-slate-600">
           Tools scale from KG picture books to Grade 12 transcripts — same platform,
@@ -55,7 +58,7 @@ export function HomePrograms() {
         {PROGRAMS.map((p) => (
           <article
             key={p.title}
-            className={`rounded-2xl border p-6 transition hover:shadow-md ${p.bg}`}
+            className={`rounded-2xl border p-6 shadow-md transition hover:-translate-y-0.5 hover:shadow-lg ${p.bg}`}
           >
             <div
               className={`inline-flex rounded-xl bg-gradient-to-br p-2.5 text-white shadow ${p.gradient}`}
