@@ -9,7 +9,6 @@ import {
   getBranchGradeLevelBreakdown,
   getBranchOverview,
 } from "@/lib/services/branch-admin";
-import { OrganizationHierarchySection } from "@/components/organization/organization-hierarchy-section";
 import { DashboardGraphs } from "@/components/dashboard/dashboard-graphs";
 import { getBranchDashboardCharts } from "@/lib/services/dashboard-charts";
 import { formatPercent } from "@/lib/utils";
@@ -114,14 +113,6 @@ export default async function BranchAdminPage() {
         <StatCard title="Parents" value={String(c.parents)} icon={Users} />
         <StatCard title="Portal users" value={String(c.users)} icon={Users} />
       </div>
-
-      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <OrganizationHierarchySection
-          variant="branch"
-          highlightBranchId={branchId}
-          showPortalLinks
-        />
-      </section>
 
       <section className="mt-8">
         <h2 className="text-lg font-semibold text-slate-900">Quick actions</h2>
