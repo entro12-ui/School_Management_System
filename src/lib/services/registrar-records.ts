@@ -26,6 +26,7 @@ export type EnrollmentRecordRow = {
   isActive: boolean;
   createdAt: string;
   studentId: string | null;
+  studentRecordId: string | null;
   gradeLevel: number | null;
   className: string | null;
   employeeId: string | null;
@@ -48,6 +49,7 @@ export async function getEnrollmentRecords(options: {
       branch: { select: { name: true } },
       student: {
         select: {
+          id: true,
           studentId: true,
           gradeLevel: true,
           class: { select: { name: true } },
@@ -82,6 +84,7 @@ export async function getEnrollmentRecords(options: {
       isActive: u.isActive,
       createdAt: u.createdAt.toISOString(),
       studentId: u.student?.studentId ?? null,
+      studentRecordId: u.student?.id ?? null,
       gradeLevel: u.student?.gradeLevel ?? null,
       className: u.student?.class?.name ?? null,
       employeeId:

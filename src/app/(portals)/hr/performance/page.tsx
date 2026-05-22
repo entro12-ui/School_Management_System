@@ -2,7 +2,7 @@ import { PortalShell } from "@/components/layout/portal-shell";
 import { HrBranchPicker } from "@/components/hr/hr-branch-picker";
 import { HrPerformanceManager } from "@/components/hr/hr-performance-manager";
 import { auth } from "@/lib/auth";
-import { HR_NAV } from "@/lib/nav/hr-nav";
+import { hrNavForRole } from "@/lib/nav/hr-nav";
 import {
   canAccessHr,
   getHrAccessFlags,
@@ -32,7 +32,7 @@ export default async function HrPerformancePage({
 
   if (!branchId) {
     return (
-      <PortalShell title="Human Resources" nav={HR_NAV}>
+      <PortalShell title="Human Resources" nav={hrNavForRole(session.user.role)}>
         <p className="text-slate-500">No branch configured.</p>
       </PortalShell>
     );
@@ -45,7 +45,7 @@ export default async function HrPerformancePage({
   ]);
 
   return (
-    <PortalShell title="Human Resources" subtitle={branch?.name} nav={HR_NAV}>
+    <PortalShell title="Human Resources" subtitle={branch?.name} nav={hrNavForRole(session.user.role)}>
       {isSuperAdmin && (
         <HrBranchPicker branchId={branchId} branches={branches} basePath="/hr/performance" />
       )}

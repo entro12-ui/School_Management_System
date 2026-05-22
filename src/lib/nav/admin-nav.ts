@@ -4,6 +4,7 @@ export const ADMIN_NAV: NavItemConfig[] = [
   { href: "/admin", label: "Dashboard", icon: "LayoutDashboard" },
   { href: "/admin/registrations", label: "Staff applications", icon: "UserCheck" },
   { href: "/registrar/enroll", label: "Enroll user", icon: "UserCheck" },
+  { href: "/registrar/students", label: "Student records", icon: "Users" },
   { href: "/registrar/records", label: "Enrollment sheet", icon: "ClipboardList" },
   { href: "/admin/organization", label: "Organization", icon: "Network" },
   { href: "/hr", label: "Human Resources", icon: "Briefcase" },

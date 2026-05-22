@@ -3,7 +3,7 @@ import { HrBranchPicker } from "@/components/hr/hr-branch-picker";
 import { HrEmployeesManager } from "@/components/hr/hr-employees-manager";
 import { auth } from "@/lib/auth";
 import { HR_MANAGER_ROLE_NAME } from "@/lib/hr/permissions";
-import { HR_NAV } from "@/lib/nav/hr-nav";
+import { hrNavForRole } from "@/lib/nav/hr-nav";
 import {
   canAccessHr,
   getHrAccessFlags,
@@ -34,7 +34,7 @@ export default async function HrEmployeesPage({
 
   if (!branchId) {
     return (
-      <PortalShell title="Human Resources" nav={HR_NAV}>
+      <PortalShell title="Human Resources" nav={hrNavForRole(session.user.role)}>
         <p className="text-slate-500">No branch configured.</p>
       </PortalShell>
     );
@@ -56,7 +56,7 @@ export default async function HrEmployeesPage({
     <PortalShell
       title="Human Resources"
       subtitle={branch?.name ?? "Employees"}
-      nav={HR_NAV}
+      nav={hrNavForRole(session.user.role)}
     >
       {isManager && (
         <p className="mb-4 rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm text-indigo-900">

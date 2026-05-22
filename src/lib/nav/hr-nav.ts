@@ -1,3 +1,4 @@
+import { UserRole } from "@prisma/client";
 import type { NavItemConfig } from "./icons";
 
 export const HR_NAV: NavItemConfig[] = [
@@ -13,3 +14,15 @@ export const HR_NAV: NavItemConfig[] = [
   { href: "/hr/recruitment", label: "Recruitment", icon: "UserCheck" },
   { href: "/hr/settings", label: "HR roles", icon: "Shield" },
 ];
+
+/** Sidebar for HR pages — includes portal home when opened from super admin or branch admin. */
+export function hrNavForRole(role: UserRole): NavItemConfig[] {
+  const portalHome: NavItemConfig[] =
+    role === UserRole.SUPER_ADMIN
+      ? [{ href: "/admin", label: "Home", icon: "LayoutDashboard" }]
+      : role === UserRole.BRANCH_ADMIN
+        ? [{ href: "/branch", label: "Home", icon: "LayoutDashboard" }]
+        : [];
+
+  return [...portalHome, ...HR_NAV];
+}

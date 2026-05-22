@@ -16,7 +16,7 @@ export function AppSidebar({ nav, open, onClose }: AppSidebarProps) {
   const pathname = usePathname();
 
   function isActive(href: string) {
-    if (href === "/teacher" || href === "/branch" || href === "/admin") {
+    if (href === "/teacher" || href === "/branch" || href === "/admin" || href === "/hr") {
       return pathname === href;
     }
     if (pathname === href) return true;

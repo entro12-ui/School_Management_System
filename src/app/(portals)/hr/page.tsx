@@ -2,7 +2,7 @@ import Link from "next/link";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { auth } from "@/lib/auth";
-import { HR_NAV } from "@/lib/nav/hr-nav";
+import { hrNavForRole } from "@/lib/nav/hr-nav";
 import {
   canAccessHr,
   getHrDashboardStats,
@@ -48,7 +48,7 @@ export default async function HrDashboardPage() {
     <PortalShell
       title="Human Resources"
       subtitle={session.user.branchName ?? "Staff lifecycle & payroll"}
-      nav={HR_NAV}
+      nav={hrNavForRole(session.user.role)}
     >
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-900">HR dashboard</h1>

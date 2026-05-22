@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 import { UserRole } from "@prisma/client";
 import {
@@ -365,6 +366,15 @@ export function EnrollmentDataTable({
                   </td>
                   <td className="px-3 py-3">
                     <div className="flex flex-wrap gap-1">
+                      {row.role === UserRole.STUDENT && row.studentRecordId && (
+                        <Link
+                          href={`/registrar/students/${row.studentRecordId}`}
+                          className="inline-flex h-8 items-center rounded-lg border border-indigo-200 bg-indigo-50 px-2 text-xs font-medium text-indigo-700 hover:bg-indigo-100"
+                          title="Grades & assessments"
+                        >
+                          Grades
+                        </Link>
+                      )}
                       <Button
                         type="button"
                         size="sm"

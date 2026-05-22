@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AppHeader } from "./app-header";
 import { AppSidebar } from "./app-sidebar";
 import type { NavItemConfig } from "@/lib/nav/icons";
+import type { UserRole } from "@prisma/client";
 
 interface PortalLayoutProps {
   title: string;
@@ -11,6 +12,7 @@ interface PortalLayoutProps {
   nav: NavItemConfig[];
   userName?: string | null;
   userRole?: string;
+  userRoleEnum?: UserRole;
   branchName?: string | null;
   userPhotoUrl?: string | null;
   signOutAction: () => void | Promise<void>;
@@ -23,6 +25,7 @@ export function PortalLayout({
   nav,
   userName,
   userRole,
+  userRoleEnum,
   branchName,
   userPhotoUrl,
   signOutAction,
@@ -44,6 +47,7 @@ export function PortalLayout({
           subtitle={subtitle}
           userName={userName}
           userRole={userRole}
+          userRoleEnum={userRoleEnum}
           branchName={branchName}
           userPhotoUrl={userPhotoUrl}
           onMenuClick={() => setSidebarOpen(true)}

@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth";
 import { REGISTRAR_NAV } from "@/lib/nav/registrar-nav";
 import { getRegistrarDashboardCharts } from "@/lib/services/dashboard-charts";
 import { redirect } from "next/navigation";
-import { UserCheck, Users } from "lucide-react";
+import { GraduationCap, UserCheck, Users } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -42,6 +42,18 @@ export default async function RegistrarPortalPage() {
             <h2 className="font-semibold text-slate-900">Enroll new user</h2>
             <p className="text-sm text-slate-600">
               Create student, teacher, finance, librarian, or parent accounts with OTP
+            </p>
+          </div>
+        </Link>
+        <Link
+          href="/registrar/students"
+          className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-indigo-300"
+        >
+          <GraduationCap className="h-10 w-10 text-indigo-600" />
+          <div>
+            <h2 className="font-semibold text-slate-900">Student records</h2>
+            <p className="text-sm text-slate-600">
+              All students — grades, assessments, GPA, and attendance
             </p>
           </div>
         </Link>

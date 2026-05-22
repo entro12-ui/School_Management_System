@@ -2,12 +2,15 @@
 
 import { Menu, Bell, LogOut, GraduationCap } from "lucide-react";
 import { UserAvatar } from "@/components/ui/user-avatar";
+import { PortalHomeLink } from "./portal-home-link";
+import type { UserRole } from "@prisma/client";
 
 interface AppHeaderProps {
   title: string;
   subtitle?: string;
   userName?: string | null;
   userRole?: string;
+  userRoleEnum?: UserRole;
   branchName?: string | null;
   userPhotoUrl?: string | null;
   onMenuClick: () => void;
@@ -19,6 +22,7 @@ export function AppHeader({
   subtitle,
   userName,
   userRole,
+  userRoleEnum,
   branchName,
   userPhotoUrl,
   onMenuClick,
@@ -48,6 +52,8 @@ export function AppHeader({
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
+        {userRoleEnum && <PortalHomeLink role={userRoleEnum} />}
+
         <button
           type="button"
           className="hidden rounded-lg p-2 text-slate-500 hover:bg-slate-100 sm:block"
