@@ -2,7 +2,7 @@
  * Copy HR module data from local Postgres → Render (does not touch students/payments).
  * Run: npm run db:sync-hr-to-render
  */
-import { PrismaClient, UserRole } from "@prisma/client";
+import { Prisma, PrismaClient, UserRole } from "@prisma/client";
 
 const LOCAL_URL =
   process.env.LOCAL_DATABASE_URL ??
@@ -351,7 +351,22 @@ async function main() {
     render.hrDisciplinaryAction.create({ data: d })
   );
   await upsertMany("HrCandidate", candidates, (c) =>
-    render.hrCandidate.create({ data: c })
+    render.hrCandidate.create({
+      data: {
+        id: c.id,
+        createdAt: c.createdAt,
+        email: c.email,
+        status: c.status,
+        jobPostId: c.jobPostId,
+        fullName: c.fullName,
+        resumeUrl: c.resumeUrl,
+        parsedResumeData:
+          c.parsedResumeData === null
+            ? Prisma.JsonNull
+            : (c.parsedResumeData as Prisma.InputJsonValue),
+        aiScore: c.aiScore,
+      },
+    })
   );
   for (const ur of userRoles) {
     const renderUserId = mapUserId(ur.userId, userIdMap);
