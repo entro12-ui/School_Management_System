@@ -13,7 +13,7 @@ services:
     plan: free
     buildCommand: npm install && npx prisma generate && npm run build
     startCommand: npm start
-    healthCheckPath: /login
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
@@ -24,9 +24,13 @@ services:
         sync: false
       - key: AUTH_SECRET
         sync: false
-      # Public app URL, e.g. https://school-management-system.onrender.com
+      # Public app URL — must match your Render URL exactly (https, no trailing slash)
       - key: NEXTAUTH_URL
         sync: false
+      - key: AUTH_URL
+        sync: false
+      - key: AUTH_TRUST_HOST
+        value: "true"
 
 databases:
   - name: school-sms-db

@@ -3,6 +3,8 @@ import { ROLE_HOME } from "@/lib/auth/roles";
 import type { UserRole } from "@prisma/client";
 
 export const authEdgeConfig = {
+  // Required on Render/Vercel — proxy host differs from NEXTAUTH_URL without this
+  trustHost: true,
   providers: [],
   pages: {
     signIn: "/login",

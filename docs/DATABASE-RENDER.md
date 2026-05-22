@@ -94,10 +94,14 @@ DATABASE_URL=postgresql://USER:PASS@dpg-xxxxx-a/DATABASE?schema=school_sms
 
 AUTH_SECRET=<openssl rand -base64 32 — production only>
 NEXTAUTH_URL=https://your-service-name.onrender.com
+AUTH_URL=https://your-service-name.onrender.com
+AUTH_TRUST_HOST=true
 ```
 
 Important:
 
+- `NEXTAUTH_URL` and `AUTH_URL` must be your **public HTTPS app URL** (e.g. `https://school-management-system-7qgd.onrender.com`), not localhost.
+- `AUTH_TRUST_HOST=true` fixes `UntrustedHost` errors on Render (also set `trustHost: true` in code).
 - Use **Internal**, not External, for `DATABASE_URL` on the web service.
 - Always add **`?schema=school_sms`** (or `&schema=school_sms` if the URL already has `?sslmode=...`). Internal URLs often omit `sslmode`; that is fine on Render’s private network.
 - `NEXTAUTH_URL` must be your **public HTTPS app URL** (same host users open in the browser), not the database URL.
