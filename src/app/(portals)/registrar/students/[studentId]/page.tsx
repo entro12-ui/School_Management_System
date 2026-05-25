@@ -6,6 +6,7 @@ import { navForUser } from "@/lib/nav/portal-nav";
 import { getRegistrarStudentAcademicRecord } from "@/lib/services/registrar-students";
 import { UserRole } from "@prisma/client";
 import { redirect, notFound } from "next/navigation";
+import { FileText } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -44,26 +45,35 @@ export default async function RegistrarStudentDetailPage({
       subtitle={`${student.firstName} ${student.lastName} · ${student.studentId}`}
       nav={navForUser(session.user.role, "registrar")}
     >
-      <div className="mb-6">
+      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <Link
+            href="/registrar/students"
+            className="text-sm text-indigo-600 hover:underline"
+          >
+            ← All student records
+          </Link>
+          <h1 className="mt-2 text-2xl font-bold text-slate-900">
+            {student.firstName} {student.lastName}
+          </h1>
+          <p className="text-slate-500">
+            {student.gradeLabel}
+            {student.stream ? ` · ${student.stream}` : ""} · {student.className ?? "No class"} ·{" "}
+            {student.branchName}
+            {!student.isActive && (
+              <span className="ml-2 rounded-full bg-slate-200 px-2 py-0.5 text-xs text-slate-600">
+                Inactive
+              </span>
+            )}
+          </p>
+        </div>
         <Link
-          href="/registrar/students"
-          className="text-sm text-indigo-600 hover:underline"
+          href={`/registrar/students/${student.id}/transcript`}
+          className="inline-flex w-fit items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700"
         >
-          ← All student records
+          <FileText className="h-4 w-4" />
+          Official transcript
         </Link>
-        <h1 className="mt-2 text-2xl font-bold text-slate-900">
-          {student.firstName} {student.lastName}
-        </h1>
-        <p className="text-slate-500">
-          {student.gradeLabel}
-          {student.stream ? ` · ${student.stream}` : ""} · {student.className ?? "No class"} ·{" "}
-          {student.branchName}
-          {!student.isActive && (
-            <span className="ml-2 rounded-full bg-slate-200 px-2 py-0.5 text-xs text-slate-600">
-              Inactive
-            </span>
-          )}
-        </p>
       </div>
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { DataTable, type DataTableColumn } from "@/components/ui/data-table";
 import type { RegistrarStudentListRow } from "@/lib/services/registrar-students";
-import { Eye } from "lucide-react";
+import { Eye, FileText } from "lucide-react";
 
 export function RegistrarStudentsTable({
   students,
@@ -80,13 +80,22 @@ export function RegistrarStudentsTable({
       id: "actions",
       header: "",
       cell: (r) => (
-        <Link
-          href={`/registrar/students/${r.id}`}
-          className="inline-flex items-center gap-1 rounded-lg border border-indigo-200 bg-indigo-50 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-100"
-        >
-          <Eye className="h-3.5 w-3.5" />
-          Full record
-        </Link>
+        <div className="flex flex-wrap gap-1.5">
+          <Link
+            href={`/registrar/students/${r.id}`}
+            className="inline-flex items-center gap-1 rounded-lg border border-indigo-200 bg-indigo-50 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-100"
+          >
+            <Eye className="h-3.5 w-3.5" />
+            Full record
+          </Link>
+          <Link
+            href={`/registrar/students/${r.id}/transcript`}
+            className="inline-flex items-center gap-1 rounded-lg bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-slate-800"
+          >
+            <FileText className="h-3.5 w-3.5" />
+            Transcript
+          </Link>
+        </div>
       ),
     });
 
