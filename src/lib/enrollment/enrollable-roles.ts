@@ -63,6 +63,7 @@ export const ENROLL_STAFF_WITH_PROFILE: ReadonlySet<UserRole> = new Set([
 
 /** Roles that may upload a profile photo on enrollment. */
 export const ENROLL_PHOTO_ROLES: ReadonlySet<UserRole> = new Set([
+  UserRole.STUDENT,
   UserRole.TEACHER,
   UserRole.FINANCE_OFFICER,
   UserRole.LIBRARIAN,

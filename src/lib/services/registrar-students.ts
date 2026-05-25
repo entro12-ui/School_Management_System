@@ -1,4 +1,4 @@
-import type { AssessmentType, GradeBand } from "@prisma/client";
+import type { AssessmentType, GradeBand, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { formatGradeLevel } from "@/lib/grade-utils";
 import {
@@ -28,6 +28,112 @@ export type RegistrarStudentListRow = {
   assessmentCount: number;
   email: string | null;
 };
+
+export type RegistrarStudentIdCardRow = {
+  id: string;
+  studentId: string;
+  fullName: string;
+  firstName: string;
+  lastName: string;
+  photoUrl: string | null;
+  gradeLevel: number;
+  gradeLabel: string;
+  gradeBand: GradeBand;
+  className: string | null;
+  academicYear: string | null;
+  schoolName: string;
+  branchCode: string;
+  branchCity: string;
+  schoolAddress: string | null;
+  schoolPhone: string | null;
+  dateOfBirth: string | null;
+  gender: string | null;
+  guardianName: string | null;
+  guardianPhone: string | null;
+  guardianEmail: string | null;
+  studentEmail: string | null;
+  studentPhone: string | null;
+  enrollmentDate: string;
+  isActive: boolean;
+};
+
+export type GeneratedStudentIdCardRow = {
+  id: string;
+  cardNumber: string;
+  issueDate: string;
+  expiresAt: string | null;
+  status: string;
+  notes: string | null;
+  printedAt: string | null;
+  createdAt: string;
+  student: RegistrarStudentIdCardRow;
+};
+
+const idCardStudentInclude = {
+  branch: {
+    select: {
+      code: true,
+      name: true,
+      city: true,
+      address: true,
+      phone: true,
+    },
+  },
+  class: {
+    select: {
+      name: true,
+      academicYear: { select: { name: true } },
+    },
+  },
+  user: { select: { email: true, phone: true, photoUrl: true } },
+  guardian: {
+    include: {
+      user: {
+        select: {
+          firstName: true,
+          lastName: true,
+          email: true,
+          phone: true,
+        },
+      },
+    },
+  },
+} satisfies Prisma.StudentInclude;
+
+type IdCardStudentPayload = Prisma.StudentGetPayload<{
+  include: typeof idCardStudentInclude;
+}>;
+
+function mapStudentForIdCard(s: IdCardStudentPayload): RegistrarStudentIdCardRow {
+  const guardian = s.guardian?.user;
+  return {
+    id: s.id,
+    studentId: s.studentId,
+    fullName: `${s.firstName} ${s.lastName}`,
+    firstName: s.firstName,
+    lastName: s.lastName,
+    photoUrl: s.user?.photoUrl ?? null,
+    gradeLevel: s.gradeLevel,
+    gradeLabel: formatGradeLevel(s.gradeLevel),
+    gradeBand: s.gradeBand,
+    className: s.class?.name ?? null,
+    academicYear: s.class?.academicYear?.name ?? null,
+    schoolName: s.branch.name,
+    branchCode: s.branch.code,
+    branchCity: s.branch.city,
+    schoolAddress: s.branch.address,
+    schoolPhone: s.branch.phone,
+    dateOfBirth: s.dateOfBirth?.toISOString() ?? null,
+    gender: s.gender,
+    guardianName: guardian ? `${guardian.firstName} ${guardian.lastName}` : null,
+    guardianPhone: guardian?.phone ?? null,
+    guardianEmail: guardian?.email ?? null,
+    studentEmail: s.user?.email ?? null,
+    studentPhone: s.user?.phone ?? null,
+    enrollmentDate: s.enrollmentDate.toISOString(),
+    isActive: s.isActive,
+  };
+}
 
 export type RegistrarGradeRow = {
   id: string;
@@ -151,6 +257,48 @@ export async function getRegistrarStudentList(options: {
       email: s.user?.email ?? null,
     };
   });
+}
+
+export async function getRegistrarStudentIdCards(options: {
+  branchId?: string;
+  includeInactive?: boolean;
+}): Promise<RegistrarStudentIdCardRow[]> {
+  const students = await prisma.student.findMany({
+    where: {
+      ...(options.branchId ? { branchId: options.branchId } : {}),
+      ...(options.includeInactive ? {} : { isActive: true }),
+    },
+    include: idCardStudentInclude,
+    orderBy: [{ branch: { name: "asc" } }, { gradeLevel: "asc" }, { firstName: "asc" }],
+  });
+
+  return students.map(mapStudentForIdCard);
+}
+
+export async function getGeneratedStudentIdCards(options: {
+  branchId?: string;
+}): Promise<GeneratedStudentIdCardRow[]> {
+  const cards = await prisma.studentIdCard.findMany({
+    where: {
+      ...(options.branchId ? { branchId: options.branchId } : {}),
+    },
+    include: {
+      student: { include: idCardStudentInclude },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return cards.map((card) => ({
+    id: card.id,
+    cardNumber: card.cardNumber,
+    issueDate: card.issueDate.toISOString(),
+    expiresAt: card.expiresAt?.toISOString() ?? null,
+    status: card.status,
+    notes: card.notes,
+    printedAt: card.printedAt?.toISOString() ?? null,
+    createdAt: card.createdAt.toISOString(),
+    student: mapStudentForIdCard(card.student),
+  }));
 }
 
 export async function getRegistrarStudentAcademicRecord(

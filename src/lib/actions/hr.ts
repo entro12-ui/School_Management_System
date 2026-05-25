@@ -56,6 +56,7 @@ export type ActionResult =
 const HR_PATHS = [
   "/hr",
   "/hr/employees",
+  "/hr/id-cards",
   "/hr/departments",
   "/hr/leave",
   "/hr/attendance",

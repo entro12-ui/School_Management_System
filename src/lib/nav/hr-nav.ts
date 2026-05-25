@@ -4,6 +4,7 @@ import type { NavItemConfig } from "./icons";
 export const HR_NAV: NavItemConfig[] = [
   { href: "/hr", label: "Dashboard", icon: "LayoutDashboard" },
   { href: "/hr/employees", label: "Employees", icon: "Users" },
+  { href: "/hr/id-cards", label: "Employee ID cards", icon: "IdCard" },
   { href: "/hr/departments", label: "Departments", icon: "Network" },
   { href: "/hr/attendance", label: "Attendance", icon: "ClipboardList" },
   { href: "/hr/leave", label: "Leave", icon: "Calendar" },

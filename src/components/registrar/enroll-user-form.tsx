@@ -35,6 +35,7 @@ export function EnrollUserForm({
   const [otpResult, setOtpResult] = useState<{
     email: string;
     oneTimePassword: string;
+    studentId?: string;
     name: string;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -62,6 +63,7 @@ export function EnrollUserForm({
         setOtpResult({
           email: result.data.email,
           oneTimePassword: result.data.oneTimePassword,
+          studentId: result.data.studentId,
           name: formData.get("firstName") + " " + formData.get("lastName"),
         });
         (e.target as HTMLFormElement).reset();
@@ -80,6 +82,16 @@ export function EnrollUserForm({
           <p className="mt-1 text-sm text-emerald-800">
             {otpResult.name} ({otpResult.email})
           </p>
+          {otpResult.studentId && (
+            <div className="mt-3 rounded-lg border border-emerald-200 bg-white/70 px-3 py-2">
+              <p className="text-xs font-medium uppercase tracking-wide text-emerald-700">
+                Generated Student ID
+              </p>
+              <p className="font-mono text-lg font-bold text-emerald-950">
+                {otpResult.studentId}
+              </p>
+            </div>
+          )}
           <p className="mt-3 font-mono text-2xl font-bold tracking-widest text-emerald-900">
             {otpResult.oneTimePassword}
           </p>
@@ -166,7 +178,7 @@ export function EnrollUserForm({
         </Field>
 
         {showPhoto && (
-          <Field label="Staff photo">
+          <Field label={role === UserRole.STUDENT ? "Student photo" : "Staff photo"}>
             <div className="flex flex-wrap items-center gap-4">
               {photoPreview && (
                 // eslint-disable-next-line @next/next/no-img-element -- blob preview URL
@@ -193,7 +205,7 @@ export function EnrollUserForm({
               />
             </div>
             <p className="mt-1 text-xs text-slate-500">
-              Optional. JPEG, PNG, or WebP, max 2 MB. Shown in the portal header after login.
+              Optional. JPEG, PNG, or WebP, max 2 MB. Student photos are used on ID cards.
             </p>
           </Field>
         )}
@@ -224,7 +236,11 @@ export function EnrollUserForm({
         )}
 
         <Button type="submit" disabled={pending} className="w-full">
-          {pending ? "Creating account…" : "Create account & generate OTP"}
+          {pending
+            ? "Creating account…"
+            : role === UserRole.STUDENT
+              ? "Create student ID, account & OTP"
+              : "Create account & generate OTP"}
         </Button>
       </form>
     </div>

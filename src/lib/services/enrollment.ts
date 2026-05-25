@@ -38,6 +38,7 @@ export type EnrollUserResult = {
   userId: string;
   email: string;
   oneTimePassword: string;
+  studentId?: string;
 };
 
 function staffPrefix(role: EnrollableRole): string | null {
@@ -51,6 +52,28 @@ function staffPrefix(role: EnrollableRole): string | null {
     default:
       return null;
   }
+}
+
+async function generateStudentId(
+  db: Prisma.TransactionClient,
+  branchId: string,
+  branchCode: string
+) {
+  const year = new Date().getFullYear();
+  const code = branchCode.replace(/[^a-zA-Z0-9]/g, "").toUpperCase() || "BR";
+  const prefix = `STU-${code}-${year}`;
+  const existingCount = await db.student.count({ where: { branchId } });
+
+  for (let i = existingCount + 1; i < existingCount + 10000; i += 1) {
+    const candidate = `${prefix}-${String(i).padStart(4, "0")}`;
+    const existing = await db.student.findUnique({
+      where: { branchId_studentId: { branchId, studentId: candidate } },
+      select: { id: true },
+    });
+    if (!existing) return candidate;
+  }
+
+  throw new Error("Could not generate a unique student ID. Please try again.");
 }
 
 export async function createEnrolledUser(
@@ -87,16 +110,19 @@ export async function createEnrolledUser(
     },
   });
 
+  let generatedStudentId: string | undefined;
+
   if (input.role === UserRole.STUDENT) {
-    const year = new Date().getFullYear();
-    const studentCount = await db.student.count({
-      where: { branchId: input.branchId },
-    });
+    generatedStudentId = await generateStudentId(
+      db as Prisma.TransactionClient,
+      input.branchId,
+      branch.code
+    );
     const student = await db.student.create({
       data: {
         userId: user.id,
         branchId: input.branchId,
-        studentId: `STU-${year}-${String(studentCount + 1).padStart(4, "0")}`,
+        studentId: generatedStudentId,
         firstName: input.firstName.trim(),
         lastName: input.lastName.trim(),
         dateOfBirth: input.dateOfBirth ?? null,
@@ -169,7 +195,7 @@ export async function createEnrolledUser(
     }
   }
 
-  return { userId: user.id, email, oneTimePassword };
+  return { userId: user.id, email, oneTimePassword, studentId: generatedStudentId };
 }
 
 export async function createRegistrarFromApproval(

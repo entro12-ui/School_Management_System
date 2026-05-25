@@ -146,6 +146,7 @@ model Branch {
   bookReservations   BookReservation[]
   libraryFines       LibraryFine[]
   libraryReadingLogs LibraryReadingLog[]
+  studentIdCards     StudentIdCard[]
   announcements   Announcement[]
   auditLogs            AuditLog[]
   registrationRequests RegistrationRequest[]
@@ -156,6 +157,7 @@ model Branch {
   hrTrainings          HrTraining[]
   hrAssets             HrAsset[]
   hrJobPosts           HrJobPost[]
+  hrEmployeeIdCards    HrEmployeeIdCard[]
 }
 
 model AcademicYear {
@@ -210,6 +212,8 @@ model User {
   libraryBorrowals       BookIssue[]               @relation("LibraryBorrower")
   libraryReservations    BookReservation[]         @relation("LibraryReservationBorrower")
   libraryFines           LibraryFine[]             @relation("LibraryFineBorrower")
+  createdStudentIdCards  StudentIdCard[]           @relation("StudentIdCardCreator")
+  createdHrEmployeeIdCards HrEmployeeIdCard[]       @relation("HrEmployeeIdCardCreator")
 
   @@index([role])
   @@index([branchId])
@@ -388,9 +392,33 @@ model Student {
   bookReservations BookReservation[]
   readingLogs      LibraryReadingLog[]
   gpaRecords       GpaRecord[]
+  idCards          StudentIdCard[]
 
   @@unique([branchId, studentId])
   @@index([gradeBand, gradeLevel])
+}
+
+model StudentIdCard {
+  id          String    @id @default(cuid())
+  branchId    String
+  studentId   String
+  cardNumber  String
+  issueDate   DateTime  @default(now())
+  expiresAt   DateTime?
+  status      String    @default("ACTIVE")
+  notes       String?
+  printedAt   DateTime?
+  createdById String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  branch    Branch  @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdBy User?   @relation("StudentIdCardCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@unique([branchId, cardNumber])
+  @@index([studentId, status])
+  @@index([branchId, createdAt])
 }
 
 model GpaRecord {
@@ -839,10 +867,34 @@ model HrEmployee {
   trainings     HrTrainingEnrollment[]
   assetAssignments HrAssetAssignment[]
   disciplinary  HrDisciplinaryAction[]
+  idCards       HrEmployeeIdCard[]
 
   @@unique([branchId, employeeCode])
   @@index([branchId, status])
   @@index([departmentId])
+}
+
+model HrEmployeeIdCard {
+  id          String    @id @default(cuid())
+  branchId    String
+  employeeId  String
+  cardNumber  String
+  issueDate   DateTime  @default(now())
+  expiresAt   DateTime?
+  status      String    @default("ACTIVE")
+  notes       String?
+  printedAt   DateTime?
+  createdById String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  branch    Branch     @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  employee  HrEmployee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  createdBy User?      @relation("HrEmployeeIdCardCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@unique([branchId, cardNumber])
+  @@index([employeeId, status])
+  @@index([branchId, createdAt])
 }
 
 model HrEmployeeDocument {

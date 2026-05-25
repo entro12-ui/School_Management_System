@@ -1,4 +1,4 @@
-import type { UserRole } from "@prisma/client";
+import type { Prisma, UserRole } from "@prisma/client";
 import {
   ALL_HR_PERMISSIONS,
   HR_MANAGER_ROLE_NAME,
@@ -174,6 +174,103 @@ export async function getHrEmployees(branchId?: string) {
     },
     orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
   });
+}
+
+export type HrEmployeeIdCardEmployeeRow = {
+  id: string;
+  employeeCode: string;
+  fullName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string | null;
+  profilePhotoUrl: string | null;
+  departmentName: string | null;
+  designationTitle: string | null;
+  employmentType: string;
+  status: string;
+  joiningDate: string | null;
+  schoolName: string;
+  branchCode: string;
+  branchCity: string;
+  schoolAddress: string | null;
+  schoolPhone: string | null;
+};
+
+export type GeneratedHrEmployeeIdCardRow = {
+  id: string;
+  cardNumber: string;
+  issueDate: string;
+  expiresAt: string | null;
+  status: string;
+  notes: string | null;
+  printedAt: string | null;
+  createdAt: string;
+  employee: HrEmployeeIdCardEmployeeRow;
+};
+
+const employeeIdCardInclude = {
+  branch: {
+    select: { code: true, name: true, city: true, address: true, phone: true },
+  },
+  department: { select: { name: true } },
+  designation: { select: { title: true } },
+} satisfies Prisma.HrEmployeeInclude;
+
+type EmployeeIdCardPayload = Prisma.HrEmployeeGetPayload<{
+  include: typeof employeeIdCardInclude;
+}>;
+
+function mapEmployeeForIdCard(e: EmployeeIdCardPayload): HrEmployeeIdCardEmployeeRow {
+  return {
+    id: e.id,
+    employeeCode: e.employeeCode,
+    fullName: `${e.firstName} ${e.lastName}`,
+    firstName: e.firstName,
+    lastName: e.lastName,
+    email: e.email,
+    phone: e.phone,
+    profilePhotoUrl: e.profilePhotoUrl,
+    departmentName: e.department?.name ?? null,
+    designationTitle: e.designation?.title ?? null,
+    employmentType: e.employmentType,
+    status: e.status,
+    joiningDate: e.joiningDate?.toISOString() ?? null,
+    schoolName: e.branch.name,
+    branchCode: e.branch.code,
+    branchCity: e.branch.city,
+    schoolAddress: e.branch.address,
+    schoolPhone: e.branch.phone,
+  };
+}
+
+export async function getHrEmployeesForIdCards(branchId?: string) {
+  const employees = await prisma.hrEmployee.findMany({
+    where: branchId ? { branchId } : {},
+    include: employeeIdCardInclude,
+    orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
+  });
+  return employees.map(mapEmployeeForIdCard);
+}
+
+export async function getGeneratedHrEmployeeIdCards(branchId?: string) {
+  const cards = await prisma.hrEmployeeIdCard.findMany({
+    where: branchId ? { branchId } : {},
+    include: { employee: { include: employeeIdCardInclude } },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return cards.map((card) => ({
+    id: card.id,
+    cardNumber: card.cardNumber,
+    issueDate: card.issueDate.toISOString(),
+    expiresAt: card.expiresAt?.toISOString() ?? null,
+    status: card.status,
+    notes: card.notes,
+    printedAt: card.printedAt?.toISOString() ?? null,
+    createdAt: card.createdAt.toISOString(),
+    employee: mapEmployeeForIdCard(card.employee),
+  }));
 }
 
 export async function getHrDepartments(branchId?: string) {
