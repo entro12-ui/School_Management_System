@@ -7,6 +7,7 @@ export const TEACHER_NAV: NavItemConfig[] = [
   { href: "/teacher/attendance", label: "Weekly sheet", icon: "ClipboardList" },
   { href: "/teacher/students", label: "Students", icon: "Users" },
   { href: "/teacher/classes", label: "My classes", icon: "GraduationCap" },
+  { href: "/teacher/schedule", label: "Schedule", icon: "Calendar" },
   { href: "/teacher/reports", label: "Report cards", icon: "FileText" },
   { href: "/teacher/library", label: "Library", icon: "BookOpen" },
 ];
