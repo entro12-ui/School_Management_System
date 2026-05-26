@@ -1,0 +1,16 @@
+import type { NavItemConfig } from "./icons";
+
+export const BRANCH_NAV: NavItemConfig[] = [
+  { href: "/branch", label: "Dashboard", icon: "LayoutDashboard" },
+  { href: "/branch/students", label: "Students", icon: "Users" },
+  { href: "/branch/staff", label: "Staff", icon: "GraduationCap" },
+  { href: "/branch/classes", label: "Classes", icon: "BookOpen" },
+  { href: "/finance/payments", label: "Fee payments", icon: "Wallet" },
+  { href: "/hr", label: "Human Resources", icon: "Briefcase" },
+  { href: "/registrar/enroll", label: "Enroll user", icon: "UserCheck" },
+  { href: "/registrar/students", label: "Student records", icon: "Users" },
+  { href: "/registrar/records", label: "Enrollment sheet", icon: "ClipboardList" },
+  { href: "/branch/registrations", label: "Staff applications", icon: "ClipboardList" },
+  { href: "/branch/audit", label: "Audit log", icon: "FileText" },
+  { href: "/branch/reports", label: "Reports", icon: "Download" },
+];

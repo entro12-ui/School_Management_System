@@ -1,0 +1,65 @@
+# Render Blueprint — deploy web app + use existing Postgres
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Before deploy:
+# 1. Create/link Postgres on Render (or use existing dpg-... instance)
+# 2. Run locally: npm run db:push-render && npm run db:seed-hr-render
+# 3. Set AUTH_SECRET in Render dashboard (openssl rand -base64 32)
+
+services:
+  - type: web
+    name: school-management-system
+    runtime: node
+    plan: free
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm start
+    healthCheckPath: /login
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Prefer linking Postgres in dashboard, then set DATABASE_URL manually:
+      # Internal URL + ?schema=school_sms (NOT External — External is for laptop sync only)
+      # Example: postgresql://user:pass@dpg-xxx-a/dbname?schema=school_sms
+      - key: DATABASE_URL
+        sync: false
+      - key: AUTH_SECRET
+        sync: false
+      # Public app URL, e.g. https://school-management-system.onrender.com
+      - key: NEXTAUTH_URL
+        sync: false
+      # Ollama private service — set after deploying school-sms-ollama (see docs/OLLAMA-AI-TUTOR.md)
+      - key: OLLAMA_BASE_URL
+        sync: false
+      - key: OLLAMA_MODEL
+        value: llama3.1:8b
+      - key: AI_TUTOR_ENABLED
+        value: "true"
+      - key: AI_TUTOR_FALLBACK_MOCK
+        value: "true"
+      - key: OLLAMA_TIMEOUT_MS
+        value: "12000"
+      - key: OLLAMA_NUM_PREDICT
+        value: "140"
+      - key: OLLAMA_NUM_CTX
+        value: "3072"
+      - key: OLLAMA_MAX_HISTORY
+        value: "4"
+      - key: OLLAMA_KEEP_ALIVE
+        value: "15m"
+
+  # Ollama LLM — private service (not public). Requires Starter+ plan for most models.
+  - type: pserv
+    name: school-sms-ollama
+    runtime: docker
+    dockerfilePath: ./docker/ollama/Dockerfile
+    plan: starter
+    envVars:
+      - key: OLLAMA_HOST
+        value: 0.0.0.0:11434
+
+databases:
+  - name: school-sms-db
+    plan: free
+    databaseName: health_system_2pbp
+    # If using an EXISTING Render Postgres, skip creating this and set DATABASE_URL manually:
+    # postgresql://USER:PASS@HOST/DB?sslmode=require&schema=school_sms
