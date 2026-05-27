@@ -6,7 +6,6 @@ import {
   AlertCircle,
   CheckCircle2,
   ChevronDown,
-  ChevronRight,
   ClipboardCheck,
   FileText,
   Printer,
