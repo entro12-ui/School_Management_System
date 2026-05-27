@@ -17,5 +17,21 @@
     "paths": { "@/*": ["./src/*"] }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "prisma/sync-hr-to-render.ts",
+    "prisma/compare-local-render.ts",
+    "prisma/seed.ts",
+    "prisma/seed-grade-students.ts",
+    "prisma/seed-hr-render.ts",
+    "prisma/check-db.ts",
+    "prisma/db-ping.ts",
+    "prisma/ensure-demo-login.ts",
+    "prisma/ensure-hr-manager.ts",
+    "prisma/ensure-system-settings.ts",
+    "prisma/assign-homeroom.ts",
+    "prisma/sync-subjects.ts",
+    "prisma/migrate-photo-url.ts",
+    "prisma/migrate-semester-payments.ts"
+  ]
 }

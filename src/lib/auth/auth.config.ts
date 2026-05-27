@@ -1,6 +1,6 @@
 import type { NextAuthConfig } from "next-auth";
-import { ROLE_HOME } from "@/lib/auth/roles";
 import type { UserRole } from "@prisma/client";
+import { ROLE_HOME } from "@/lib/auth/role-home";
 
 export const authEdgeConfig = {
   providers: [],

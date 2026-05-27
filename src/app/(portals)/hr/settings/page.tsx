@@ -26,7 +26,7 @@ export default async function HrSettingsPage({
   await ensureHrRbacDefaults();
 
   const params = await searchParams;
-  const { branchId, branches, branch, isSuperAdmin } = await getHrPageBranch(
+  const { branchId, branches, isSuperAdmin } = await getHrPageBranch(
     session.user.role,
     session.user.branchId,
     params.branchId

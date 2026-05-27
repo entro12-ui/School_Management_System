@@ -173,7 +173,6 @@ export function HrEmployeesManager({
       header: "Files",
       cell: (r) => (
         <HrEmployeeDocumentsList
-          employeeId={r.id}
           employeeName={`${r.firstName} ${r.lastName}`}
           documents={r.documents}
           canWrite={canWrite}
