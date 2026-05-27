@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 import { auth } from "@/lib/auth";
 import {
-  HR_MANAGER_ROLE_NAME,
   HR_PERMISSIONS,
   type HrPermissionName,
 } from "@/lib/hr/permissions";

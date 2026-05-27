@@ -3,7 +3,7 @@ import {
   getOllamaBaseUrl,
   getOllamaModel,
   isAiTutorEnabled,
-  useMockFallbackOnError,
+  isMockFallbackEnabledOnError,
 } from "@/lib/ai/config";
 import { ollamaHealthCheck, ollamaWarmModel } from "@/lib/ai/ollama";
 import { NextResponse } from "next/server";
@@ -26,7 +26,7 @@ export async function GET() {
       reachable: false,
       model: getOllamaModel(),
       baseUrl: getOllamaBaseUrl(),
-      fallbackMock: useMockFallbackOnError(),
+      fallbackMock: isMockFallbackEnabledOnError(),
       models: [] as string[],
     });
   }
@@ -42,7 +42,7 @@ export async function GET() {
     reachable: health.reachable,
     model: health.model,
     baseUrl: getOllamaBaseUrl(),
-    fallbackMock: useMockFallbackOnError(),
+    fallbackMock: isMockFallbackEnabledOnError(),
     models: health.models,
     error: health.error,
     modelInstalled: health.models.some(

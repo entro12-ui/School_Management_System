@@ -30,7 +30,7 @@ export function isAiTutorEnabled(): boolean {
 }
 
 /** If Ollama fails, use the built-in Socratic mock replies. */
-export function useMockFallbackOnError(): boolean {
+export function isMockFallbackEnabledOnError(): boolean {
   const raw = process.env.AI_TUTOR_FALLBACK_MOCK;
   if (raw === undefined || raw === "") return true;
   return raw === "1" || raw.toLowerCase() === "true";

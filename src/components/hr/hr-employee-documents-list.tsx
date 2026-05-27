@@ -14,7 +14,7 @@ export type EmployeeDocumentItem = {
 };
 
 export function HrEmployeeDocumentsList({
-  employeeId,
+  employeeId: _employeeId,
   employeeName,
   documents,
   canWrite,

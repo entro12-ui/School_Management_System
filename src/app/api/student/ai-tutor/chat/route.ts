@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import {
   getOllamaModel,
   isAiTutorEnabled,
-  useMockFallbackOnError,
+  isMockFallbackEnabledOnError,
 } from "@/lib/ai/config";
 import { ollamaChatStream, OllamaError } from "@/lib/ai/ollama";
 import { buildMockTutorReply } from "@/lib/ai/tutor-mock";
@@ -131,7 +131,7 @@ export async function POST(request: Request) {
               ? error.message
               : "Ollama request failed";
 
-        if (!useMockFallbackOnError()) {
+        if (!isMockFallbackEnabledOnError()) {
           send({ type: "error", message: "AI Tutor unavailable", detail: ollamaMessage });
           controller.close();
           return;
