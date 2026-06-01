@@ -31,6 +31,35 @@ services:
         sync: false
       - key: AUTH_TRUST_HOST
         value: "true"
+      # Ollama private service — see docs/OLLAMA-AI-TUTOR.md
+      - key: OLLAMA_BASE_URL
+        sync: false
+      - key: OLLAMA_MODEL
+        value: llama3.1:8b
+      - key: AI_TUTOR_ENABLED
+        value: "true"
+      - key: AI_TUTOR_FALLBACK_MOCK
+        value: "true"
+      - key: OLLAMA_TIMEOUT_MS
+        value: "12000"
+      - key: OLLAMA_NUM_PREDICT
+        value: "140"
+      - key: OLLAMA_NUM_CTX
+        value: "3072"
+      - key: OLLAMA_MAX_HISTORY
+        value: "4"
+      - key: OLLAMA_KEEP_ALIVE
+        value: "15m"
+
+  # Ollama LLM — private service (not public). Requires Starter+ plan for most models.
+  - type: pserv
+    name: school-sms-ollama
+    runtime: docker
+    dockerfilePath: ./docker/ollama/Dockerfile
+    plan: starter
+    envVars:
+      - key: OLLAMA_HOST
+        value: 0.0.0.0:11434
 
 databases:
   - name: school-sms-db

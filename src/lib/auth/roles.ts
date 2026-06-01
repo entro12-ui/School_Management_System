@@ -1,4 +1,5 @@
 import { UserRole } from "@prisma/client";
+import { ROLE_HOME as ROLE_HOME_PATHS } from "@/lib/auth/role-home";
 
 export const ROLE_LABELS: Record<UserRole, string> = {
   SUPER_ADMIN: "Super Admin",
@@ -12,17 +13,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   STUDENT: "Student",
 };
 
-export const ROLE_HOME: Record<UserRole, string> = {
-  SUPER_ADMIN: "/admin",
-  BRANCH_ADMIN: "/branch",
-  REGISTRAR: "/registrar",
-  TEACHER: "/teacher",
-  FINANCE_OFFICER: "/finance",
-  LIBRARIAN: "/library",
-  HR_OFFICER: "/hr",
-  PARENT: "/parent",
-  STUDENT: "/student",
-};
+export const ROLE_HOME = ROLE_HOME_PATHS as Record<UserRole, string>;
 
 export const STAFF_ROLES: UserRole[] = [
   UserRole.SUPER_ADMIN,

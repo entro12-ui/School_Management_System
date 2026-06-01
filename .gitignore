@@ -44,3 +44,8 @@ next-env.d.ts
 # prisma
 /prisma/*.db
 /prisma/*.db-journal
+
+# cache
+.cache/
+*.tmp
+**/prisma/**/.cache/

@@ -1,7 +1,9 @@
 import NextAuth from "next-auth";
 import { authEdgeConfig } from "@/lib/auth/auth.config";
 
-export const { auth: middleware } = NextAuth(authEdgeConfig);
+const { auth } = NextAuth(authEdgeConfig);
+
+export default auth;
 
 export const config = {
   matcher: [

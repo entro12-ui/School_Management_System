@@ -8,6 +8,7 @@ Multi-branch school management platform aligned with your architecture: **Super 
 - **PostgreSQL** + **Prisma ORM**
 - **NextAuth v5** (credentials, role-based routes)
 - **Tailwind CSS 4**
+- **Ollama** (optional) — AI Study Tutor for students ([docs/OLLAMA-AI-TUTOR.md](docs/OLLAMA-AI-TUTOR.md))
 
 ## Quick start
 
@@ -73,6 +74,21 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
+
+### AI Tutor (Ollama, local)
+
+1. Install [Ollama](https://ollama.com) and pull the model:
+
+   ```bash
+   ollama pull llama3.1:8b
+   # or: ./scripts/ollama-setup-local.sh
+   ```
+
+2. In `.env` (see `.env.example` for `OLLAMA_*` and `AI_TUTOR_*` variables).
+
+3. Open **Student → AI Tutor** — the header should show **Ollama connected** when the model is running.
+
+Details: [docs/OLLAMA-AI-TUTOR.md](docs/OLLAMA-AI-TUTOR.md)
 
 ## Demo accounts (password: `demo1234`)
 

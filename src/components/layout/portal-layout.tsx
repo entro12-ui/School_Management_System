@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ParentCommunicationBot } from "@/components/parent/parent-communication-bot";
 import { AppHeader } from "./app-header";
 import { AppSidebar } from "./app-sidebar";
 import type { NavItemConfig } from "@/lib/nav/icons";
@@ -56,6 +57,8 @@ export function PortalLayout({
 
         <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">{children}</main>
       </div>
+
+      {userRoleEnum === "PARENT" ? <ParentCommunicationBot /> : null}
     </div>
   );
 }
