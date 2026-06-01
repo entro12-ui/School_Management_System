@@ -22,6 +22,11 @@ import {
   GraduationCap,
 } from "lucide-react";
 import {
+  buildQuizQuestions,
+  formatQuizQuestionMeta,
+  type QuizQuestion,
+} from "@/lib/ai/quiz-bank";
+import {
   TUTOR_KNOWLEDGE_MODE_OPTIONS,
   type TutorKnowledgeMode,
 } from "@/lib/ai/knowledge-mode";
@@ -45,18 +50,6 @@ type ChatMessage = {
   role: "student" | "tutor";
   text: string;
   createdAt: number;
-};
-
-type QuizQuestion = {
-  id: number;
-  type: "multiple_choice" | "true_false" | "fill_blank";
-  question: string;
-  options?: string[];
-  correctAnswer: string;
-  explanation: string;
-  pageReference: number;
-  difficulty: "easy" | "medium" | "hard";
-  topic: string;
 };
 
 type Chapter = {
@@ -256,121 +249,6 @@ function Textarea({
   );
 }
 
-function buildQuizQuestions(chapter: Chapter): QuizQuestion[] {
-  const firstPage = chapter.pageStart;
-  const secondPage = chapter.pageStart + 1;
-  const thirdPage = Math.min(chapter.pageStart + 5, chapter.pageEnd);
-
-  if (chapter.subject === "Science") {
-    return [
-      {
-        id: 1,
-        type: "multiple_choice",
-        question: "According to the chapter, what do roots do for a plant?",
-        options: ["A. Make food", "B. Hold the plant in soil", "C. Carry pollen"],
-        correctAnswer: "B",
-        explanation: `Page ${firstPage} says roots hold the plant in the soil and take in water.`,
-        pageReference: firstPage,
-        difficulty: "easy",
-        topic: "Roots",
-      },
-      {
-        id: 2,
-        type: "true_false",
-        question: "The stem supports the plant and carries water to the leaves.",
-        options: ["True", "False"],
-        correctAnswer: "True",
-        explanation: `Page ${secondPage} explains that the stem supports the plant and carries water.`,
-        pageReference: secondPage,
-        difficulty: "easy",
-        topic: "Stem",
-      },
-      {
-        id: 3,
-        type: "fill_blank",
-        question: "Leaves help the plant make food using ____.",
-        correctAnswer: "sunlight",
-        explanation: `Page ${thirdPage} says leaves help the plant make its food using sunlight.`,
-        pageReference: thirdPage,
-        difficulty: "medium",
-        topic: "Leaves",
-      },
-    ];
-  }
-
-  if (chapter.subject === "English") {
-    return [
-      {
-        id: 1,
-        type: "multiple_choice",
-        question: "What does the main idea tell you?",
-        options: ["A. What a paragraph is mostly about", "B. The page number", "C. Every small detail"],
-        correctAnswer: "A",
-        explanation: `Page ${firstPage} says the main idea tells what a paragraph is mostly about.`,
-        pageReference: firstPage,
-        difficulty: "easy",
-        topic: "Main idea",
-      },
-      {
-        id: 2,
-        type: "true_false",
-        question: "Supporting details give more information about the main idea.",
-        options: ["True", "False"],
-        correctAnswer: "True",
-        explanation: `Page ${secondPage} says supporting details give more information about the main idea.`,
-        pageReference: secondPage,
-        difficulty: "easy",
-        topic: "Supporting details",
-      },
-      {
-        id: 3,
-        type: "fill_blank",
-        question: "A good summary keeps the main idea and the most important ____.",
-        correctAnswer: "details",
-        explanation: `Page ${thirdPage} explains that a good summary keeps the main idea and the most important details.`,
-        pageReference: thirdPage,
-        difficulty: "medium",
-        topic: "Summary",
-      },
-    ];
-  }
-
-  return [
-    {
-      id: 1,
-      type: "multiple_choice",
-      question: "In the chapter example, what does the denominator tell you?",
-      options: ["A. The selected parts", "B. The total equal parts", "C. The page number"],
-      correctAnswer: "B",
-      explanation: `As the book explains on page ${firstPage}, the denominator tells how many equal parts the whole has.`,
-      pageReference: firstPage,
-      difficulty: "easy",
-      topic: "Denominator",
-    },
-    {
-      id: 2,
-      type: "true_false",
-      question: "The numerator tells how many equal parts are selected or shaded.",
-      options: ["True", "False"],
-      correctAnswer: "True",
-      explanation: `Page ${secondPage} says the numerator tells how many equal parts are selected or shaded.`,
-      pageReference: secondPage,
-      difficulty: "easy",
-      topic: "Numerator",
-    },
-    {
-      id: 3,
-      type: "fill_blank",
-      question: "To compare fractions with the same denominator, compare their ____.",
-      correctAnswer: "numerators",
-      explanation: `Page ${thirdPage} explains that fractions with the same denominator are compared using their numerators.`,
-      pageReference: thirdPage,
-      difficulty: "medium",
-      topic: "Comparing fractions",
-    },
-  ];
-}
-
 type TutorEngineStatus = "checking" | "ollama" | "offline" | "mock";
 
 const TUTOR_INTRO_MESSAGES: Record<TutorKnowledgeMode, string> = {
@@ -485,7 +363,18 @@ export function AiStudyTutor({
   const streamLabel = formatStream(stream);
   const selectedGradeLabel = formatGrade(selectedGrade);
   const isExamPrepEligible = selectedGrade >= 11;
-  const currentQuizQuestions = useMemo(() => buildQuizQuestions(chapter), [chapter]);
+  const currentQuizQuestions = useMemo(
+    () =>
+      buildQuizQuestions({
+        gradeLevel: chapter.gradeLevel,
+        subject: chapter.subject,
+        chapterNumber: chapter.number,
+        chapterTitle: chapter.title,
+        pageStart: chapter.pageStart,
+        pageEnd: chapter.pageEnd,
+      }),
+    [chapter]
+  );
   const isRagMode = knowledgeSourceMode === "rag";
   const sidebarPassages = isRagMode
     ? retrievedPassages.length > 0
@@ -1341,14 +1230,24 @@ export function AiStudyTutor({
 
           {activeMode === "quiz" && (
             <div className="p-5">
-              <div className="mb-5 flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="mb-5 flex flex-col gap-3 rounded-xl border border-indigo-100 bg-gradient-to-r from-indigo-50/80 via-white to-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="font-semibold text-slate-900">Adaptive practice quiz</p>
-                  <p className="text-sm text-slate-500">Questions are weighted toward weak topics and cite textbook pages.</p>
+                  <p className="text-xs font-medium uppercase tracking-wide text-indigo-600">
+                    {selectedGradeLabel} · {subject}
+                    {isRagMode ? ` · Ch. ${chapter.number}` : ""}
+                  </p>
+                  <p className="mt-1 font-semibold text-slate-900">
+                    {subject} practice quiz
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500">
+                    {isRagMode
+                      ? "Questions match your chapter and cite textbook pages."
+                      : "Questions match your grade and subject — no textbook pages required."}
+                  </p>
                 </div>
-                <Button type="button" variant="outline" onClick={resetQuiz}>
+                <Button type="button" variant="outline" className="shrink-0 bg-white" onClick={resetQuiz}>
                   <RotateCcw className="h-4 w-4" />
-                  Reset
+                  Reset quiz
                 </Button>
               </div>
 
@@ -1357,16 +1256,27 @@ export function AiStudyTutor({
                   const selected = answers[quizQuestion.id] ?? "";
                   const isCorrect =
                     selected.trim().toLowerCase() === quizQuestion.correctAnswer.toLowerCase();
+                  const quizChapter = {
+                    gradeLevel: selectedGrade,
+                    subject: chapter.subject,
+                    chapterNumber: chapter.number,
+                    chapterTitle: chapter.title,
+                    pageStart: chapter.pageStart,
+                    pageEnd: chapter.pageEnd,
+                  };
 
                   return (
-                    <article key={quizQuestion.id} className="rounded-xl border border-slate-200 p-4">
+                    <article
+                      key={quizQuestion.id}
+                      className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                    >
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                         <div>
                           <p className="text-sm font-semibold text-slate-900">
                             {quizQuestion.id}. {quizQuestion.question}
                           </p>
                           <p className="mt-1 text-xs text-slate-500">
-                            Page {quizQuestion.pageReference} - {quizQuestion.topic} - {quizQuestion.difficulty}
+                            {formatQuizQuestionMeta(quizQuestion, quizChapter, isRagMode)}
                           </p>
                         </div>
                         {quizSubmitted && (
@@ -1443,7 +1353,8 @@ export function AiStudyTutor({
                 </Button>
                 {quizSubmitted && (
                   <p className="text-sm font-medium text-slate-700">
-                    Score: {score} / {currentQuizQuestions.length}. Keep reviewing {chapter.title.toLowerCase()}.
+                    Score: {score} / {currentQuizQuestions.length} in {subject}. Keep reviewing{" "}
+                    {chapter.title.toLowerCase()}.
                   </p>
                 )}
               </div>
