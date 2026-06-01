@@ -156,7 +156,9 @@ Default tutor settings (in `.env`):
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
-| `OLLAMA_TIMEOUT_MS` | `12000` | Fail fast instead of waiting 2 minutes |
+| `OLLAMA_TIMEOUT_MS` | `120000` | Max wait for first streamed token (legacy name) |
+| `OLLAMA_FIRST_TOKEN_TIMEOUT_MS` | same as above | Optional override for model load + first token |
+| `OLLAMA_STREAM_IDLE_TIMEOUT_MS` | `45000` | Abort if no chunks arrive for this long after streaming starts |
 | `OLLAMA_NUM_PREDICT` | `140` | Short answers = faster generation |
 | `OLLAMA_NUM_CTX` | `3072` | Smaller context window |
 | `OLLAMA_MAX_HISTORY` | `4` | Fewer prior turns in the prompt |
@@ -172,6 +174,7 @@ If replies still feel slow on CPU, run once: `ollama run llama3.1:8b` before usi
 
 | Symptom | Fix |
 |---------|-----|
+| “Ollama timed out after 12000ms” / fallback on every question | Raise `OLLAMA_TIMEOUT_MS` to `120000` in `.env`; warm model with `ollama run llama3.1:8b` or use a smaller model |
 | “Ollama offline — guided fallback” locally | Run `ollama serve`, confirm `ollama list` includes `llama3.1:8b` |
 | Status shows model not installed | `ollama pull` the name in `OLLAMA_MODEL` |
 | Render timeout / 503 | Increase `OLLAMA_TIMEOUT_MS`; use a smaller model; scale Ollama plan RAM |

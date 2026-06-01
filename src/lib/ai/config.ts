@@ -36,9 +36,26 @@ export function isMockFallbackEnabledOnError(): boolean {
   return raw === "1" || raw.toLowerCase() === "true";
 }
 
-/** Hard cap for tutor round-trips (target ~5–12s on local 8B). */
+/**
+ * Max wait for the first streamed token (model load + prompt on CPU can take 30–90s).
+ * Legacy env: OLLAMA_TIMEOUT_MS (used when OLLAMA_FIRST_TOKEN_TIMEOUT_MS is unset).
+ */
+export function getOllamaFirstTokenTimeoutMs(): number {
+  const dedicated = process.env.OLLAMA_FIRST_TOKEN_TIMEOUT_MS;
+  if (dedicated !== undefined && dedicated !== "") {
+    return readIntEnv("OLLAMA_FIRST_TOKEN_TIMEOUT_MS", 120_000);
+  }
+  return readIntEnv("OLLAMA_TIMEOUT_MS", 120_000);
+}
+
+/** Max idle time between stream chunks after the first token. */
+export function getOllamaStreamIdleTimeoutMs(): number {
+  return readIntEnv("OLLAMA_STREAM_IDLE_TIMEOUT_MS", 45_000);
+}
+
+/** @deprecated Prefer getOllamaFirstTokenTimeoutMs */
 export function getOllamaRequestTimeoutMs(): number {
-  return readIntEnv("OLLAMA_TIMEOUT_MS", 12_000);
+  return getOllamaFirstTokenTimeoutMs();
 }
 
 /** Max tokens generated per reply — lower = faster. */

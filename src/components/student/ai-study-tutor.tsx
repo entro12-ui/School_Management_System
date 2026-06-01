@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   BookMarked,
   Bot,
@@ -10,6 +10,7 @@ import {
   Languages,
   Loader2,
   MessageCircleQuestion,
+  MessageSquarePlus,
   PenLine,
   RotateCcw,
   Send,
@@ -43,6 +44,7 @@ type ChatMessage = {
   id: number;
   role: "student" | "tutor";
   text: string;
+  createdAt: number;
 };
 
 type QuizQuestion = {
@@ -377,6 +379,68 @@ const TUTOR_INTRO_MESSAGES: Record<TutorKnowledgeMode, string> = {
     "Hi. General tutor mode is on — I will help using grade-level subject knowledge without citing textbook pages. Ask your question when you are ready.",
 };
 
+function createWelcomeMessage(mode: TutorKnowledgeMode): ChatMessage {
+  return {
+    id: Date.now(),
+    role: "tutor",
+    text: TUTOR_INTRO_MESSAGES[mode],
+    createdAt: Date.now(),
+  };
+}
+
+function formatMessageTime(timestamp: number) {
+  return new Intl.DateTimeFormat(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(timestamp));
+}
+
+function studentInitials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+/** RAG uses the selected textbook chapter; general mode only needs grade + subject. */
+function buildApiChapterContext(
+  mode: TutorKnowledgeMode,
+  chapter: Chapter,
+  gradeLevel: number,
+  subjectName: string,
+  language: string
+) {
+  if (mode === "rag") {
+    return {
+      gradeLevel: chapter.gradeLevel,
+      subject: chapter.subject,
+      chapterNumber: chapter.number,
+      chapterTitle: chapter.title,
+      pageStart: chapter.pageStart,
+      pageEnd: chapter.pageEnd,
+      language,
+      chunks: chapter.chunks,
+      keywords: chapter.keywords,
+      nextChapter: chapter.nextChapter,
+    };
+  }
+
+  return {
+    gradeLevel,
+    subject: subjectName,
+    chapterNumber: 1,
+    chapterTitle: "General study (no textbook)",
+    pageStart: 1,
+    pageEnd: 1,
+    language,
+    chunks: [`General ${subjectName} tutoring for grade ${gradeLevel} — no textbook chapter.`],
+    keywords: [subjectName.toLowerCase(), "general", "study"],
+    nextChapter: 1,
+  };
+}
+
 export function AiStudyTutor({
   studentName,
   gradeLevel,
@@ -397,18 +461,16 @@ export function AiStudyTutor({
   const [question, setQuestion] = useState("");
   const [knowledgeSourceMode, setKnowledgeSourceMode] = useState<TutorKnowledgeMode>("rag");
   const [retrievedPassages, setRetrievedPassages] = useState<string[]>([]);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: 1,
-      role: "tutor",
-      text: TUTOR_INTRO_MESSAGES.rag,
-    },
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>(() => [createWelcomeMessage("rag")]);
+  const [streamingReply, setStreamingReply] = useState<string | null>(null);
+  const chatScrollRef = useRef<HTMLDivElement>(null);
+  const chatInputRef = useRef<HTMLTextAreaElement>(null);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [essay, setEssay] = useState("");
   const [timedPractice, setTimedPractice] = useState(false);
   const [isTutorLoading, setIsTutorLoading] = useState(false);
+  const [showSlowTutorHint, setShowSlowTutorHint] = useState(false);
   const [tutorEngineStatus, setTutorEngineStatus] = useState<TutorEngineStatus>("checking");
   const [tutorEngineDetail, setTutorEngineDetail] = useState<string | null>(null);
 
@@ -438,6 +500,25 @@ export function AiStudyTutor({
     setRetrievedPassages([]);
   }, [selectedGrade, selectedSubject, chapterIndex]);
 
+  const scrollChatToBottom = useCallback(() => {
+    const el = chatScrollRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, []);
+
+  useEffect(() => {
+    scrollChatToBottom();
+  }, [messages, streamingReply, isTutorLoading, scrollChatToBottom]);
+
+  const startNewChat = useCallback(() => {
+    if (isTutorLoading) return;
+    setMessages([createWelcomeMessage(knowledgeSourceMode)]);
+    setStreamingReply(null);
+    setRetrievedPassages([]);
+    setQuestion("");
+    chatInputRef.current?.focus();
+  }, [isTutorLoading, knowledgeSourceMode]);
+
   function handleKnowledgeModeChange(nextMode: TutorKnowledgeMode) {
     if (nextMode === knowledgeSourceMode) return;
     setKnowledgeSourceMode(nextMode);
@@ -447,6 +528,7 @@ export function AiStudyTutor({
       {
         id: Date.now(),
         role: "tutor",
+        createdAt: Date.now(),
         text:
           nextMode === "rag"
             ? "Switched to textbook (RAG) mode. I will ground answers in your chapter and uploaded books."
@@ -519,6 +601,15 @@ export function AiStudyTutor({
     };
   }, []);
 
+  useEffect(() => {
+    if (!isTutorLoading) {
+      setShowSlowTutorHint(false);
+      return;
+    }
+    const timer = window.setTimeout(() => setShowSlowTutorHint(true), 8_000);
+    return () => window.clearTimeout(timer);
+  }, [isTutorLoading]);
+
   const score = useMemo(() => {
     return currentQuizQuestions.reduce((total, quizQuestion) => {
       const answer = answers[quizQuestion.id]?.trim().toLowerCase();
@@ -550,22 +641,18 @@ export function AiStudyTutor({
       id: Date.now(),
       role: "student",
       text: trimmed,
+      createdAt: Date.now(),
     };
-    const pendingId = Date.now() + 1;
 
     setMessages((current) => [...current, studentMessage]);
     setQuestion("");
     setIsTutorLoading(true);
+    setStreamingReply("");
 
     const history = [...messages, studentMessage].map((entry) => ({
       role: entry.role,
       text: entry.text,
     }));
-
-    setMessages((current) => [
-      ...current,
-      { id: pendingId, role: "tutor", text: "" },
-    ]);
 
     try {
       const response = await fetch("/api/student/ai-tutor/chat", {
@@ -581,18 +668,13 @@ export function AiStudyTutor({
             schoolName,
             className,
             stream,
-            chapter: {
-              gradeLevel: selectedGrade,
-              subject: chapter.subject,
-              chapterNumber: chapter.number,
-              chapterTitle: chapter.title,
-              pageStart: chapter.pageStart,
-              pageEnd: chapter.pageEnd,
-              language: selectedLanguage,
-              chunks: chapter.chunks,
-              keywords: chapter.keywords,
-              nextChapter: chapter.nextChapter,
-            },
+            chapter: buildApiChapterContext(
+              knowledgeSourceMode,
+              chapter,
+              selectedGrade,
+              subject,
+              selectedLanguage
+            ),
           },
         }),
       });
@@ -649,12 +731,7 @@ export function AiStudyTutor({
 
           if (event.type === "token" && event.text) {
             streamedReply += event.text;
-            const snapshot = streamedReply;
-            setMessages((current) =>
-              current.map((entry) =>
-                entry.id === pendingId ? { ...entry, text: snapshot } : entry
-              )
-            );
+            setStreamingReply(streamedReply);
           }
 
           if (event.type === "done" && event.reply) {
@@ -678,11 +755,17 @@ export function AiStudyTutor({
       }
 
       const finalReply = donePayload.reply;
-      setMessages((current) =>
-        current.map((entry) =>
-          entry.id === pendingId ? { ...entry, text: finalReply } : entry
-        )
-      );
+      setStreamingReply(null);
+      setIsTutorLoading(false);
+      setMessages((current) => [
+        ...current,
+        {
+          id: Date.now(),
+          role: "tutor",
+          text: finalReply,
+          createdAt: Date.now(),
+        },
+      ]);
 
       if (donePayload.knowledgeMode === "rag" && donePayload.retrievedPassages?.length) {
         setRetrievedPassages(donePayload.retrievedPassages);
@@ -702,25 +785,40 @@ export function AiStudyTutor({
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Something went wrong. Please try again.";
-      setMessages((current) => {
-        const withoutEmpty = current.filter(
-          (entry) => !(entry.id === pendingId && entry.text === "")
-        );
-        return [
-          ...withoutEmpty,
-          {
-            id: pendingId,
-            role: "tutor",
-            text: `I could not reach the AI tutor right now. ${message} Try again in a moment, or ask your teacher for help.`,
-          },
-        ];
-      });
+      setStreamingReply(null);
+      setIsTutorLoading(false);
+      setMessages((current) => [
+        ...current,
+        {
+          id: Date.now(),
+          role: "tutor",
+          createdAt: Date.now(),
+          text: `I could not reach the AI tutor right now. ${message} Try again in a moment, or ask your teacher for help.`,
+        },
+      ]);
       setTutorEngineStatus("offline");
       setTutorEngineDetail(message);
     } finally {
       setIsTutorLoading(false);
+      setStreamingReply(null);
     }
   }
+
+  const studentAvatarLabel = studentInitials(studentName);
+  const tutorStatusLabel =
+    tutorEngineStatus === "ollama"
+      ? "Live"
+      : tutorEngineStatus === "mock"
+        ? "Fallback"
+        : tutorEngineStatus === "checking"
+          ? "Connecting"
+          : "Offline";
+  const tutorStatusClass =
+    tutorEngineStatus === "ollama"
+      ? "bg-emerald-50 text-emerald-700 ring-emerald-600/20"
+      : tutorEngineStatus === "mock"
+        ? "bg-amber-50 text-amber-800 ring-amber-600/20"
+        : "bg-slate-100 text-slate-600 ring-slate-500/20";
 
   function resetQuiz() {
     setAnswers({});
@@ -759,7 +857,8 @@ export function AiStudyTutor({
           <p className="text-slate-500">
             {tutorEngineStatus === "checking" && "Checking Ollama connection…"}
             {tutorEngineStatus === "ollama" && "Ollama connected — live Socratic tutoring."}
-            {tutorEngineStatus === "mock" && "Offline fallback — guided replies until Ollama is ready."}
+            {tutorEngineStatus === "mock" &&
+              "Offline fallback — Ollama is slow or unavailable; answers may be shorter until Live shows."}
             {tutorEngineStatus === "offline" && "AI tutor unavailable — check server configuration."}
           </p>
           {tutorEngineDetail ? (
@@ -875,11 +974,25 @@ export function AiStudyTutor({
             <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-6">
               <div className="lg:col-span-2 xl:col-span-6">
                 <p className="text-sm font-semibold text-slate-900">
-                  Chapter {chapter.number}: {chapter.title}
+                  {isRagMode
+                    ? `Chapter ${chapter.number}: ${chapter.title}`
+                    : `General study · ${subject}`}
                 </p>
                 <p className="mt-1 text-xs text-slate-500">
-                  {selectedGradeLabel} - {chapter.subject} pages {chapter.pageStart}-{chapter.pageEnd} - {selectedLanguage} - Stream: {streamLabel}
-                  {knowledgeModeMeta ? ` - ${knowledgeModeMeta.shortLabel}` : ""}
+                  {isRagMode ? (
+                    <>
+                      {selectedGradeLabel} · {chapter.subject} · pages {chapter.pageStart}–
+                      {chapter.pageEnd} · {selectedLanguage} · Stream: {streamLabel}
+                      {knowledgeModeMeta ? ` · ${knowledgeModeMeta.shortLabel}` : ""}
+                    </>
+                  ) : (
+                    <>
+                      {selectedGradeLabel} · {subject} · {selectedLanguage} · Stream: {streamLabel}
+                      {knowledgeModeMeta ? ` · ${knowledgeModeMeta.shortLabel}` : ""}
+                      {" · "}
+                      Ask about any topic at this grade level — no chapter required.
+                    </>
+                  )}
                 </p>
               </div>
               <div>
@@ -922,24 +1035,27 @@ export function AiStudyTutor({
                   ))}
                 </Select>
               </div>
-              <div>
-                <Label htmlFor="chapter">Chapter</Label>
-                <Select
-                  id="chapter"
-                  className="mt-1 bg-white"
-                  value={String(chapterIndex)}
-                  onChange={(event) => {
-                    setChapterIndex(Number(event.target.value));
-                    resetQuiz();
-                  }}
-                >
-                  {chapterOptions.map((chapterOption, index) => (
-                    <option key={`${chapterOption.subject}-${chapterOption.number}`} value={index}>
-                      Ch. {chapterOption.number} - p. {chapterOption.pageStart}-{chapterOption.pageEnd}
-                    </option>
-                  ))}
-                </Select>
-              </div>
+              {isRagMode ? (
+                <div>
+                  <Label htmlFor="chapter">Chapter</Label>
+                  <Select
+                    id="chapter"
+                    className="mt-1 bg-white"
+                    value={String(chapterIndex)}
+                    onChange={(event) => {
+                      setChapterIndex(Number(event.target.value));
+                      resetQuiz();
+                    }}
+                  >
+                    {chapterOptions.map((chapterOption, index) => (
+                      <option key={`${chapterOption.subject}-${chapterOption.number}`} value={index}>
+                        Ch. {chapterOption.number} - p. {chapterOption.pageStart}-
+                        {chapterOption.pageEnd}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              ) : null}
               <div>
                 <Label htmlFor="language" className="inline-flex items-center gap-1">
                   <Languages className="h-3.5 w-3.5" />
@@ -984,6 +1100,11 @@ export function AiStudyTutor({
                 <p className="mt-1 text-[11px] leading-4 text-slate-500">
                   {knowledgeModeMeta?.description}
                 </p>
+                {!isRagMode ? (
+                  <p className="mt-1 text-[11px] leading-4 text-indigo-600">
+                    Chapter selection is hidden — general mode uses grade and subject only.
+                  </p>
+                ) : null}
               </div>
               <div
                 className={cn(
@@ -997,7 +1118,7 @@ export function AiStudyTutor({
                 <p>
                   {isRagMode
                     ? "Textbook RAG: retrieved passages only, cite pages, Socratic hints, check-in question."
-                    : "General mode: grade-level subject knowledge, no invented textbook pages, Socratic hints."}
+                    : "General mode: direct answers for “what is…” questions, then a short check question. No invented pages."}
                 </p>
               </div>
             </div>
@@ -1010,70 +1131,177 @@ export function AiStudyTutor({
                 isRagMode ? "lg:grid-cols-[minmax(0,1fr)_280px]" : "lg:grid-cols-1"
               )}
             >
-              <div className="flex min-h-[480px] flex-col">
-                <div className="flex-1 space-y-4 overflow-y-auto p-5">
-                  {messages.map((message) => (
-                    <div
-                      key={message.id}
+              <div className="flex min-h-[520px] flex-col overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-b from-slate-50 to-white shadow-sm">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-slate-900">Study conversation</p>
+                    <p className="truncate text-xs text-slate-500">
+                      {selectedGradeLabel} · {subject}
+                      {isRagMode ? ` · Ch. ${chapter.number} · Textbook RAG` : " · General tutor"}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span
                       className={cn(
-                        "flex gap-3",
-                        message.role === "student" ? "justify-end" : "justify-start"
+                        "inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ring-1 ring-inset",
+                        tutorStatusClass
                       )}
                     >
-                      {message.role === "tutor" && (
-                        <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-white">
-                          <Bot className="h-4 w-4" />
-                        </span>
+                      {tutorEngineStatus === "checking" ? (
+                        <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                      ) : (
+                        <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-current opacity-70" />
                       )}
+                      {tutorStatusLabel}
+                    </span>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="h-8 gap-1.5 bg-white text-xs"
+                      disabled={isTutorLoading}
+                      onClick={startNewChat}
+                    >
+                      <MessageSquarePlus className="h-3.5 w-3.5" />
+                      New chat
+                    </Button>
+                  </div>
+                </div>
+
+                <div
+                  ref={chatScrollRef}
+                  className="flex-1 space-y-5 overflow-y-auto px-4 py-5 scroll-smooth"
+                >
+                  {messages.map((message) => {
+                    const isStudent = message.role === "student";
+
+                    return (
                       <div
-                        className={cn(
-                          "max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-6 shadow-sm",
-                          message.role === "student"
-                            ? "bg-indigo-600 text-white"
-                            : "border border-slate-200 bg-white text-slate-700"
-                        )}
+                        key={message.id}
+                        className={cn("flex gap-3", isStudent ? "flex-row-reverse" : "flex-row")}
                       >
-                        {message.text}
+                        <span
+                          className={cn(
+                            "mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold shadow-sm",
+                            isStudent
+                              ? "bg-indigo-600 text-white"
+                              : "bg-gradient-to-br from-indigo-600 to-violet-600 text-white"
+                          )}
+                          aria-hidden
+                        >
+                          {isStudent ? (
+                            studentAvatarLabel || "You"
+                          ) : (
+                            <Bot className="h-4 w-4" />
+                          )}
+                        </span>
+                        <div
+                          className={cn(
+                            "flex max-w-[min(85%,42rem)] flex-col gap-1",
+                            isStudent ? "items-end" : "items-start"
+                          )}
+                        >
+                          <div className="flex items-center gap-2 px-1">
+                            <span className="text-[11px] font-medium text-slate-500">
+                              {isStudent ? studentName.split(" ")[0] ?? "You" : "AI Tutor"}
+                            </span>
+                            <span className="text-[10px] text-slate-400">
+                              {formatMessageTime(message.createdAt)}
+                            </span>
+                          </div>
+                          <div
+                            className={cn(
+                              "rounded-2xl px-4 py-3 text-sm leading-6 shadow-sm",
+                              isStudent
+                                ? "rounded-tr-md bg-indigo-600 text-white"
+                                : "rounded-tl-md border border-slate-200/80 bg-white text-slate-800"
+                            )}
+                          >
+                            <p className="whitespace-pre-wrap">{message.text}</p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                  {isTutorLoading &&
-                  messages.at(-1)?.role === "tutor" &&
-                  !messages.at(-1)?.text ? (
+                    );
+                  })}
+
+                  {isTutorLoading && streamingReply !== null ? (
                     <div className="flex gap-3">
-                      <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-white">
+                      <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-sm">
                         <Bot className="h-4 w-4" />
                       </span>
-                      <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-500">
-                        <Loader2 className="h-4 w-4 animate-spin text-indigo-600" />
-                        Thinking…
+                      <div className="flex max-w-[min(85%,42rem)] flex-col gap-1">
+                        <div className="flex items-center gap-2 px-1">
+                          <span className="text-[11px] font-medium text-slate-500">AI Tutor</span>
+                          <span className="text-[10px] text-slate-400">now</span>
+                        </div>
+                        <div className="rounded-2xl rounded-tl-md border border-slate-200/80 bg-white px-4 py-3 text-sm shadow-sm">
+                          {streamingReply && streamingReply.length > 0 ? (
+                            <p className="whitespace-pre-wrap leading-6 text-slate-800">
+                              {streamingReply}
+                              <span className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-indigo-500 align-middle" />
+                            </p>
+                          ) : (
+                            <div className="space-y-2">
+                              <div className="flex items-center gap-2 text-slate-500">
+                                <Loader2 className="h-4 w-4 shrink-0 animate-spin text-indigo-600" />
+                                <span>Thinking…</span>
+                              </div>
+                              {showSlowTutorHint ? (
+                                <p className="text-xs leading-5 text-slate-400">
+                                  The local model may take 1–2 minutes on the first reply while it
+                                  loads. Later answers are usually faster.
+                                </p>
+                              ) : null}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ) : null}
                 </div>
-                <div className="border-t border-slate-100 bg-white p-4">
-                  <div className="flex gap-2">
-                    <Input
+
+                <div className="border-t border-slate-200 bg-white p-3">
+                  <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-2 focus-within:border-indigo-300 focus-within:ring-2 focus-within:ring-indigo-100">
+                    <textarea
+                      ref={chatInputRef}
+                      rows={2}
                       value={question}
                       disabled={isTutorLoading}
                       onChange={(event) => setQuestion(event.target.value)}
                       onKeyDown={(event) => {
-                        if (event.key === "Enter") void sendQuestion();
+                        if (event.key === "Enter" && !event.shiftKey) {
+                          event.preventDefault();
+                          void sendQuestion();
+                        }
                       }}
                       placeholder={
                         isRagMode
-                          ? "Ask about the chapter, for example: I don't understand denominators"
-                          : "Ask a general question, for example: How do I compare fractions?"
+                          ? "Ask about this chapter… (Enter to send, Shift+Enter for new line)"
+                          : "Ask a study question… (Enter to send, Shift+Enter for new line)"
                       }
+                      className="w-full resize-none bg-transparent px-2 py-1.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
                     />
-                    <Button type="button" onClick={() => void sendQuestion()} disabled={isTutorLoading}>
-                      {isTutorLoading ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <Send className="h-4 w-4" />
-                      )}
-                      Ask
-                    </Button>
+                    <div className="mt-2 flex items-center justify-between gap-2 px-1">
+                      <p className="text-[11px] text-slate-400">
+                        {messages.length > 1
+                          ? `${messages.length - 1} messages in this chat`
+                          : "Start by asking a question"}
+                      </p>
+                      <Button
+                        type="button"
+                        size="sm"
+                        className="gap-1.5"
+                        onClick={() => void sendQuestion()}
+                        disabled={isTutorLoading || !question.trim()}
+                      >
+                        {isTutorLoading ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Send className="h-4 w-4" />
+                        )}
+                        Send
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>

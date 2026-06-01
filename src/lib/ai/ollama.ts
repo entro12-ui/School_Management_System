@@ -1,8 +1,9 @@
 import {
   getOllamaBaseUrl,
+  getOllamaFirstTokenTimeoutMs,
   getOllamaKeepAlive,
   getOllamaModel,
-  getOllamaRequestTimeoutMs,
+  getOllamaStreamIdleTimeoutMs,
   getTutorOllamaOptions,
 } from "@/lib/ai/config";
 
@@ -97,7 +98,7 @@ export async function ollamaWarmModel(): Promise<void> {
       keep_alive: getOllamaKeepAlive(),
       options: { ...getTutorOllamaOptions(), num_predict: 1 },
     }),
-    signal: AbortSignal.timeout(25_000),
+    signal: AbortSignal.timeout(getOllamaFirstTokenTimeoutMs()),
   }).catch(() => {
     /* warm-up is best-effort */
   });
@@ -119,9 +120,27 @@ export async function* ollamaChatStream(
   messages: OllamaChatMessage[]
 ): AsyncGenerator<string, void, unknown> {
   const baseUrl = getOllamaBaseUrl();
-  const timeoutMs = getOllamaRequestTimeoutMs();
+  const firstTokenTimeoutMs = getOllamaFirstTokenTimeoutMs();
+  const idleTimeoutMs = getOllamaStreamIdleTimeoutMs();
   const abort = new AbortController();
-  const timer = setTimeout(() => abort.abort(), timeoutMs);
+  let sawToken = false;
+  let activeTimeoutMs = firstTokenTimeoutMs;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+
+  const armTimer = () => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => abort.abort(), activeTimeoutMs);
+  };
+
+  const onStreamActivity = () => {
+    if (!sawToken) {
+      sawToken = true;
+      activeTimeoutMs = idleTimeoutMs;
+    }
+    armTimer();
+  };
+
+  armTimer();
 
   try {
     const response = await fetch(`${baseUrl}/api/chat`, {
@@ -154,6 +173,8 @@ export async function* ollamaChatStream(
       const { done, value } = await reader.read();
       if (done) break;
 
+      onStreamActivity();
+
       buffer += decoder.decode(value, { stream: true });
       const lines = buffer.split("\n");
       buffer = lines.pop() ?? "";
@@ -174,7 +195,10 @@ export async function* ollamaChatStream(
         }
 
         const piece = chunk.message?.content;
-        if (piece) yield piece;
+        if (piece) {
+          onStreamActivity();
+          yield piece;
+        }
 
         if (chunk.done) return;
       }
@@ -182,10 +206,12 @@ export async function* ollamaChatStream(
   } catch (error) {
     if (error instanceof OllamaError) throw error;
     if (error instanceof Error && error.name === "AbortError") {
-      throw new OllamaError(`Ollama timed out after ${timeoutMs}ms`);
+      const label = sawToken ? "idle" : "first token";
+      const limit = sawToken ? idleTimeoutMs : firstTokenTimeoutMs;
+      throw new OllamaError(`Ollama timed out waiting for ${label} (${limit}ms)`);
     }
     throw new OllamaError(error instanceof Error ? error.message : "Ollama request failed");
   } finally {
-    clearTimeout(timer);
+    if (timer) clearTimeout(timer);
   }
 }

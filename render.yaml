@@ -41,7 +41,9 @@ services:
       - key: AI_TUTOR_FALLBACK_MOCK
         value: "true"
       - key: OLLAMA_TIMEOUT_MS
-        value: "12000"
+        value: "120000"
+      - key: OLLAMA_STREAM_IDLE_TIMEOUT_MS
+        value: "45000"
       - key: OLLAMA_NUM_PREDICT
         value: "140"
       - key: OLLAMA_NUM_CTX
