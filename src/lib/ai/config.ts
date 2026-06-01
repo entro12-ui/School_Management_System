@@ -14,8 +14,46 @@ function readIntEnv(key: string, fallback: number): number {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
+function buildUrlFromHostport(hostport: string) {
+  const trimmed = hostport.trim();
+  if (!trimmed) return null;
+  return trimSlash(trimmed.startsWith("http") ? trimmed : `http://${trimmed}`);
+}
+
+/** Resolve Ollama URL for local dev or Render private networking. */
 export function getOllamaBaseUrl(): string {
-  return trimSlash(process.env.OLLAMA_BASE_URL ?? "http://127.0.0.1:11434");
+  const fromHostport = process.env.OLLAMA_HOSTPORT
+    ? buildUrlFromHostport(process.env.OLLAMA_HOSTPORT)
+    : null;
+  if (fromHostport) return fromHostport;
+
+  const explicit = process.env.OLLAMA_BASE_URL?.trim();
+  if (explicit) return trimSlash(explicit);
+
+  return "http://127.0.0.1:11434";
+}
+
+export function isRunningOnRender(): boolean {
+  return process.env.RENDER === "true" || Boolean(process.env.RENDER_SERVICE_ID);
+}
+
+/** Actionable hint when production cannot reach Ollama (shown in status UI). */
+export function getOllamaConfigurationHint(): string | null {
+  if (!isRunningOnRender()) return null;
+
+  const baseUrl = getOllamaBaseUrl();
+  const hasExplicitConfig = Boolean(
+    process.env.OLLAMA_HOSTPORT?.trim() || process.env.OLLAMA_BASE_URL?.trim()
+  );
+
+  if (!hasExplicitConfig || baseUrl.includes("127.0.0.1") || baseUrl.includes("localhost")) {
+    return (
+      "On Render: deploy the school-sms-ollama private service, set OLLAMA_HOSTPORT (Blueprint) " +
+      "or OLLAMA_BASE_URL=http://school-sms-ollama:11434 on the web service, then pull the model in Ollama Shell."
+    );
+  }
+
+  return null;
 }
 
 export function getOllamaModel(): string {
@@ -67,9 +105,9 @@ export function getOllamaNumCtx(): number {
   return readIntEnv("OLLAMA_NUM_CTX", 3072);
 }
 
-/** Conversation turns sent to the model (student + tutor pairs). */
+/** Prior chat messages sent to the model (student + tutor lines). */
 export function getOllamaMaxHistory(): number {
-  return readIntEnv("OLLAMA_MAX_HISTORY", 4);
+  return readIntEnv("OLLAMA_MAX_HISTORY", 8);
 }
 
 export function getOllamaKeepAlive(): string {

@@ -172,8 +172,29 @@ If replies still feel slow on CPU, run once: `ollama run llama3.1:8b` before usi
 
 ## 7. Troubleshooting
 
+### Render: “fetch failed” / Fallback after deploy
+
+The **web service cannot use `localhost` for Ollama**. You need a **private Ollama service** on the same Render account/region.
+
+**Checklist**
+
+1. **Private service exists** — Dashboard → **school-sms-ollama** (Docker, `docker/ollama/Dockerfile`). Plan **Standard (2GB+)** or larger (Starter OOMs on 7B/8B models).
+2. **Web service env** — On **school-management-system**:
+   - **Blueprint (recommended):** `OLLAMA_HOSTPORT` from `school-sms-ollama` (already in `render.yaml`).
+   - **Manual:** `OLLAMA_BASE_URL` = `http://school-sms-ollama:11434` (use the internal host from Dashboard → Ollama service → **Connect** → **Internal**).
+3. **Pull the model** — Render **Shell** on the Ollama service:
+   ```bash
+   ollama pull qwen2.5:7b
+   curl -s http://127.0.0.1:11434/api/tags
+   ```
+4. **Redeploy** the web service after env changes.
+5. AI Tutor header should show **Live**, not **Fallback**.
+
+If you only deployed the **web app** (no Ollama private service), either add `school-sms-ollama` from the blueprint or keep `AI_TUTOR_FALLBACK_MOCK=true` (offline tutor only).
+
 | Symptom | Fix |
 |---------|-----|
+| “fetch failed” on Render | Set `OLLAMA_HOSTPORT` / `OLLAMA_BASE_URL` to the **private** Ollama host; deploy `school-sms-ollama`; pull model in Shell |
 | “Ollama timed out after 12000ms” / fallback on every question | Raise `OLLAMA_TIMEOUT_MS` to `120000` in `.env`; warm model with `ollama run llama3.1:8b` or use a smaller model |
 | “Ollama offline — guided fallback” locally | Run `ollama serve`, confirm `ollama list` includes `llama3.1:8b` |
 | Status shows model not installed | `ollama pull` the name in `OLLAMA_MODEL` |

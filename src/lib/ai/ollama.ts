@@ -1,5 +1,6 @@
 import {
   getOllamaBaseUrl,
+  getOllamaConfigurationHint,
   getOllamaFirstTokenTimeoutMs,
   getOllamaKeepAlive,
   getOllamaModel,
@@ -79,7 +80,13 @@ export async function ollamaHealthCheck(): Promise<{
     return { reachable: true, model, models };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return { reachable: false, model, models: [], error: message };
+    const hint = getOllamaConfigurationHint();
+    return {
+      reachable: false,
+      model,
+      models: [],
+      error: hint ? `${message}. ${hint}` : message,
+    };
   }
 }
 

@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import {
   getOllamaBaseUrl,
+  getOllamaConfigurationHint,
   getOllamaModel,
   isAiTutorEnabled,
   isMockFallbackEnabledOnError,
@@ -31,11 +32,16 @@ export async function GET() {
     });
   }
 
+  const configurationHint = getOllamaConfigurationHint();
   const health = await ollamaHealthCheck();
 
   if (health.reachable) {
     void ollamaWarmModel();
   }
+
+  const error =
+    health.error ??
+    (!health.reachable && configurationHint ? configurationHint : undefined);
 
   return NextResponse.json({
     enabled: true,
@@ -44,7 +50,8 @@ export async function GET() {
     baseUrl: getOllamaBaseUrl(),
     fallbackMock: isMockFallbackEnabledOnError(),
     models: health.models,
-    error: health.error,
+    error,
+    configurationHint: configurationHint ?? undefined,
     modelInstalled: health.models.some(
       (name) => name === health.model || name.startsWith(`${health.model}:`)
     ),

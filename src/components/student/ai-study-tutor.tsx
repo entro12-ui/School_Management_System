@@ -557,6 +557,7 @@ export function AiStudyTutor({
           model?: string;
           modelInstalled?: boolean;
           error?: string;
+          configurationHint?: string;
         };
 
         if (cancelled) return;
@@ -575,9 +576,10 @@ export function AiStudyTutor({
 
         setTutorEngineStatus("mock");
         if (!data.reachable) {
+          const detail = data.configurationHint ?? data.error;
           setTutorEngineDetail(
-            data.error
-              ? `Ollama offline — using guided fallback. (${data.error})`
+            detail
+              ? `Ollama offline — using guided fallback. (${detail})`
               : "Ollama offline — using guided fallback until the model is available."
           );
         } else {
@@ -660,7 +662,7 @@ export function AiStudyTutor({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: trimmed,
-          history: history.slice(-4),
+          history: history.slice(-12),
           knowledgeMode: knowledgeSourceMode,
           ragSnippets: [],
           session: {

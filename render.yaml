@@ -31,11 +31,17 @@ services:
         sync: false
       - key: AUTH_TRUST_HOST
         value: "true"
-      # Ollama private service — see docs/OLLAMA-AI-TUTOR.md
+      # Ollama private service — auto-wired when school-sms-ollama is deployed (see docs/OLLAMA-AI-TUTOR.md)
+      - key: OLLAMA_HOSTPORT
+        fromService:
+          type: pserv
+          name: school-sms-ollama
+          property: hostport
+      # Optional manual override, e.g. http://school-sms-ollama:11434
       - key: OLLAMA_BASE_URL
         sync: false
       - key: OLLAMA_MODEL
-        value: llama3.1:8b
+        value: qwen2.5:7b
       - key: AI_TUTOR_ENABLED
         value: "true"
       - key: AI_TUTOR_FALLBACK_MOCK
@@ -49,7 +55,7 @@ services:
       - key: OLLAMA_NUM_CTX
         value: "3072"
       - key: OLLAMA_MAX_HISTORY
-        value: "4"
+        value: "8"
       - key: OLLAMA_KEEP_ALIVE
         value: "15m"
 
@@ -58,7 +64,8 @@ services:
     name: school-sms-ollama
     runtime: docker
     dockerfilePath: ./docker/ollama/Dockerfile
-    plan: starter
+    # llama/qwen 7–8B needs ~4GB+ RAM; Starter (512MB) will OOM — use standard or higher
+    plan: standard
     envVars:
       - key: OLLAMA_HOST
         value: 0.0.0.0:11434

@@ -137,7 +137,13 @@ export async function POST(request: Request) {
           return;
         }
 
-        const reply = buildMockTutorReply(message, chapter, gradeLevel, knowledgeMode);
+        const reply = buildMockTutorReply(
+          message,
+          chapter,
+          gradeLevel,
+          knowledgeMode,
+          history
+        );
         send({ type: "token", text: reply });
         send({
           type: "done",

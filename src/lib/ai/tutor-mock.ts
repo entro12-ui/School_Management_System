@@ -1,5 +1,6 @@
 import type { TutorKnowledgeMode } from "@/lib/ai/knowledge-mode";
-import type { TutorChapterContext } from "@/lib/ai/tutor-prompt";
+import { buildContextualFollowUpReply } from "@/lib/ai/tutor-mock-context";
+import type { TutorChapterContext, TutorHistoryMessage } from "@/lib/ai/tutor-prompt";
 
 function hasChapterCoverage(question: string, keywords: string[]) {
   const normalized = question.toLowerCase();
@@ -34,6 +35,13 @@ type DefinitionAnswer = {
 };
 
 const DEFINITION_ANSWERS: DefinitionAnswer[] = [
+  {
+    test: /\blinear equation/i,
+    reply: (grade) =>
+      grade <= 8
+        ? "A linear equation is an equation where the variable is only to the first power (no x²). Its graph is a straight line. Examples: y = 2x + 1 or 3x + 4 = 10. Can you write a linear equation that uses x?"
+        : "A linear equation has the form ax + b = c (or y = mx + b): the variable appears to the first power only, so the graph is a line. Solving finds the value(s) that make the statement true. Try solving 2x + 5 = 13 — what is x?",
+  },
   {
     test: /\bequation/i,
     reply: (grade) =>
@@ -166,6 +174,7 @@ function matchTopicHint(question: string): TopicHint | null {
 function buildGeneralMockReply(
   question: string,
   gradeLevel: number,
+  history: TutorHistoryMessage[],
   sidebarSubject?: string
 ): string {
   if (isFrustrated(question)) {
@@ -198,10 +207,16 @@ export function buildMockTutorReply(
   question: string,
   chapter: TutorChapterContext & { keywords: string[]; nextChapter: number },
   gradeLevel: number,
-  knowledgeMode: TutorKnowledgeMode
+  knowledgeMode: TutorKnowledgeMode,
+  history: TutorHistoryMessage[] = []
 ): string {
+  const contextualReply = buildContextualFollowUpReply(question, history, gradeLevel);
+  if (contextualReply) {
+    return contextualReply;
+  }
+
   if (knowledgeMode === "general") {
-    return buildGeneralMockReply(question, gradeLevel, chapter.subject);
+    return buildGeneralMockReply(question, gradeLevel, history, chapter.subject);
   }
 
   if (!hasChapterCoverage(question, chapter.keywords)) {

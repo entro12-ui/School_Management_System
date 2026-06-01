@@ -37,6 +37,8 @@ const CORE_RULES = `Rules: Match the student's question topic and grade. Max 4 s
 
 const DIRECT_ANSWER_RULES = `If the student asks what something IS (e.g. "what is an equation", "define fraction", "explain photosynthesis", "tell me about…"): answer directly first with a clear, accurate definition or explanation at their grade level (2–3 sentences). Only then add one brief check question. Never deflect with "what do you already know?" or "which topic are you on?" for these questions.`;
 
+const CONVERSATION_RULES = `Always use the full conversation. Short replies (e.g. "yes", "x = 5", "3/4", "the first law") usually answer YOUR previous question — respond to that directly: confirm, gently correct, or extend. Never restart with a generic opener like "Good question" when the student is continuing the same topic.`;
+
 function generalModeRules(grade: string) {
   return `Mode: GENERAL — use standard ${grade} school knowledge for the topic in the question. Sidebar subject is optional context only.`;
 }
@@ -61,6 +63,7 @@ ${generalModeRules(grade)}
 Answer the topic in the student's question (math, science, history, etc.) — not limited to sidebar subject "${ctx.chapter.subject}".
 ${CORE_RULES}
 ${DIRECT_ANSWER_RULES}
+${CONVERSATION_RULES}
 Do not invent textbook page numbers.`;
   }
 
@@ -72,6 +75,7 @@ Do not invent textbook page numbers.`;
 Mode: TEXTBOOK RAG — use ONLY the passages below. Cite pages when relevant.
 ${CORE_RULES}
 ${DIRECT_ANSWER_RULES}
+${CONVERSATION_RULES}
 If not in passages, say it is outside this chapter.
 
 PASSAGES:
