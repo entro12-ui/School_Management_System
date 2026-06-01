@@ -59,11 +59,13 @@ export function ClassScheduleBoard({
         <table className="min-w-[920px] w-full border-collapse text-sm">
           <thead>
             <tr className="bg-slate-100 text-left text-xs uppercase tracking-wide text-slate-600">
-              <th className="w-32 border border-slate-200 px-4 py-3 font-bold">Day</th>
+              <th className="sticky left-0 top-0 z-30 w-32 border border-slate-200 bg-slate-100 px-4 py-3 font-bold">
+                Day
+              </th>
               {sheetPeriods.map((period) => (
                 <th
                   key={period}
-                  className="min-w-[10rem] border border-slate-200 px-4 py-3 font-bold"
+                  className="sticky top-0 z-20 min-w-[10rem] border border-slate-200 bg-slate-100 px-4 py-3 font-bold"
                 >
                   Period {period}
                 </th>
@@ -73,7 +75,7 @@ export function ClassScheduleBoard({
           <tbody>
             {CLASS_SCHEDULE_DAYS.map((day) => (
               <tr key={day} className="align-top">
-                <th className="border border-slate-200 bg-slate-50 px-4 py-4 text-left font-bold text-slate-900">
+                <th className="sticky left-0 z-10 border border-slate-200 bg-slate-50 px-4 py-4 text-left font-bold text-slate-900 shadow-[1px_0_0_#e2e8f0]">
                   {CLASS_SCHEDULE_DAY_LABELS[day]}
                   <p className="mt-1 text-xs font-normal text-slate-500">
                     {(byDay.get(day) ?? []).length} lesson

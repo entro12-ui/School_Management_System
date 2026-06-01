@@ -8,6 +8,7 @@ const NAV = [
   { href: "#portals", label: "Portals" },
   { href: "#programs", label: "Programs" },
   { href: "#features", label: "Features" },
+  { href: "#contact", label: "Contact" },
 ] as const;
 
 export function HomeHeader({

@@ -249,7 +249,7 @@ export function ClassScheduleManager({
         </form>
       </section>
 
-      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <section className="max-h-[34rem] overflow-auto rounded-2xl border border-slate-200 bg-white shadow-sm overscroll-contain">
         <div className="border-b border-slate-100 px-5 py-4">
           <h2 className="font-semibold text-slate-900">Generated class schedules</h2>
           <p className="text-sm text-slate-500">
@@ -258,7 +258,7 @@ export function ClassScheduleManager({
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-slate-500">
+            <thead className="sticky top-0 z-10 bg-slate-50 text-left text-slate-500 shadow-[0_1px_0_#e2e8f0]">
               <tr>
                 <th className="px-4 py-3 font-medium">Day / Period</th>
                 <th className="px-4 py-3 font-medium">Class</th>
@@ -324,14 +324,16 @@ export function ClassScheduleManager({
         <h2 className="mb-3 text-lg font-semibold text-slate-900">
           Professional schedule sheet
         </h2>
-        <ClassScheduleBoard
-          entries={entries}
-          mode="class"
-          title="Branch weekly schedule sheet"
-          subtitle="Prepared timetable for classes, teachers, rooms, and periods"
-          periods={sheetPeriods}
-          emptyMessage="No schedules prepared yet. Use the form above to create the sheet."
-        />
+        <div className="max-h-[52rem] overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50/60 p-4 overscroll-contain">
+          <ClassScheduleBoard
+            entries={entries}
+            mode="class"
+            title="Branch weekly schedule sheet"
+            subtitle="Prepared timetable for classes, teachers, rooms, and periods"
+            periods={sheetPeriods}
+            emptyMessage="No schedules prepared yet. Use the form above to create the sheet."
+          />
+        </div>
       </section>
 
       <section className="space-y-4">
@@ -375,20 +377,22 @@ export function ClassScheduleManager({
             No classes found for this branch.
           </div>
         ) : (
-          classes.map((klass) => {
-            const classEntries = entries.filter((entry) => entry.classId === klass.id);
-            return (
-              <ClassScheduleBoard
-                key={klass.id}
-                entries={classEntries}
-                mode="student"
-                title={`${klass.name} schedule sheet`}
-                subtitle={`${formatGradeLevel(klass.gradeLevel)} · ${klass.academicYear}`}
-                periods={sheetPeriods}
-                emptyMessage="No schedule entries yet for this class."
-              />
-            );
-          })
+          <div className="max-h-[52rem] space-y-4 overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50/60 p-4 overscroll-contain">
+            {classes.map((klass) => {
+              const classEntries = entries.filter((entry) => entry.classId === klass.id);
+              return (
+                <ClassScheduleBoard
+                  key={klass.id}
+                  entries={classEntries}
+                  mode="student"
+                  title={`${klass.name} schedule sheet`}
+                  subtitle={`${formatGradeLevel(klass.gradeLevel)} · ${klass.academicYear}`}
+                  periods={sheetPeriods}
+                  emptyMessage="No schedule entries yet for this class."
+                />
+              );
+            })}
+          </div>
         )}
       </section>
     </div>

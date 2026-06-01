@@ -56,13 +56,15 @@ export default async function TeacherSchedulePage() {
       <div className="space-y-8">
         <section>
           <h2 className="mb-3 text-lg font-semibold text-slate-900">Classes I teach</h2>
-          <ClassScheduleBoard
-            entries={data.entries}
-            mode="teacher"
-            title="Teacher weekly schedule sheet"
-            subtitle={`${data.teacher.user.firstName} ${data.teacher.user.lastName} · ${data.teacher.branch.name}`}
-            emptyMessage="No class schedule has been assigned to you yet."
-          />
+          <div className="max-h-[52rem] overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50/60 p-4 overscroll-contain">
+            <ClassScheduleBoard
+              entries={data.entries}
+              mode="teacher"
+              title="Teacher weekly schedule sheet"
+              subtitle={`${data.teacher.user.firstName} ${data.teacher.user.lastName} · ${data.teacher.branch.name}`}
+              emptyMessage="No class schedule has been assigned to you yet."
+            />
+          </div>
         </section>
 
         {setup && (

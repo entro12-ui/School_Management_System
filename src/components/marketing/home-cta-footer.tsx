@@ -41,7 +41,7 @@ export function HomeCta({ dashboardHref }: { dashboardHref: string }) {
 
 export function HomeFooter() {
   return (
-    <footer className="mt-14 border-t border-indigo-100/80 pt-10 pb-10">
+    <footer id="contact" className="mt-14 border-t border-indigo-100/80 pt-10 pb-10">
       <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 text-white">
@@ -61,6 +61,12 @@ export function HomeFooter() {
           </Link>
           <a href="#portals" className="text-slate-600 hover:text-indigo-600">
             Portals
+          </a>
+          <a
+            href="mailto:info@edusyncsms.com"
+            className="rounded-lg bg-gradient-to-r from-slate-800 to-teal-600 px-4 py-2 font-semibold text-white shadow-lg shadow-teal-700/20 transition hover:from-slate-900 hover:to-teal-700"
+          >
+            Contact Us
           </a>
         </div>
       </div>
