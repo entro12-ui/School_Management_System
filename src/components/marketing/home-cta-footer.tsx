@@ -75,97 +75,124 @@ export function HomeCta({ dashboardHref }: { dashboardHref: string }) {
 
 export function HomeFooter() {
   return (
-    <footer id="contact" className="mt-14 border-t border-indigo-100/80 pt-10 pb-10">
-      <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 text-white shadow-lg shadow-indigo-200">
-              <GraduationCap className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="font-bold text-slate-900">EduSync SMS</p>
-              <p className="text-xs text-slate-500">Powered by Entro Ethiopia</p>
-            </div>
-          </div>
-          <p className="mt-4 max-w-md text-sm leading-6 text-slate-600">
-            A professional KG-12 school management platform for multi-branch schools,
-            connecting academics, finance, library, HR, parents, students, teachers,
-            and AI-supported insights in one system.
-          </p>
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
-            <MapPin className="h-3.5 w-3.5" />
-            Locally engineered in Ethiopia
-          </div>
-        </div>
+    <footer id="contact" className="mt-16 pb-10">
+      <div className="relative overflow-hidden rounded-[2rem] border border-white/80 bg-gradient-to-br from-slate-950 via-indigo-950 to-violet-900 p-1 shadow-2xl shadow-indigo-200/50">
+        <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 right-10 h-72 w-72 rounded-full bg-violet-400/25 blur-3xl" />
 
-        <div>
-          <h3 className="text-sm font-bold uppercase tracking-wide text-slate-900">
-            Quick access
-          </h3>
-          <div className="mt-4 grid gap-2 text-sm">
-            <Link href="/login" className="font-medium text-slate-600 hover:text-indigo-600">
-              Sign in
-            </Link>
-            <Link href="/register" className="font-medium text-slate-600 hover:text-indigo-600">
-              Register staff
-            </Link>
-            <a href="#portals" className="font-medium text-slate-600 hover:text-indigo-600">
-              Role portals
-            </a>
-            <a href="#features" className="font-medium text-slate-600 hover:text-indigo-600">
-              Platform features
-            </a>
-          </div>
-          <details className="group mt-5">
-            <summary className="inline-flex cursor-pointer list-none items-center gap-2 rounded-xl bg-gradient-to-r from-slate-900 to-indigo-700 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-700/20 transition hover:from-slate-950 hover:to-indigo-800 [&::-webkit-details-marker]:hidden">
-              Contact Us
-              <ArrowRight className="h-4 w-4 transition group-open:rotate-90" />
-            </summary>
+        <div className="relative rounded-[1.8rem] bg-white/95 p-6 backdrop-blur sm:p-8">
+          <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="rounded-3xl border border-indigo-100 bg-gradient-to-br from-white via-indigo-50/60 to-cyan-50/40 p-6 shadow-lg shadow-indigo-100/40">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-cyan-500 text-white shadow-lg shadow-indigo-300/50">
+                  <GraduationCap className="h-6 w-6" />
+                </div>
+                <div>
+                  <p className="text-lg font-extrabold text-slate-900">EduSync SMS</p>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-indigo-500">
+                    SchoolHub by Entro Ethiopia
+                  </p>
+                </div>
+              </div>
 
-            <div className="mt-4 space-y-3 rounded-2xl border border-indigo-100 bg-white/85 p-3 shadow-lg shadow-indigo-100/50">
-              {CONTACT_LINKS.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target={item.href.startsWith("http") ? "_blank" : undefined}
-                    rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-                    className="group/contact flex items-center gap-3 rounded-xl border border-slate-100 bg-white p-3 text-sm transition hover:border-indigo-200 hover:bg-indigo-50/70"
+              <p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600">
+                A professional KG-12 school management platform for multi-branch schools,
+                connecting academics, finance, library, HR, parents, students, teachers,
+                and AI-supported insights in one secure operating system.
+              </p>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {["Multi-branch ready", "AI-supported", "Role-based portals"].map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-indigo-100 bg-white/90 px-3 py-1 text-xs font-semibold text-indigo-700"
                   >
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 transition group-hover/contact:bg-indigo-100">
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <span>
-                      <span className="block text-xs font-semibold uppercase tracking-wide text-slate-400">
-                        {item.label}
-                      </span>
-                      <span className="font-medium text-slate-800 group-hover/contact:text-indigo-700">
-                        {item.value}
-                      </span>
-                    </span>
-                  </a>
-                );
-              })}
-            </div>
-          </details>
-        </div>
-      </div>
+                    {item}
+                  </span>
+                ))}
+              </div>
 
-      <div className="mt-10 flex flex-col gap-3 border-t border-indigo-100/80 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-        <p>© {new Date().getFullYear()} EduSync SMS. All rights reserved.</p>
-        <p>
-          Built by{" "}
-          <a
-            href="https://www.entroethiopia.com/"
-            target="_blank"
-            rel="noreferrer"
-            className="font-semibold text-indigo-600 hover:underline"
-          >
-            Entro Ethiopia Software Development PLC
-          </a>
-          .
-        </p>
+              <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-indigo-600 px-3 py-1 text-xs font-semibold text-white shadow-md shadow-indigo-200">
+                <MapPin className="h-3.5 w-3.5" />
+                Locally engineered in Ethiopia
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-lg shadow-slate-200/60">
+              <div className="flex flex-col gap-6 sm:flex-row sm:justify-between lg:flex-col">
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-wide text-slate-900">
+                    Quick access
+                  </h3>
+                  <div className="mt-4 grid gap-2 text-sm">
+                    <Link href="/login" className="font-semibold text-slate-600 hover:text-indigo-600">
+                      Sign in
+                    </Link>
+                    <Link href="/register" className="font-semibold text-slate-600 hover:text-indigo-600">
+                      Register staff
+                    </Link>
+                    <a href="#portals" className="font-semibold text-slate-600 hover:text-indigo-600">
+                      Role portals
+                    </a>
+                    <a href="#features" className="font-semibold text-slate-600 hover:text-indigo-600">
+                      Platform modules
+                    </a>
+                  </div>
+                </div>
+
+                <details className="group">
+                  <summary className="inline-flex cursor-pointer list-none items-center gap-2 rounded-2xl bg-gradient-to-r from-slate-950 to-indigo-700 px-5 py-3 text-sm font-bold text-white shadow-xl shadow-indigo-700/25 transition hover:from-slate-900 hover:to-indigo-800 [&::-webkit-details-marker]:hidden">
+                    Contact Us
+                    <ArrowRight className="h-4 w-4 transition group-open:rotate-90" />
+                  </summary>
+
+                  <div className="mt-4 space-y-3 rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-white p-3">
+                    {CONTACT_LINKS.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <a
+                          key={item.label}
+                          href={item.href}
+                          target={item.href.startsWith("http") ? "_blank" : undefined}
+                          rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+                          className="group/contact flex items-center gap-3 rounded-xl border border-white bg-white p-3 text-sm shadow-sm transition hover:border-indigo-200 hover:bg-indigo-50"
+                        >
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 transition group-hover/contact:bg-indigo-100">
+                            <Icon className="h-4 w-4" />
+                          </span>
+                          <span>
+                            <span className="block text-xs font-bold uppercase tracking-wide text-slate-400">
+                              {item.label}
+                            </span>
+                            <span className="font-semibold text-slate-800 group-hover/contact:text-indigo-700">
+                              {item.value}
+                            </span>
+                          </span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </details>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-col gap-3 border-t border-indigo-100/80 pt-5 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+            <p>© {new Date().getFullYear()} EduSync SMS. All rights reserved.</p>
+            <p>
+              Built by{" "}
+              <a
+                href="https://www.entroethiopia.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="font-bold text-indigo-600 hover:underline"
+              >
+                Entro Ethiopia Software Development PLC
+              </a>
+              .
+            </p>
+          </div>
+        </div>
       </div>
     </footer>
   );

@@ -97,7 +97,7 @@ export function HomeHero({
         aria-hidden
       />
 
-      <div className="relative grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+      <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(480px,0.95fr)] lg:items-center xl:gap-14">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-violet-200/80 bg-gradient-to-r from-violet-100 to-indigo-100 px-4 py-1.5 text-xs font-bold text-violet-800">
             <Sparkles className="h-3.5 w-3.5 text-violet-600" />
@@ -111,7 +111,7 @@ export function HomeHero({
             </span>
           </h1>
 
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
             EduSync SMS brings academics, attendance, finance, library, HR, parent
             communication, AI-supported learning, and student analytics into one calm
             workspace, helping schools notice risks early, personalize support, and guide
@@ -149,7 +149,7 @@ export function HomeHero({
             </Link>
           </div>
 
-          <div className="mt-8 grid max-w-xl grid-cols-3 gap-3">
+          <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3">
             {HERO_STATS.map((stat) => (
               <div
                 key={stat.label}
