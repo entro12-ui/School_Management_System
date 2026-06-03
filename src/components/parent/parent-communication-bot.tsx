@@ -111,7 +111,17 @@ function readUrlChildId() {
   return new URLSearchParams(window.location.search).get("childId");
 }
 
-export function ParentCommunicationBot() {
+export function ParentCommunicationBot({
+  apiPath = "/api/parent/communication-bot",
+  emptyTitle = "No linked children found",
+  emptyDescription = "Link a child account first to generate parent communication drafts.",
+  introText = "Choose a child and message type to generate a draft you can copy and send to the school.",
+}: {
+  apiPath?: string;
+  emptyTitle?: string;
+  emptyDescription?: string;
+  introText?: string;
+}) {
   const pathname = usePathname();
 
   const [open, setOpen] = useState(false);
@@ -170,7 +180,7 @@ export function ParentCommunicationBot() {
       setContext(null);
 
       try {
-        const response = await fetch("/api/parent/communication-bot", {
+        const response = await fetch(apiPath, {
           method: "GET",
           cache: "no-store",
           credentials: "same-origin",
@@ -224,7 +234,7 @@ export function ParentCommunicationBot() {
     return () => {
       cancelled = true;
     };
-  }, [open, pathname, reloadKey]);
+  }, [apiPath, open, pathname, reloadKey]);
 
   const shareText = useMemo(() => {
     if (!draftResult) return "";
@@ -258,7 +268,7 @@ export function ParentCommunicationBot() {
     setCopied(false);
 
     try {
-      const response = await fetch("/api/parent/communication-bot", {
+      const response = await fetch(apiPath, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
@@ -385,9 +395,9 @@ export function ParentCommunicationBot() {
             ) : context.children.length === 0 ? (
               <div className="rounded-lg border border-dashed border-slate-200 bg-white p-6 text-center">
                 <Bot className="mx-auto h-10 w-10 text-slate-300" />
-                <p className="mt-3 font-medium text-slate-900">No linked children found</p>
+                <p className="mt-3 font-medium text-slate-900">{emptyTitle}</p>
                 <p className="mt-1 text-sm text-slate-500">
-                  Link a child account first to generate parent communication drafts.
+                  {emptyDescription}
                 </p>
               </div>
             ) : (
@@ -396,7 +406,7 @@ export function ParentCommunicationBot() {
                   {context?.parentName ? (
                     <>
                       Signed in as <span className="font-medium text-slate-900">{context.parentName}</span>.
-                      Choose a child and message type to generate a draft you can copy and send to the school.
+                      {introText}
                     </>
                   ) : (
                     <>Choose a child and message type to generate a draft from their latest school records.</>

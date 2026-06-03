@@ -181,7 +181,10 @@ export async function getClassScheduleSetup(branchId: string) {
         branchId,
         user: { role: UserRole.TEACHER, isActive: true },
       },
-      include: {
+      select: {
+        id: true,
+        employeeId: true,
+        department: true,
         user: { select: { firstName: true, lastName: true, email: true } },
         staffSubjects: { select: { subjectId: true } },
       },
@@ -219,7 +222,7 @@ export async function getClassScheduleSetup(branchId: string) {
     name: `${teacher.user.firstName} ${teacher.user.lastName}`,
     email: teacher.user.email,
     department: teacher.department,
-    isScheduleUnitLeader: teacher.isScheduleUnitLeader,
+    isScheduleUnitLeader: false,
     subjectIds: teacher.staffSubjects.map((subject) => subject.subjectId),
   }));
 
@@ -282,7 +285,7 @@ export async function getBranchScheduleEntries(branchId: string, academicYearId?
     include: {
       class: { select: { name: true, gradeLevel: true } },
       subject: { select: { name: true } },
-      teacher: { include: { user: { select: { firstName: true, lastName: true } } } },
+      teacher: { select: { user: { select: { firstName: true, lastName: true } } } },
     },
   });
 
@@ -292,7 +295,9 @@ export async function getBranchScheduleEntries(branchId: string, academicYearId?
 export async function getTeacherSchedule(userId: string) {
   const teacher = await prisma.staffProfile.findUnique({
     where: { userId },
-    include: {
+    select: {
+      id: true,
+      branchId: true,
       branch: { select: { id: true, name: true } },
       user: { select: { firstName: true, lastName: true } },
     },
@@ -304,12 +309,15 @@ export async function getTeacherSchedule(userId: string) {
     include: {
       class: { select: { name: true, gradeLevel: true } },
       subject: { select: { name: true } },
-      teacher: { include: { user: { select: { firstName: true, lastName: true } } } },
+      teacher: { select: { user: { select: { firstName: true, lastName: true } } } },
     },
   });
 
   return {
-    teacher,
+    teacher: {
+      ...teacher,
+      isScheduleUnitLeader: false,
+    },
     entries: sortScheduleEntries(entries.map(mapEntry)),
   };
 }
@@ -333,7 +341,7 @@ export async function getStudentClassSchedule(userId: string) {
     include: {
       class: { select: { name: true, gradeLevel: true } },
       subject: { select: { name: true } },
-      teacher: { include: { user: { select: { firstName: true, lastName: true } } } },
+      teacher: { select: { user: { select: { firstName: true, lastName: true } } } },
     },
   });
 

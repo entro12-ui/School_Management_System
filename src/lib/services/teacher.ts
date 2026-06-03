@@ -20,9 +20,16 @@ export type TeacherClassesStats = {
 };
 
 export async function getTeacherByUserId(userId: string) {
-  return prisma.staffProfile.findUnique({
+  const teacher = await prisma.staffProfile.findUnique({
     where: { userId },
-    include: {
+    select: {
+      id: true,
+      userId: true,
+      branchId: true,
+      employeeId: true,
+      department: true,
+      hireDate: true,
+      createdAt: true,
       branch: true,
       staffSubjects: {
         include: { subject: true },
@@ -40,6 +47,14 @@ export async function getTeacherByUserId(userId: string) {
       user: { select: { firstName: true, lastName: true, email: true } },
     },
   });
+
+  if (!teacher) return null;
+
+  return {
+    ...teacher,
+    // Compatibility for databases that have not applied the schedule-unit migration yet.
+    isScheduleUnitLeader: false,
+  };
 }
 
 export async function getTeacherClasses(userId: string) {

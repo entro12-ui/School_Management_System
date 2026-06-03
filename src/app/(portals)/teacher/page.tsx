@@ -10,6 +10,8 @@ import {
 } from "@/lib/services/teacher";
 import { DashboardGraphs } from "@/components/dashboard/dashboard-graphs";
 import { getTeacherDashboardCharts } from "@/lib/services/dashboard-charts";
+import { AiLessonPlanner } from "@/components/teacher/ai-lesson-planner";
+import { GRADE_LEVEL_OPTIONS } from "@/lib/grade-utils";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
@@ -21,6 +23,31 @@ import {
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
+
+const LESSON_PLANNER_SUBJECTS = [
+  "English",
+  "Mathematics",
+  "General Science",
+  "Biology",
+  "Chemistry",
+  "Physics",
+  "History",
+  "Geography",
+  "Sport",
+  "Physical Education",
+  "Civics",
+  "Economics",
+  "Social Studies",
+  "ICT",
+  "Art",
+  "Music",
+  "Amharic",
+  "Afaan Oromo",
+] as const;
+
+function subjectOptionId(name: string) {
+  return `planner-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+}
 
 export default async function TeacherPortalPage() {
   const session = await auth();
@@ -41,6 +68,37 @@ export default async function TeacherPortalPage() {
     homeroomCount: 0,
     studentCount: 0,
   };
+  const assignedGradeCounts = (classData?.classes ?? []).reduce((map, cls) => {
+    const current = map.get(cls.gradeLevel);
+    map.set(cls.gradeLevel, {
+      value: cls.gradeLevel,
+      label: GRADE_LEVEL_OPTIONS.find((grade) => grade.value === cls.gradeLevel)?.label ?? `Grade ${cls.gradeLevel}`,
+      classCount: (current?.classCount ?? 0) + 1,
+    });
+    return map;
+  }, new Map<number, { value: number; label: string; classCount: number }>());
+  const gradeOptions = GRADE_LEVEL_OPTIONS.map((grade) => ({
+    value: grade.value,
+    label: grade.label,
+    classCount: assignedGradeCounts.get(grade.value)?.classCount ?? 0,
+  }));
+  const assignedSubjectOptions = [
+    ...subjects.map((subject) => ({ id: subject.id, name: subject.name })),
+    ...(classData?.classes ?? []).flatMap((cls) =>
+      (cls.mySubjects.length > 0 ? cls.mySubjects : cls.sectionSubjects).map((subject) => ({
+        id: subject.id,
+        name: subject.name,
+      }))
+    ),
+  ];
+  const subjectOptions = [
+    ...[
+      ...LESSON_PLANNER_SUBJECTS.map((name) => ({ id: subjectOptionId(name), name })),
+      ...assignedSubjectOptions,
+    ]
+      .reduce((map, subject) => map.set(subject.name.toLowerCase(), subject), new Map<string, { id: string; name: string }>())
+      .values(),
+  ].sort((left, right) => left.name.localeCompare(right.name));
 
   return (
     <PortalShell
@@ -84,6 +142,8 @@ export default async function TeacherPortalPage() {
       </div>
 
       <DashboardGraphs charts={charts} />
+
+      <AiLessonPlanner gradeOptions={gradeOptions} subjectOptions={subjectOptions} />
 
       <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>

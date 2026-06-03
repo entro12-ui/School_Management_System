@@ -8,7 +8,9 @@ import {
 } from "@/lib/parent-communication";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, fullName } from "@/lib/utils";
+import { formatGradeLevel } from "@/lib/grade-utils";
 import { getChildrenForParent } from "./parent";
+import { getTeacherByUserId, getTeacherClasses } from "./teacher";
 
 type ParentChildRecord = {
   id: string;
@@ -173,9 +175,9 @@ async function buildChildSummary(
     const homeroom = await prisma.classTeacher.findFirst({
       where: { classId: child.classId },
       orderBy: { isPrimary: "desc" },
-      include: {
+      select: {
         teacher: {
-          include: {
+          select: {
             user: { select: { firstName: true, lastName: true } },
           },
         },
@@ -818,6 +820,134 @@ export async function generateParentCommunicationDraft(
     summary,
     draft: buildLocalizedDraft(
       buildParentName(parent),
+      summary,
+      input.messageType,
+      input.language,
+      input.tone,
+      input.additionalNotes
+    ),
+  };
+}
+
+function buildTeacherName(teacher: {
+  user?: { firstName?: string | null; lastName?: string | null } | null;
+}) {
+  const first = teacher.user?.firstName ?? "";
+  const last = teacher.user?.lastName ?? "";
+  const name = fullName(first, last).trim();
+  return name || "Teacher";
+}
+
+export async function getTeacherCommunicationBotContext(
+  teacherUserId: string
+): Promise<ParentCommunicationBotContext> {
+  const [teacher, classData] = await Promise.all([
+    getTeacherByUserId(teacherUserId),
+    getTeacherClasses(teacherUserId),
+  ]);
+
+  if (!teacher || !classData || classData.classes.length === 0) {
+    return { parentName: "Teacher", defaultChildId: null, children: [] };
+  }
+
+  const classIds = classData.classes.map((cls) => cls.id);
+  const students = await prisma.student.findMany({
+    where: {
+      isActive: true,
+      branchId: teacher.branchId,
+      classId: { in: classIds },
+    },
+    select: {
+      id: true,
+      studentId: true,
+      firstName: true,
+      lastName: true,
+      gradeLevel: true,
+      classId: true,
+      branch: { select: { name: true } },
+      class: { select: { name: true } },
+    },
+    orderBy: [{ gradeLevel: "asc" }, { lastName: "asc" }, { firstName: "asc" }],
+    take: 80,
+  });
+
+  const summaries = await Promise.all(
+    students.map((student) =>
+      buildChildSummary({
+        id: student.id,
+        studentId: student.studentId,
+        firstName: student.firstName,
+        lastName: student.lastName,
+        gradeLabel: formatGradeLevel(student.gradeLevel),
+        className: student.class?.name ?? "Unassigned",
+        branchName: student.branch.name,
+        classId: student.classId,
+      })
+    )
+  );
+
+  return {
+    parentName: buildTeacherName(teacher),
+    defaultChildId: summaries[0]?.id ?? null,
+    children: summaries,
+  };
+}
+
+export async function generateTeacherCommunicationDraft(
+  teacherUserId: string,
+  input: ParentCommunicationDraftInput
+): Promise<{
+  parentName: string;
+  summary: ParentCommunicationChildSummary;
+  draft: ParentCommunicationDraft;
+} | null> {
+  const [teacher, classData] = await Promise.all([
+    getTeacherByUserId(teacherUserId),
+    getTeacherClasses(teacherUserId),
+  ]);
+
+  if (!teacher || !classData) return null;
+
+  const accessibleClassIds = new Set(classData.classes.map((cls) => cls.id));
+  const student = await prisma.student.findFirst({
+    where: {
+      id: input.childId,
+      isActive: true,
+      branchId: teacher.branchId,
+      classId: { in: [...accessibleClassIds] },
+    },
+    select: {
+      id: true,
+      studentId: true,
+      firstName: true,
+      lastName: true,
+      gradeLevel: true,
+      classId: true,
+      branch: { select: { name: true } },
+      class: { select: { name: true } },
+    },
+  });
+
+  if (!student) return null;
+
+  const summary = await buildChildSummary({
+    id: student.id,
+    studentId: student.studentId,
+    firstName: student.firstName,
+    lastName: student.lastName,
+    gradeLabel: formatGradeLevel(student.gradeLevel),
+    className: student.class?.name ?? "Unassigned",
+    branchName: student.branch.name,
+    classId: student.classId,
+  });
+
+  const recipientName = "Parent/Guardian";
+
+  return {
+    parentName: buildTeacherName(teacher),
+    summary,
+    draft: buildLocalizedDraft(
+      recipientName,
       summary,
       input.messageType,
       input.language,

@@ -58,7 +58,14 @@ export function PortalLayout({
         <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">{children}</main>
       </div>
 
-      {userRoleEnum === "PARENT" ? <ParentCommunicationBot /> : null}
+      {userRoleEnum === "TEACHER" ? (
+        <ParentCommunicationBot
+          apiPath="/api/teacher/communication-bot"
+          emptyTitle="No students available"
+          emptyDescription="Assign this teacher to a class or subject before generating parent communication drafts."
+          introText="Choose a student and message type to generate a parent-ready draft you can copy, download, or share."
+        />
+      ) : null}
     </div>
   );
 }
