@@ -43,15 +43,23 @@ export async function GET() {
   const guard = await requireParentUser();
   if ("error" in guard) return guard.error;
 
-  const context = await getParentCommunicationBotContext(guard.userId);
-  return NextResponse.json({
-    ...context,
-    stats: {
-      multilingualSupport: 3,
-      workloadReduction: "~40%",
-      draftTypes: PARENT_COMMUNICATION_MESSAGE_TYPES.length,
-    },
-  });
+  try {
+    const context = await getParentCommunicationBotContext(guard.userId);
+    return NextResponse.json({
+      ...context,
+      stats: {
+        multilingualSupport: 3,
+        workloadReduction: "~40%",
+        draftTypes: PARENT_COMMUNICATION_MESSAGE_TYPES.length,
+      },
+    });
+  } catch (error) {
+    console.error("[parent-communication-bot] GET failed:", error);
+    return NextResponse.json(
+      { error: "Could not load communication context. Please try again." },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: Request) {
@@ -93,17 +101,25 @@ export async function POST(request: Request) {
     );
   }
 
-  const result = await generateParentCommunicationDraft(guard.userId, {
-    childId,
-    messageType,
-    language,
-    tone,
-    additionalNotes,
-  });
+  try {
+    const result = await generateParentCommunicationDraft(guard.userId, {
+      childId,
+      messageType,
+      language,
+      tone,
+      additionalNotes,
+    });
 
-  if (!result) {
-    return NextResponse.json({ error: "Child record not found." }, { status: 404 });
+    if (!result) {
+      return NextResponse.json({ error: "Child record not found." }, { status: 404 });
+    }
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("[parent-communication-bot] POST failed:", error);
+    return NextResponse.json(
+      { error: "Could not generate draft. Please try again." },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json(result);
 }

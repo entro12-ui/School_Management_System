@@ -3,6 +3,7 @@ export const PARENT_COMMUNICATION_MESSAGE_TYPES = [
   "attendance_alert",
   "fee_alert",
   "positive_update",
+  "meeting_request",
 ] as const;
 
 export type ParentCommunicationMessageType =
@@ -25,6 +26,7 @@ export const PARENT_COMMUNICATION_MESSAGE_TYPE_LABELS: Record<
   attendance_alert: "Attendance alert",
   fee_alert: "Fee alert",
   positive_update: "Positive update",
+  meeting_request: "Meeting request",
 };
 
 export const PARENT_COMMUNICATION_TONE_LABELS: Record<

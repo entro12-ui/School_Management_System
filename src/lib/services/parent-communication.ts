@@ -18,6 +18,7 @@ type ParentChildRecord = {
   gradeLabel: string;
   className: string;
   branchName: string;
+  classId?: string | null;
 };
 
 export type ParentCommunicationChildSummary = {
@@ -39,6 +40,7 @@ export type ParentCommunicationChildSummary = {
   attendanceRate: number | null;
   outstandingBalance: number;
   pendingFeeItems: number;
+  homeroomTeacherName: string | null;
 };
 
 export type ParentCommunicationBotContext = {
@@ -166,6 +168,28 @@ async function buildChildSummary(
     0
   );
 
+  let homeroomTeacherName: string | null = null;
+  if (child.classId) {
+    const homeroom = await prisma.classTeacher.findFirst({
+      where: { classId: child.classId },
+      orderBy: { isPrimary: "desc" },
+      include: {
+        teacher: {
+          include: {
+            user: { select: { firstName: true, lastName: true } },
+          },
+        },
+      },
+    });
+    if (homeroom?.teacher?.user) {
+      const name = fullName(
+        homeroom.teacher.user.firstName,
+        homeroom.teacher.user.lastName
+      ).trim();
+      homeroomTeacherName = name || null;
+    }
+  }
+
   return {
     id: child.id,
     studentName: fullName(child.firstName, child.lastName),
@@ -193,6 +217,7 @@ async function buildChildSummary(
     attendanceRate,
     outstandingBalance,
     pendingFeeItems: payments.length,
+    homeroomTeacherName,
   };
 }
 
@@ -330,6 +355,38 @@ function englishDraft(
             : "Latest score: not available",
           summary.attendanceRate != null
             ? `Attendance: ${summary.attendanceRate}%`
+            : "Attendance: no recent data",
+        ],
+      },
+      meeting_request: {
+        subject: `Meeting request regarding ${childName}`,
+        preview: `A respectful request to meet with school staff about ${childName}'s learning and wellbeing.`,
+        body: [
+          greeting,
+          "",
+          `I would like to schedule a meeting to discuss ${childName}'s progress and how we can support learning together.`,
+          `${childName} is enrolled in ${summary.gradeLabel}, class ${summary.className}, at ${summary.branchName}.`,
+          summary.homeroomTeacherName
+            ? `If appropriate, I would appreciate coordinating with ${summary.homeroomTeacherName}.`
+            : null,
+          performance,
+          attendance,
+          note,
+          "",
+          `Please share available dates and times for a brief conversation.`,
+          closing,
+        ]
+          .filter(Boolean)
+          .join("\n"),
+        highlights: [
+          summary.homeroomTeacherName
+            ? `Class teacher: ${summary.homeroomTeacherName}`
+            : "Class teacher: contact school office",
+          summary.averagePercent != null
+            ? `Recent average: ${summary.averagePercent}%`
+            : "Recent average: pending more grades",
+          summary.attendanceRate != null
+            ? `Attendance (30 days): ${summary.attendanceRate}%`
             : "Attendance: no recent data",
         ],
       },
@@ -474,6 +531,34 @@ function amharicDraft(
           summary.attendanceRate != null ? `መገኘት: ${summary.attendanceRate}%` : "መገኘት: መረጃ የለም",
         ],
       },
+      meeting_request: {
+        subject: `ስለ ${childName} የስብሰባ ጥያቄ`,
+        preview: `ስለ ልጅዎ እድገት እና ድጋፍ ከትምህርት ቤቱ ጋር ለመገናኘት የተዘጋጀ ረቂቅ።`,
+        body: [
+          greeting,
+          "",
+          `ስለ ${childName} እድገት እና ቀጣይ ድጋፍ ለመወያየት ስብሰባ ለመጠየቅ እፈልጋለሁ።`,
+          `${childName} በ${summary.gradeLabel}፣ ክፍል ${summary.className}፣ በ${summary.branchName} ተመዝቧል/ተመዝባለች።`,
+          summary.homeroomTeacherName
+            ? `በተቻለ መጠን ከ${summary.homeroomTeacherName} ጋር ማስተባበር እንደሚቻል እጠብቃለሁ።`
+            : null,
+          scoreLine,
+          attendanceLine,
+          note,
+          "",
+          `ለአጭር ውይይት የሚመጡ ቀናት እና ሰዓቶችን እባክዎ ያሳውቁኝ።`,
+          closing,
+        ]
+          .filter(Boolean)
+          .join("\n"),
+        highlights: [
+          summary.homeroomTeacherName
+            ? `ክፍል መምህር: ${summary.homeroomTeacherName}`
+            : "ክፍል መምህር: ትምህርት ቤቱን ያግኙ",
+          summary.averagePercent != null ? `አማካይ ውጤት: ${summary.averagePercent}%` : "አማካይ ውጤት: መረጃ በመሰብሰብ ላይ",
+          summary.attendanceRate != null ? `መገኘት: ${summary.attendanceRate}%` : "መገኘት: መረጃ የለም",
+        ],
+      },
     };
 
   return {
@@ -615,6 +700,34 @@ function oromoDraft(
           summary.attendanceRate != null ? `Argama: ${summary.attendanceRate}%` : "Argama: ragaan hin jiru",
         ],
       },
+      meeting_request: {
+        subject: `Gaaffii walga'ii ${childName}`,
+        preview: `Guddina barnootaa fi deeggarsa irratti hojii mana barumsaa waliin mari'achuuf ergaa kabajamaa.`,
+        body: [
+          greeting,
+          "",
+          `Guddina ${childName} fi akkamitti waliin deeggaruu danda'u ilaaluuf walga'ii qopheessuuf gaafachuu barbaada.`,
+          `${childName} ${summary.gradeLabel}, kutaa ${summary.className}, ${summary.branchName} keessatti galmaa'eera.`,
+          summary.homeroomTeacherName
+            ? `Yoo ta'e ${summary.homeroomTeacherName} waliin walitti qabuu nan barbaada.`
+            : null,
+          performance,
+          attendance,
+          note,
+          "",
+          `Mari'achuuf guyyaa fi sa'aatni jiran naaf himaa.`,
+          closing,
+        ]
+          .filter(Boolean)
+          .join("\n"),
+        highlights: [
+          summary.homeroomTeacherName
+            ? `Barsiisaa kutaa: ${summary.homeroomTeacherName}`
+            : "Barsiisaa kutaa: waajjira mana barumsaa qunnamaa",
+          summary.averagePercent != null ? `Giddugaleessa: ${summary.averagePercent}%` : "Giddugaleessa: ragaan dabalataa eeggamaa jira",
+          summary.attendanceRate != null ? `Argama: ${summary.attendanceRate}%` : "Argama: ragaan hin jiru",
+        ],
+      },
     };
 
   return {
@@ -663,6 +776,7 @@ export async function getParentCommunicationBotContext(
         gradeLabel: child.gradeLabel,
         className: child.className,
         branchName: child.branchName,
+        classId: child.classId,
       })
     )
   );
@@ -696,6 +810,7 @@ export async function generateParentCommunicationDraft(
     gradeLabel: child.gradeLabel,
     className: child.className,
     branchName: child.branchName,
+    classId: child.classId,
   });
 
   return {

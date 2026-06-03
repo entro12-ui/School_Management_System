@@ -44,6 +44,7 @@ export async function getChildrenForParent(parentUserId: string) {
       gradeLevel: c.gradeLevel,
       gradeLabel: formatGradeLevel(c.gradeLevel),
       gradeBand: c.gradeBand,
+      classId: c.classId,
       className: c.class?.name ?? "Unassigned",
       branchName: c.branch.name,
       academicYear: c.class?.academicYear?.name ?? "—",

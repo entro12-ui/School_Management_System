@@ -114,7 +114,7 @@ Data is scoped by **branch** where applicable. Academic structure follows Ethiop
 ### Parent portal (`/parent`)
 
 - Linked children: attendance, results, fees, library
-- **Parent Communication Bot** — draft messages to school staff (multilingual, tone-aware; rule-based, not LLM-backed)
+- **Parent Communication Bot** — draft messages to school staff (multilingual, tone-aware, meeting requests, edit/copy/WhatsApp/Telegram/download; rule-based, not LLM-backed)
 
 ### Student portal (`/student`)
 
