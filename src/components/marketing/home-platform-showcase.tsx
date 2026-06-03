@@ -8,6 +8,7 @@ import {
   CalendarCheck,
   CheckCircle2,
   ChevronRight,
+  FileText,
   GraduationCap,
   LineChart,
   MessageSquare,
@@ -22,18 +23,18 @@ const EXPERIENCES = [
     label: "Leadership",
     title: "A live command center for every campus",
     description:
-      "Central office can compare branches, monitor enrollment, use AI-supported performance analytics, and review audit activity without waiting for manual reports.",
+      "Central office can compare branches, monitor enrollment, generate AI monthly executive reports, and review audit activity without waiting for manual reporting cycles.",
     icon: ShieldCheck,
     accent: "from-violet-600 to-indigo-600",
     metrics: [
       { label: "Branch visibility", value: "All campuses" },
       { label: "Risk review", value: "Daily" },
-      { label: "Export-ready", value: "PDF / Excel / CSV" },
+      { label: "AI reporting", value: "Monthly brief" },
     ],
     actions: [
       "Track enrollment, attendance, revenue, and outstanding fees together.",
       "Use early warning analytics to flag students who need academic or attendance intervention.",
-      "Keep leadership decisions grounded in one trusted system record.",
+      "Generate owner-ready monthly summaries from one trusted system record.",
     ],
   },
   {
@@ -81,6 +82,11 @@ const OUTCOMES = [
     title: "Early warning analytics",
     description: "Combines grade trends and attendance records to flag at-risk students.",
     icon: Brain,
+  },
+  {
+    title: "AI executive reporting",
+    description: "Turns monthly school performance data into owner-ready summaries and next steps.",
+    icon: FileText,
   },
   {
     title: "Attendance-to-action flow",

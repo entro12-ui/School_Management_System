@@ -19,19 +19,16 @@ import { DashboardGraphs } from "@/components/dashboard/dashboard-graphs";
 import { getAdminDashboardCharts } from "@/lib/services/dashboard-charts";
 import { StudentPerformanceAnalyticsPanel } from "@/components/admin/student-performance-analytics";
 import { getStudentPerformanceAnalytics } from "@/lib/services/student-performance-analytics";
-import { MonthlyReportGenerator } from "@/components/admin/monthly-report-generator";
-import { getAdminMonthlyReportBranchOptions } from "@/lib/services/admin-monthly-report";
 
 export const dynamic = "force-dynamic";
 
 export default async function SuperAdminPage() {
-  const [stats, gradeBreakdown, charts, adminSummary, performanceAnalytics, reportBranches] = await Promise.all([
+  const [stats, gradeBreakdown, charts, adminSummary, performanceAnalytics] = await Promise.all([
     getConsolidatedStats(),
     getGradeBandBreakdown(),
     getAdminDashboardCharts(),
     getAdminSummary(),
     getStudentPerformanceAnalytics(),
-    getAdminMonthlyReportBranchOptions(),
   ]);
 
   return (
@@ -59,7 +56,7 @@ export default async function SuperAdminPage() {
         <Link href="/admin/reports">
           <Button variant="outline">
             <Download className="h-4 w-4" />
-            Export (PDF / Excel / CSV)
+            Open reports
           </Button>
         </Link>
       </div>
@@ -90,8 +87,6 @@ export default async function SuperAdminPage() {
       </div>
 
       <DashboardGraphs charts={charts} />
-
-      <MonthlyReportGenerator branches={reportBranches} />
 
       <StudentPerformanceAnalyticsPanel analytics={performanceAnalytics} />
 

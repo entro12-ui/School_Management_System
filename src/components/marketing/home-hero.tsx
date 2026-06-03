@@ -113,15 +113,16 @@ export function HomeHero({
 
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
             EduSync SMS brings academics, attendance, finance, library, HR, parent
-            communication, AI-supported learning, and student analytics into one calm
-            workspace, helping schools notice risks early, personalize support, and guide
-            every learner with confidence.
+            communication, AI-supported learning, student analytics, and monthly executive
+            reporting into one calm workspace, helping schools notice risks early,
+            personalize support, and guide every learner with confidence.
           </p>
 
           <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium text-slate-700">
             {[
               "Role-based portals",
               "Early warning insights",
+              "AI monthly reports",
               "Family-ready communication",
               "Leadership dashboards",
             ].map((text) => (

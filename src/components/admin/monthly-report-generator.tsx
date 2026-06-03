@@ -233,11 +233,15 @@ export function MonthlyReportGenerator({
         </div>
       </div>
 
-      <div className="grid gap-5 p-5 sm:p-6 lg:grid-cols-[0.85fr_1.15fr]">
+      <div className="grid gap-5 p-5 sm:p-6 2xl:grid-cols-[22rem_minmax(0,1fr)]">
         <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-1">
             <Field label="Month">
-              <Select value={month} onChange={(event) => setMonth(event.target.value)}>
+              <Select
+                value={month}
+                onChange={(event) => setMonth(event.target.value)}
+                className="h-11 min-w-0 truncate bg-white"
+              >
                 {MONTHS.map((label, index) => (
                   <option key={label} value={index + 1}>
                     {label}
@@ -246,7 +250,11 @@ export function MonthlyReportGenerator({
               </Select>
             </Field>
             <Field label="Year">
-              <Select value={year} onChange={(event) => setYear(event.target.value)}>
+              <Select
+                value={year}
+                onChange={(event) => setYear(event.target.value)}
+                className="h-11 min-w-0 truncate bg-white"
+              >
                 {years.map((option) => (
                   <option key={option} value={option}>
                     {option}
@@ -254,21 +262,27 @@ export function MonthlyReportGenerator({
                 ))}
               </Select>
             </Field>
-            <Field label="Branch">
-              <Select value={branchId} onChange={(event) => setBranchId(event.target.value)}>
-                <option value="all">All branches</option>
-                {branches.map((branch) => (
-                  <option key={branch.id} value={branch.id}>
-                    {branch.name}
-                  </option>
-                ))}
-              </Select>
-            </Field>
+            <div className="sm:col-span-2 xl:col-span-1 2xl:col-span-1">
+              <Field label="Branch">
+                <Select
+                  value={branchId}
+                  onChange={(event) => setBranchId(event.target.value)}
+                  className="h-11 min-w-0 truncate bg-white"
+                >
+                  <option value="all">All branches</option>
+                  {branches.map((branch) => (
+                    <option key={branch.id} value={branch.id}>
+                      {branch.name}
+                    </option>
+                  ))}
+                </Select>
+              </Field>
+            </div>
             <Button
               type="button"
               onClick={() => void generateReport()}
               disabled={loading}
-              className="h-11 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-indigo-200 hover:from-indigo-700 hover:to-violet-700"
+              className="h-11 w-full whitespace-nowrap rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 shadow-md shadow-indigo-200 hover:from-indigo-700 hover:to-violet-700 sm:col-span-2 xl:col-span-1 2xl:col-span-1"
             >
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bot className="h-4 w-4" />}
               Generate monthly report

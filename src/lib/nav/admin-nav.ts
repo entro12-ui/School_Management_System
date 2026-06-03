@@ -12,5 +12,5 @@ export const ADMIN_NAV: NavItemConfig[] = [
   { href: "/admin/branches", label: "Branches", icon: "Users" },
   { href: "/admin/audit", label: "Audit logs", icon: "ClipboardList" },
   { href: "/admin/settings", label: "Settings", icon: "Settings" },
-  { href: "/admin/reports", label: "Export reports", icon: "Download" },
+  { href: "/admin/reports", label: "Reports", icon: "FileText" },
 ];

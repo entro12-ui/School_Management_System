@@ -36,6 +36,13 @@ const AI_CAPABILITIES = [
     accent: "from-rose-500 to-pink-600",
   },
   {
+    title: "AI Monthly Report Generator",
+    description:
+      "Owner-ready executive summaries that combine enrollment, academics, attendance, finance, and branch performance into one professional monthly report.",
+    icon: FileText,
+    accent: "from-amber-500 to-orange-600",
+  },
+  {
     title: "Smart Parent Communication",
     description:
       "Multilingual, tone-aware draft messages for progress updates, attendance alerts, fee reminders, and meeting requests.",
@@ -45,7 +52,7 @@ const AI_CAPABILITIES = [
 ] as const;
 
 const PLATFORM_COVERAGE = [
-  "Multi-branch leadership dashboards and branch comparison",
+  "Multi-branch leadership dashboards, branch comparison, and AI monthly reports",
   "Student enrollment, records, ID cards, transcripts, and registration flows",
   "Teacher class rosters, grading, assignments, exams, and attendance",
   "Finance fee structures, payment tracking, proof review, receipts, and reports",
@@ -85,8 +92,8 @@ export function HomeAiCapabilities() {
             <p className="mt-3 text-sm leading-6 text-slate-600">
               AI in EduSync SMS is designed as a support layer, not a replacement for
               educators. It helps teachers prepare lessons faster, helps students study,
-              helps leaders detect risk early, and helps staff communicate clearly with
-              families.
+              helps leaders generate monthly executive reports, and helps staff
+              communicate clearly with families.
             </p>
           </div>
 
