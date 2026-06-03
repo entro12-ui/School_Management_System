@@ -4,7 +4,7 @@ const PROGRAMS = [
   {
     title: "Kindergarten",
     grades: "KG",
-    desc: "Play-based learning, picture books, teacher-assisted library, daily reports",
+    desc: "Play-based learning, picture books, teacher-assisted library, and simple family visibility for early progress.",
     icon: Users,
     gradient: "from-amber-400 to-orange-500",
     bg: "bg-amber-50 border-amber-100",
@@ -12,7 +12,7 @@ const PROGRAMS = [
   {
     title: "Primary",
     grades: "Grades 1–5",
-    desc: "Subject grading, story tracking, reading rewards, parent communication",
+    desc: "Subject grading, reading habits, attendance follow-up, and parent communication that builds consistency.",
     icon: BookOpen,
     gradient: "from-sky-400 to-blue-600",
     bg: "bg-sky-50 border-sky-100",
@@ -20,7 +20,7 @@ const PROGRAMS = [
   {
     title: "Junior High",
     grades: "Grades 6–8",
-    desc: "Mid & final exams, GPA tracking, project materials, group reading",
+    desc: "Assessment trends, attendance discipline, project materials, and intervention support before gaps widen.",
     icon: BarChart3,
     gradient: "from-violet-400 to-purple-600",
     bg: "bg-violet-50 border-violet-100",
@@ -28,7 +28,7 @@ const PROGRAMS = [
   {
     title: "Senior High",
     grades: "Grades 9–12",
-    desc: "Streams, national exam prep, transcripts, research & college resources",
+    desc: "Streams, national exam preparation, transcripts, GPA, research resources, and future-ready reporting.",
     icon: GraduationCap,
     gradient: "from-emerald-400 to-teal-600",
     bg: "bg-emerald-50 border-emerald-100",
@@ -49,8 +49,8 @@ export function HomePrograms() {
           </span>
         </h2>
         <p className="mx-auto mt-2 max-w-lg text-slate-600">
-          Tools scale from KG picture books to Grade 12 transcripts — same platform,
-          age-appropriate workflows.
+          The same platform adapts to each learner stage, from KG classroom routines
+          to senior transcripts and exam preparation.
         </p>
       </div>
 

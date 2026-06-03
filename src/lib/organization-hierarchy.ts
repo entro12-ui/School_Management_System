@@ -132,4 +132,16 @@ export const INTEGRATED_MODULES: OrgModuleNode[] = [
     description: "Resources & circulation",
     items: ["Catalog", "Issue / return", "Fines"],
   },
+  {
+    id: "analytics",
+    title: "Analytics",
+    description: "Early warning & leadership insight",
+    items: ["At-risk flags", "Dropout warning", "Intervention suggestions"],
+  },
+  {
+    id: "communication",
+    title: "Communication",
+    description: "Family-ready updates",
+    items: ["Parent drafts", "Multilingual messages", "WhatsApp / Telegram"],
+  },
 ];

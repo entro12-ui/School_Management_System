@@ -7,6 +7,7 @@ import { HomePortalsGrid } from "@/components/marketing/home-portals-grid";
 import { HomePrograms } from "@/components/marketing/home-programs";
 import { HomeFeatures } from "@/components/marketing/home-features";
 import { HomeCta, HomeFooter } from "@/components/marketing/home-cta-footer";
+import { HomePlatformShowcase } from "@/components/marketing/home-platform-showcase";
 
 export async function HomeLanding() {
   const session = await auth();
@@ -28,6 +29,7 @@ export async function HomeLanding() {
       <main className="relative mx-auto max-w-6xl px-4 pb-12 sm:px-6">
         <div className="pt-8 sm:pt-12">
           <HomeHero dashboardHref={dashboardHref} signedIn={signedIn} />
+          <HomePlatformShowcase />
           <HomeHowItWorks />
           <HomePortalsGrid />
           <HomePrograms />

@@ -9,9 +9,15 @@ export function HomeCta({ dashboardHref }: { dashboardHref: string }) {
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIuMDgiLz48L2c+PC9zdmc+')] opacity-60" />
       <div className="relative flex flex-col gap-6 p-8 text-white sm:p-10 md:flex-row md:items-center md:justify-between">
         <div className="max-w-xl">
-          <h2 className="text-2xl font-extrabold sm:text-3xl">Start in minutes</h2>
+          <p className="text-xs font-bold uppercase tracking-wider text-cyan-100">
+            Ready to modernize school operations?
+          </p>
+          <h2 className="mt-2 text-2xl font-extrabold sm:text-3xl">
+            Give every role a clearer way to work
+          </h2>
           <p className="mt-3 text-indigo-100 leading-relaxed">
-            Try every portal with demo accounts — one password, every role.
+            Explore the connected experience: leadership dashboards, teacher workflows,
+            family portals, finance records, library operations, HR, and student analytics.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">

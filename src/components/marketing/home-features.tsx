@@ -14,17 +14,18 @@ export function HomeFeatures() {
           </span>
         </h2>
         <p className="mt-2 text-slate-600">
-          Academic, attendance, finance, and library share one student record — no
-          duplicate data entry.
+          Academic, attendance, finance, library, analytics, and family communication
+          share one student record, so teams work from the same truth instead of
+          disconnected spreadsheets.
         </p>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {INTEGRATED_MODULES.map((mod, i) => (
           <article
             key={mod.id}
             className={`rounded-2xl border border-indigo-100/80 bg-white p-6 shadow-lg shadow-indigo-100/30 ${
-              i === 0 ? "sm:col-span-2 sm:flex sm:gap-8 sm:p-8" : ""
+              i === 0 ? "sm:col-span-2 lg:col-span-3 sm:flex sm:gap-8 sm:p-8" : ""
             }`}
           >
             <div className={i === 0 ? "sm:flex-1" : ""}>

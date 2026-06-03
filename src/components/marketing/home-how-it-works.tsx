@@ -43,7 +43,8 @@ export function HomeHowItWorks() {
           </span>
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-slate-600">
-          Central office → branch staff → families. Same flow on every campus.
+          Central office, branch teams, teachers, students, and parents share one
+          operating rhythm. The platform turns daily records into coordinated action.
         </p>
       </div>
 
@@ -59,6 +60,16 @@ export function HomeHowItWorks() {
               </p>
               <h3 className="text-xl font-bold text-slate-900">{CENTRAL_OFFICE.title}</h3>
               <p className="mt-2 text-sm text-slate-600">{CENTRAL_OFFICE.description}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {CENTRAL_OFFICE.capabilities.map((capability) => (
+                  <span
+                    key={capability}
+                    className="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-amber-800"
+                  >
+                    {capability}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
