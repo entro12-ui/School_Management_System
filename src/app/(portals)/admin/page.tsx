@@ -17,15 +17,18 @@ import { Button } from "@/components/ui/button";
 import { ADMIN_NAV } from "@/lib/nav/admin-nav";
 import { DashboardGraphs } from "@/components/dashboard/dashboard-graphs";
 import { getAdminDashboardCharts } from "@/lib/services/dashboard-charts";
+import { StudentPerformanceAnalyticsPanel } from "@/components/admin/student-performance-analytics";
+import { getStudentPerformanceAnalytics } from "@/lib/services/student-performance-analytics";
 
 export const dynamic = "force-dynamic";
 
 export default async function SuperAdminPage() {
-  const [stats, gradeBreakdown, charts, adminSummary] = await Promise.all([
+  const [stats, gradeBreakdown, charts, adminSummary, performanceAnalytics] = await Promise.all([
     getConsolidatedStats(),
     getGradeBandBreakdown(),
     getAdminDashboardCharts(),
     getAdminSummary(),
+    getStudentPerformanceAnalytics(),
   ]);
 
   return (
@@ -84,6 +87,8 @@ export default async function SuperAdminPage() {
       </div>
 
       <DashboardGraphs charts={charts} />
+
+      <StudentPerformanceAnalyticsPanel analytics={performanceAnalytics} />
 
       <section className="mt-8">
         <h2 className="text-lg font-semibold text-slate-900">Branch comparison</h2>
