@@ -144,4 +144,28 @@ export const INTEGRATED_MODULES: OrgModuleNode[] = [
     description: "Family-ready updates",
     items: ["Parent drafts", "Multilingual messages", "WhatsApp / Telegram"],
   },
+  {
+    id: "ai-support",
+    title: "AI support",
+    description: "Teaching and learning assistance",
+    items: ["AI Study Tutor", "AI Lesson Planner", "Parent Communication AI Bot", "Risk insights"],
+  },
+  {
+    id: "registrar",
+    title: "Registrar",
+    description: "Student records and onboarding",
+    items: ["Enrollment", "ID cards", "Transcript export"],
+  },
+  {
+    id: "hr",
+    title: "Human resources",
+    description: "People operations for schools",
+    items: ["Payroll", "Leave", "Recruitment"],
+  },
+  {
+    id: "security",
+    title: "Security",
+    description: "Role-based system protection",
+    items: ["NextAuth", "RBAC", "Audit logs"],
+  },
 ];

@@ -22,7 +22,7 @@ const EXPERIENCES = [
     label: "Leadership",
     title: "A live command center for every campus",
     description:
-      "Central office can compare branches, monitor enrollment, spot performance risks, and review audit activity without waiting for manual reports.",
+      "Central office can compare branches, monitor enrollment, use AI-supported performance analytics, and review audit activity without waiting for manual reports.",
     icon: ShieldCheck,
     accent: "from-violet-600 to-indigo-600",
     metrics: [
@@ -32,7 +32,7 @@ const EXPERIENCES = [
     ],
     actions: [
       "Track enrollment, attendance, revenue, and outstanding fees together.",
-      "Flag students who need urgent academic or attendance intervention.",
+      "Use early warning analytics to flag students who need academic or attendance intervention.",
       "Keep leadership decisions grounded in one trusted system record.",
     ],
   },
@@ -41,7 +41,7 @@ const EXPERIENCES = [
     label: "Teachers",
     title: "Less paperwork, more teaching time",
     description:
-      "Teachers manage class rosters, daily attendance, single-assessment grading, and weekly reports from one focused workspace.",
+      "Teachers manage class rosters, daily attendance, grading, weekly reports, AI lesson planning, and parent-ready communication from one workspace.",
     icon: GraduationCap,
     accent: "from-emerald-500 to-teal-600",
     metrics: [
@@ -52,7 +52,7 @@ const EXPERIENCES = [
     actions: [
       "Enter marks once and reuse them for reports, portals, and analytics.",
       "See which students are slipping before exam season arrives.",
-      "Coordinate with parents through clear, ready-to-use updates.",
+      "Generate lesson plans and coordinate with parents through clear, ready-to-use updates.",
     ],
   },
   {
@@ -60,7 +60,7 @@ const EXPERIENCES = [
     label: "Families",
     title: "Parents and students stay connected",
     description:
-      "Families can follow attendance, results, fees, library activity, transcripts, and AI-supported learning from secure role-based portals.",
+      "Families can follow attendance, results, fees, library activity, transcripts, and AI-supported study help from secure role-based portals.",
     icon: Users,
     accent: "from-cyan-500 to-blue-600",
     metrics: [
@@ -70,7 +70,7 @@ const EXPERIENCES = [
     ],
     actions: [
       "Give parents timely visibility into performance, attendance, and fees.",
-      "Help students access schedules, assignments, GPA, and transcripts.",
+      "Help students access schedules, assignments, GPA, transcripts, and AI Study Tutor support.",
       "Create professional WhatsApp or Telegram-ready parent messages.",
     ],
   },

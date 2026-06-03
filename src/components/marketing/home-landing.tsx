@@ -8,6 +8,7 @@ import { HomePrograms } from "@/components/marketing/home-programs";
 import { HomeFeatures } from "@/components/marketing/home-features";
 import { HomeCta, HomeFooter } from "@/components/marketing/home-cta-footer";
 import { HomePlatformShowcase } from "@/components/marketing/home-platform-showcase";
+import { HomeAiCapabilities } from "@/components/marketing/home-ai-capabilities";
 
 export async function HomeLanding() {
   const session = await auth();
@@ -30,6 +31,7 @@ export async function HomeLanding() {
         <div className="pt-8 sm:pt-12">
           <HomeHero dashboardHref={dashboardHref} signedIn={signedIn} />
           <HomePlatformShowcase />
+          <HomeAiCapabilities />
           <HomeHowItWorks />
           <HomePortalsGrid />
           <HomePrograms />
