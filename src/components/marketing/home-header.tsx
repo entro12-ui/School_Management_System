@@ -55,7 +55,7 @@ export function HomeHeader({
             href={signedIn ? dashboardHref : "/login"}
             className="rounded-xl px-3 py-2 text-sm font-bold text-slate-700 transition hover:bg-indigo-50 hover:text-indigo-700"
           >
-            {signedIn ? "Dashboard" : "Sign in"}
+            {signedIn ? "Dashboard" : "Get Demo Account"}
           </Link>
         </div>
       </div>

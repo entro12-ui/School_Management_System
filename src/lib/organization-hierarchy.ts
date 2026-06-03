@@ -148,7 +148,13 @@ export const INTEGRATED_MODULES: OrgModuleNode[] = [
     id: "ai-support",
     title: "AI support",
     description: "Teaching and learning assistance",
-    items: ["AI Study Tutor", "AI Lesson Planner", "Parent Communication AI Bot", "Risk insights"],
+    items: [
+      "AI Study Tutor",
+      "AI Lesson Planner",
+      "AI Monthly Report Generator",
+      "Parent Communication AI Bot",
+      "Risk insights",
+    ],
   },
   {
     id: "registrar",
