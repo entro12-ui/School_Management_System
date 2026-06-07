@@ -17,11 +17,13 @@ export function SchoolSignupForm() {
     initialState
   );
 
+  const signupId = state.success ? state.data?.id : undefined;
+
   useEffect(() => {
-    if (state.success && state.data?.id) {
-      router.push(`/register/school/submitted?id=${state.data.id}`);
+    if (signupId) {
+      router.push(`/register/school/submitted?id=${signupId}`);
     }
-  }, [state.success, state.data?.id, router]);
+  }, [signupId, router]);
 
   return (
     <form action={formAction} className="space-y-4">
@@ -45,7 +47,8 @@ export function SchoolSignupForm() {
       <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
         Subscription is billed at{" "}
         <strong className="text-slate-900">{PLATFORM_STUDENT_PRICE_ETB} ETB per student</strong>{" "}
-        after our team approves your application.
+        after our team approves your application. You will create your super admin account after
+        payment.
       </div>
 
       <Field label="Estimated active students *">

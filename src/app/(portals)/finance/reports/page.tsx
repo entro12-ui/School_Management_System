@@ -1,5 +1,6 @@
 import { PortalShell } from "@/components/layout/portal-shell";
 import { auth } from "@/lib/auth";
+import { getSchoolDataScope } from "@/lib/auth/school-data-scope";
 import { navForUser } from "@/lib/nav/portal-nav";
 import { canManageFinance, getFinanceDashboardStats } from "@/lib/services/finance";
 import { formatCurrency } from "@/lib/utils";
@@ -12,10 +13,8 @@ export default async function FinanceReportsPage() {
   const session = await auth();
   if (!session?.user || !canManageFinance(session.user.role)) redirect("/login");
 
-  const branchId =
-    session.user.role === UserRole.SUPER_ADMIN ? undefined : session.user.branchId ?? undefined;
-
-  const stats = await getFinanceDashboardStats(branchId);
+  const scope = getSchoolDataScope(session.user);
+  const stats = await getFinanceDashboardStats(scope);
 
   return (
     <PortalShell

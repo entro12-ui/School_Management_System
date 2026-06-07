@@ -48,9 +48,23 @@ async function main() {
   await prisma.announcement.deleteMany();
   await prisma.user.deleteMany();
   await prisma.branch.deleteMany();
+  await prisma.organization.deleteMany();
+
+  const demoOrganization = await prisma.organization.create({
+    data: {
+      name: "EduSync Demo School",
+      code: "EDUSYNC-DEMO",
+      city: "Addis Ababa",
+      contactEmail: "superadmin@school.et",
+      studentLimit: 5000,
+      isActive: true,
+      activatedAt: new Date(),
+    },
+  });
 
   const branchAddis = await prisma.branch.create({
     data: {
+      organizationId: demoOrganization.id,
       code: "ADDIS",
       name: "Branch A — Addis Ababa",
       city: "Addis Ababa",
@@ -61,6 +75,7 @@ async function main() {
 
   const branchBishoftu = await prisma.branch.create({
     data: {
+      organizationId: demoOrganization.id,
       code: "BISH",
       name: "Branch B — Bishoftu",
       city: "Bishoftu",
@@ -96,6 +111,7 @@ async function main() {
       firstName: "Central",
       lastName: "Administrator",
       role: UserRole.SUPER_ADMIN,
+      organizationId: demoOrganization.id,
     },
   });
 

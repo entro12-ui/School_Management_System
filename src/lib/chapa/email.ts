@@ -4,7 +4,7 @@ const CHAPA_EMAIL_REGEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
 export function resolveChapaEmail(email?: string | null): string | null {
   if (!email) return null;
 
-  let normalized = email
+  const normalized = email
     .trim()
     .toLowerCase()
     .replace(/\s+/g, "")

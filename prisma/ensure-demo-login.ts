@@ -282,8 +282,32 @@ async function ensureStudentRecord(
   }
 }
 
+async function ensureDemoOrganization() {
+  const org =
+    (await prisma.organization.findFirst({ where: { code: "EDUSYNC-DEMO" } })) ??
+    (await prisma.organization.create({
+      data: {
+        name: "EduSync Demo School",
+        code: "EDUSYNC-DEMO",
+        city: "Addis Ababa",
+        contactEmail: "superadmin@school.et",
+        studentLimit: 5000,
+        isActive: true,
+        activatedAt: new Date(),
+      },
+    }));
+
+  await prisma.branch.updateMany({
+    where: { code: { in: ["ADDIS", "BISH"] } },
+    data: { organizationId: org.id },
+  });
+
+  return org;
+}
+
 async function main() {
   const passwordHash = await bcrypt.hash(password, 10);
+  const demoOrganization = await ensureDemoOrganization();
 
   for (const demo of DEMO_USERS) {
     const branchId = await resolveBranchId(demo);
@@ -301,6 +325,8 @@ async function main() {
         lastName: demo.lastName,
         role: demo.role,
         branchId,
+        organizationId:
+          demo.role === UserRole.SUPER_ADMIN ? demoOrganization.id : undefined,
         isActive: true,
         mustChangePassword: false,
         pendingOtp: null,
@@ -314,6 +340,9 @@ async function main() {
         pendingOtp: null,
         role: demo.role,
         branchId,
+        ...(demo.role === UserRole.SUPER_ADMIN
+          ? { organizationId: demoOrganization.id }
+          : {}),
       },
     });
 

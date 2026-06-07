@@ -8,6 +8,7 @@ import {
 } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
+import { assertUserCanAccessBranch } from "@/lib/auth/super-admin-scope";
 import { checkBorrowerEligibility } from "@/lib/library/eligibility";
 import { calculateOverdueFine, daysBetween } from "@/lib/library/fines";
 import { RESERVATION_HOLD_DAYS } from "@/lib/library/constants";
@@ -15,7 +16,6 @@ import { READING_BADGE_THRESHOLDS } from "@/lib/library/borrowing-rules";
 import {
   canAccessLibrary,
   defaultDueDateForBorrower,
-  resolveLibraryBranchId,
 } from "@/lib/services/library";
 import {
   findBookByBarcode,
@@ -58,13 +58,9 @@ async function assertLibraryAccess(branchId: string) {
   if (!session?.user || !canAccessLibrary(session.user.role)) {
     return { ok: false as const, error: "Unauthorized" };
   }
-  const allowedBranch = resolveLibraryBranchId(
-    session.user.role,
-    session.user.branchId,
-    branchId
-  );
-  if (!allowedBranch || allowedBranch !== branchId) {
-    return { ok: false as const, error: "You can only manage your branch library." };
+  const access = await assertUserCanAccessBranch(session.user, branchId);
+  if (!access.ok) {
+    return { ok: false as const, error: access.error };
   }
   return { ok: true as const, session };
 }

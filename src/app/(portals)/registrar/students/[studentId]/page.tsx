@@ -3,6 +3,7 @@ import { PortalShell } from "@/components/layout/portal-shell";
 import { RegistrarStudentGradesTable } from "@/components/registrar/registrar-student-grades-table";
 import { StudentIntelligenceHubSection } from "@/components/students/student-intelligence-hub-section";
 import { auth } from "@/lib/auth";
+import { getSchoolDataScope } from "@/lib/auth/school-data-scope";
 import { navForUser } from "@/lib/nav/portal-nav";
 import { getRegistrarStudentAcademicRecord } from "@/lib/services/registrar-students";
 import { UserRole } from "@prisma/client";
@@ -32,10 +33,8 @@ export default async function RegistrarStudentDetailPage({
   if (!manageRoles.includes(session.user.role)) redirect("/login");
 
   const { studentId } = await params;
-  const branchId =
-    session.user.role === UserRole.SUPER_ADMIN ? undefined : session.user.branchId ?? undefined;
-
-  const record = await getRegistrarStudentAcademicRecord(studentId, { branchId });
+  const scope = getSchoolDataScope(session.user);
+  const record = await getRegistrarStudentAcademicRecord(studentId, { scope });
   if (!record) notFound();
 
   const { student } = record;
@@ -111,7 +110,7 @@ export default async function RegistrarStudentDetailPage({
         studentId={student.id}
         studentName={`${student.firstName} ${student.lastName}`}
         userRole={session.user.role}
-        branchId={branchId}
+        branchId={student.branchId}
       />
 
       <section className="mb-8 rounded-xl border border-slate-200 bg-white p-6">

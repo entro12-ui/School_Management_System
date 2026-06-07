@@ -4,6 +4,7 @@ import { StatCard } from "@/components/dashboard/stat-card";
 import { OrganizationHierarchy } from "@/components/organization/organization-hierarchy";
 import { ADMIN_NAV } from "@/lib/nav/admin-nav";
 import { auth } from "@/lib/auth";
+import { getOrganizationScope } from "@/lib/auth/organization-scope";
 import { getOrganizationHierarchy } from "@/lib/services/organization";
 import { redirect } from "next/navigation";
 import { Building2, GraduationCap, Network, Users } from "lucide-react";
@@ -14,7 +15,8 @@ export default async function AdminOrganizationPage() {
   const session = await auth();
   if (!session?.user || session.user.role !== "SUPER_ADMIN") redirect("/login");
 
-  const data = await getOrganizationHierarchy();
+  const orgScope = getOrganizationScope(session.user);
+  const data = await getOrganizationHierarchy(orgScope);
 
   return (
     <PortalShell

@@ -3,6 +3,7 @@
 import { ChapaTransactionStatus, UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
+import { assertUserCanAccessBranch } from "@/lib/auth/super-admin-scope";
 import { formatChapaAmount } from "@/lib/chapa/amount";
 import {
   buildChapaCallbackUrl,
@@ -319,12 +320,8 @@ export async function reverifyChapaTransactionForFinance(txRef: string): Promise
     return { success: false, error: "Transaction not found." };
   }
 
-  if (
-    session.user.role !== UserRole.SUPER_ADMIN &&
-    session.user.branchId !== transaction.payment.branchId
-  ) {
-    return { success: false, error: "Unauthorized for this branch." };
-  }
+  const access = await assertUserCanAccessBranch(session.user, transaction.payment.branchId);
+  if (!access.ok) return { success: false, error: access.error };
 
   const result = await finalizeChapaTransaction(txRef);
   if (!result.ok) {

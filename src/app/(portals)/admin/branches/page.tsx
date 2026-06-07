@@ -25,7 +25,7 @@ export default async function AdminBranchesPage() {
         <p className="text-slate-500">
           {canCreateBranches
             ? "Manage campuses under your school organization."
-            : "All school branches — enrollment, staff, and academic year per location."}
+            : "Your account is not linked to a school organization yet."}
         </p>
       </div>
 

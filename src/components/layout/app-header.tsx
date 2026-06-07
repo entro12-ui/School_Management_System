@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, Bell, LogOut, GraduationCap } from "lucide-react";
+import { Menu, Bell, LogOut, GraduationCap, Building2 } from "lucide-react";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { PortalHomeLink } from "./portal-home-link";
 import type { UserRole } from "@prisma/client";
@@ -11,6 +11,7 @@ interface AppHeaderProps {
   userName?: string | null;
   userRole?: string;
   userRoleEnum?: UserRole;
+  organizationName?: string | null;
   branchName?: string | null;
   userPhotoUrl?: string | null;
   onMenuClick: () => void;
@@ -23,11 +24,14 @@ export function AppHeader({
   userName,
   userRole,
   userRoleEnum,
+  organizationName,
   branchName,
   userPhotoUrl,
   onMenuClick,
   signOutAction,
 }: AppHeaderProps) {
+  const locationLabel = [organizationName, branchName].filter(Boolean).join(" · ");
+
   return (
     <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-4 border-b border-slate-200/80 bg-white px-4">
       <button
@@ -51,6 +55,16 @@ export function AppHeader({
         </div>
       </div>
 
+      {organizationName && (
+        <div
+          className="flex max-w-[8rem] shrink-0 items-center gap-1 truncate rounded-full bg-indigo-50 px-2 py-1 text-[11px] font-medium text-indigo-800 sm:max-w-[12rem] sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-xs lg:max-w-xs"
+          title={locationLabel}
+        >
+          <Building2 className="hidden h-3.5 w-3.5 shrink-0 sm:block" />
+          <span className="truncate">{organizationName}</span>
+        </div>
+      )}
+
       <div className="flex items-center gap-2 sm:gap-4">
         {userRoleEnum && <PortalHomeLink role={userRoleEnum} />}
 
@@ -66,7 +80,10 @@ export function AppHeader({
 
         <div className="hidden text-right md:block">
           <p className="text-sm font-medium text-slate-900">{userName}</p>
-          <p className="text-xs text-slate-500">
+          {organizationName ? (
+            <p className="truncate text-xs font-medium text-indigo-700">{organizationName}</p>
+          ) : null}
+          <p className="truncate text-xs text-slate-500">
             {userRole}
             {branchName ? ` · ${branchName}` : ""}
           </p>

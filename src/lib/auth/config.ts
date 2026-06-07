@@ -42,7 +42,10 @@ export const authConfig = {
         try {
           const user = await prisma.user.findUnique({
             where: { email },
-            include: { branch: true },
+            include: {
+              branch: { include: { organization: { select: { name: true } } } },
+              organization: { select: { name: true } },
+            },
           });
 
           if (!user || !user.isActive) return null;
@@ -66,6 +69,8 @@ export const authConfig = {
             name: `${user.firstName} ${user.lastName}`,
             role: user.role,
             organizationId: user.organizationId,
+            organizationName:
+              user.organization?.name ?? user.branch?.organization?.name ?? null,
             branchId: user.branchId,
             branchName: user.branch?.name ?? null,
             mustChangePassword: user.mustChangePassword,

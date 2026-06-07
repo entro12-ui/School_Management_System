@@ -324,9 +324,14 @@ export async function getStudentPerformanceRiskById(
   return computeStudentPerformanceRisk(student as unknown as StudentRiskSource);
 }
 
-export async function getStudentPerformanceAnalytics(): Promise<StudentPerformanceAnalytics> {
+export async function getStudentPerformanceAnalytics(
+  organizationId?: string
+): Promise<StudentPerformanceAnalytics> {
   const students = await prisma.student.findMany({
-    where: { isActive: true },
+    where: {
+      isActive: true,
+      ...(organizationId ? { branch: { organizationId } } : {}),
+    },
     take: REVIEW_LIMIT,
     orderBy: [{ branch: { name: "asc" } }, { gradeLevel: "asc" }, { lastName: "asc" }],
     include: getStudentRiskInclude(),

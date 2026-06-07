@@ -2,6 +2,7 @@ import { PortalShell } from "@/components/layout/portal-shell";
 import { SystemSettingsForm } from "@/components/admin/system-settings-form";
 import { ADMIN_NAV } from "@/lib/nav/admin-nav";
 import { getAdminSummary } from "@/lib/services/admin";
+import { getOrganizationScope } from "@/lib/auth/organization-scope";
 import { ensureSystemSettings, getSystemSettings } from "@/lib/system-settings";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -13,14 +14,19 @@ export default async function AdminSettingsPage() {
   if (!session?.user || session.user.role !== "SUPER_ADMIN") redirect("/login");
 
   await ensureSystemSettings();
-  const [settings, summary] = await Promise.all([getSystemSettings(), getAdminSummary()]);
+  const orgScope = getOrganizationScope(session.user);
+  const [settings, summary] = await Promise.all([
+    getSystemSettings(),
+    getAdminSummary(session.user),
+  ]);
 
   return (
     <PortalShell title="Super Admin" subtitle="Global settings" nav={ADMIN_NAV}>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-900">Global settings</h1>
         <p className="text-slate-500">
-          Central office configuration for {settings.schoolName} — all branches.
+          Central office configuration for {settings.schoolName}
+          {orgScope ? " — your school branches." : "."}
         </p>
       </div>
 

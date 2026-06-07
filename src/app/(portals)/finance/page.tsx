@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { auth } from "@/lib/auth";
+import { getSchoolDataScope } from "@/lib/auth/school-data-scope";
 import { navForUser } from "@/lib/nav/portal-nav";
 import { canManageFinance, getFinanceDashboardStats } from "@/lib/services/finance";
 import { DashboardGraphs } from "@/components/dashboard/dashboard-graphs";
@@ -17,12 +18,10 @@ export default async function FinancePortalPage() {
   const session = await auth();
   if (!session?.user || !canManageFinance(session.user.role)) redirect("/login");
 
-  const branchId =
-    session.user.role === UserRole.SUPER_ADMIN ? undefined : session.user.branchId ?? undefined;
-
+  const scope = getSchoolDataScope(session.user);
   const [stats, charts] = await Promise.all([
-    getFinanceDashboardStats(branchId),
-    getFinanceDashboardCharts(branchId),
+    getFinanceDashboardStats(scope),
+    getFinanceDashboardCharts(scope),
   ]);
 
   return (

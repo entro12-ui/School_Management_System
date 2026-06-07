@@ -5,6 +5,10 @@ import {
   HR_PERMISSIONS,
   type HrPermissionName,
 } from "@/lib/hr/permissions";
+import {
+  resolveOrganizationPageBranch,
+  type BranchScopeUser,
+} from "@/lib/auth/super-admin-scope";
 import { prisma } from "@/lib/prisma";
 
 export function canAccessHr(role: UserRole): boolean {
@@ -20,47 +24,15 @@ export function isHrPortalAdmin(role: UserRole): boolean {
 }
 
 export function resolveHrBranchId(
-  role: UserRole,
-  userBranchId: string | null | undefined,
+  user: BranchScopeUser,
   overrideBranchId?: string
 ): string | undefined {
-  if (role === "SUPER_ADMIN") return overrideBranchId;
-  return userBranchId ?? undefined;
+  if (user.role === "SUPER_ADMIN") return overrideBranchId;
+  return user.branchId ?? undefined;
 }
 
-export async function getHrPageBranch(
-  role: UserRole,
-  userBranchId: string | null | undefined,
-  searchBranchId?: string
-) {
-  const isSuperAdmin = role === "SUPER_ADMIN";
-  let branchId = resolveHrBranchId(role, userBranchId, searchBranchId);
-
-  if (isSuperAdmin && !branchId) {
-    const first = await prisma.branch.findFirst({
-      where: { isActive: true },
-      orderBy: { name: "asc" },
-      select: { id: true },
-    });
-    branchId = first?.id;
-  }
-
-  const branches = isSuperAdmin
-    ? await prisma.branch.findMany({
-        where: { isActive: true },
-        orderBy: { name: "asc" },
-        select: { id: true, name: true, code: true },
-      })
-    : [];
-
-  const branch = branchId
-    ? await prisma.branch.findUnique({
-        where: { id: branchId },
-        select: { id: true, name: true, code: true },
-      })
-    : null;
-
-  return { branchId, branches, branch, isSuperAdmin };
+export async function getHrPageBranch(user: BranchScopeUser, searchBranchId?: string) {
+  return resolveOrganizationPageBranch(user, searchBranchId);
 }
 
 export async function getHrPermissionsForUser(userId: string): Promise<string[]> {

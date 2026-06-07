@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { StudentIdCardGenerator } from "@/components/registrar/student-id-card-generator";
 import { auth } from "@/lib/auth";
+import { getSchoolDataScope } from "@/lib/auth/school-data-scope";
 import { navForUser } from "@/lib/nav/portal-nav";
 import {
   getGeneratedStudentIdCards,
@@ -23,15 +24,13 @@ export default async function RegistrarIdCardsPage() {
   ];
   if (!manageRoles.includes(session.user.role)) redirect("/login");
 
-  const branchId =
-    session.user.role === UserRole.SUPER_ADMIN ? undefined : session.user.branchId ?? undefined;
-
+  const scope = getSchoolDataScope(session.user);
   const [students, generatedCards] = await Promise.all([
     getRegistrarStudentIdCards({
-      branchId,
+      scope,
       includeInactive: true,
     }),
-    getGeneratedStudentIdCards({ branchId }),
+    getGeneratedStudentIdCards({ scope }),
   ]);
 
   return (

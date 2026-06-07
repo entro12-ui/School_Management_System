@@ -15,6 +15,7 @@ export const authEdgeConfig = {
         token.id = user.id;
         token.role = user.role as UserRole;
         token.organizationId = user.organizationId as string | null;
+        token.organizationName = user.organizationName as string | null;
         token.branchId = user.branchId as string | null;
         token.branchName = user.branchName as string | null;
         token.mustChangePassword = user.mustChangePassword as boolean;
@@ -33,6 +34,7 @@ export const authEdgeConfig = {
         session.user.id = token.id as string;
         session.user.role = token.role as UserRole;
         session.user.organizationId = (token.organizationId as string | null) ?? null;
+        session.user.organizationName = (token.organizationName as string | null) ?? null;
         session.user.branchId = (token.branchId as string | null) ?? null;
         session.user.branchName = (token.branchName as string | null) ?? null;
         session.user.mustChangePassword = Boolean(token.mustChangePassword);
@@ -68,6 +70,18 @@ export const authEdgeConfig = {
       }
 
       const role = auth.user.role;
+
+      if (role === "SUPER_ADMIN" && !auth.user.organizationId) {
+        if (
+          path.startsWith("/change-password") ||
+          path.startsWith("/api/auth")
+        ) {
+          return true;
+        }
+        return Response.redirect(
+          new URL("/login?error=school-not-linked", request.nextUrl)
+        );
+      }
 
       if (path.startsWith("/platform") && role !== "PLATFORM_ADMIN") return false;
       if (path.startsWith("/admin") && role !== "SUPER_ADMIN") return false;

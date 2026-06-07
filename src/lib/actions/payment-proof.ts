@@ -9,6 +9,7 @@ import {
 import { PAYMENT_PROOF_STATUS } from "@/lib/finance/payment-proof-constants";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
+import { assertUserCanAccessBranch } from "@/lib/auth/super-admin-scope";
 import { prisma } from "@/lib/prisma";
 import {
   openNextSemesterIfEligible,
@@ -120,12 +121,8 @@ export async function approveOnlinePaymentProof(
     return { success: false, error: "Receipt not found or already processed." };
   }
 
-  if (
-    session.user.role !== UserRole.SUPER_ADMIN &&
-    session.user.branchId !== proof.payment.branchId
-  ) {
-    return { success: false, error: "You cannot approve receipts for another branch." };
-  }
+  const access = await assertUserCanAccessBranch(session.user, proof.payment.branchId);
+  if (!access.ok) return { success: false, error: access.error };
 
   const payment = proof.payment;
   const total = Number(payment.amount);
@@ -195,12 +192,8 @@ export async function rejectOnlinePaymentProof(
     return { success: false, error: "Receipt not found or already processed." };
   }
 
-  if (
-    session.user.role !== UserRole.SUPER_ADMIN &&
-    session.user.branchId !== proof.payment.branchId
-  ) {
-    return { success: false, error: "Unauthorized for this branch." };
-  }
+  const rejectAccess = await assertUserCanAccessBranch(session.user, proof.payment.branchId);
+  if (!rejectAccess.ok) return { success: false, error: rejectAccess.error };
 
   await prisma.paymentProof.update({
     where: { id: proof.id },
@@ -225,12 +218,8 @@ export async function markSemesterPaidCash(paymentId: string): Promise<ActionRes
   const payment = await prisma.payment.findUnique({ where: { id: paymentId } });
   if (!payment) return { success: false, error: "Payment not found." };
 
-  if (
-    session.user.role !== UserRole.SUPER_ADMIN &&
-    session.user.branchId !== payment.branchId
-  ) {
-    return { success: false, error: "Unauthorized for this branch." };
-  }
+  const cashAccess = await assertUserCanAccessBranch(session.user, payment.branchId);
+  if (!cashAccess.ok) return { success: false, error: cashAccess.error };
 
   const total = Number(payment.amount);
 

@@ -58,6 +58,7 @@ type ReportInput = {
   month: number;
   year: number;
   branchId?: string | null;
+  organizationId?: string;
 };
 
 const REPORT_STAFF_ROLES: UserRole[] = [
@@ -212,9 +213,14 @@ function buildRecommendations(metrics: AdminMonthlyReport["metrics"]) {
   return recommendations.slice(0, 8);
 }
 
-export async function getAdminMonthlyReportBranchOptions(): Promise<AdminMonthlyReportBranchOption[]> {
+export async function getAdminMonthlyReportBranchOptions(
+  organizationId?: string
+): Promise<AdminMonthlyReportBranchOption[]> {
   const branches = await prisma.branch.findMany({
-    where: { isActive: true },
+    where: {
+      isActive: true,
+      ...(organizationId ? { organizationId } : {}),
+    },
     orderBy: { name: "asc" },
     select: { id: true, name: true },
   });
@@ -229,6 +235,7 @@ export async function getAdminMonthlyReport(input: ReportInput): Promise<AdminMo
   const branches = await prisma.branch.findMany({
     where: {
       isActive: true,
+      ...(input.organizationId ? { organizationId: input.organizationId } : {}),
       ...(input.branchId ? { id: input.branchId } : {}),
     },
     orderBy: { name: "asc" },

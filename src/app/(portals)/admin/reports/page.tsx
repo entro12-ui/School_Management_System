@@ -2,6 +2,9 @@ import { PortalShell } from "@/components/layout/portal-shell";
 import { Button } from "@/components/ui/button";
 import { MonthlyReportGenerator } from "@/components/admin/monthly-report-generator";
 import { getAdminMonthlyReportBranchOptions } from "@/lib/services/admin-monthly-report";
+import { getOrganizationScope } from "@/lib/auth/organization-scope";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { Download, FileSpreadsheet, FileText, Printer } from "lucide-react";
 
 import { ADMIN_NAV } from "@/lib/nav/admin-nav";
@@ -17,7 +20,11 @@ const exportReportTypes = [
 ];
 
 export default async function AdminReportsPage() {
-  const reportBranches = await getAdminMonthlyReportBranchOptions();
+  const session = await auth();
+  if (!session?.user || session.user.role !== "SUPER_ADMIN") redirect("/login");
+
+  const orgScope = getOrganizationScope(session.user);
+  const reportBranches = await getAdminMonthlyReportBranchOptions(orgScope);
 
   return (
     <PortalShell title="Super Admin" subtitle="Reports center" nav={ADMIN_NAV}>

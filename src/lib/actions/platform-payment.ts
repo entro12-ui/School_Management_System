@@ -43,7 +43,7 @@ export async function startSchoolSignupPayment(
   });
 
   const summary = platformPaymentSummary(signup.estimatedStudents);
-  const returnPath = `/register/school/pay/${signupRequestId}`;
+  const returnPath = `/register/school/account/${signupRequestId}`;
   const email = signup.contactEmail.trim().toLowerCase();
 
   const init = await initializeChapaTransaction({
@@ -100,11 +100,13 @@ export async function confirmSchoolSignupPayment(txRef: string) {
   revalidatePath("/platform/schools");
   revalidatePath("/platform/organizations");
   revalidatePath("/register/school");
+  revalidatePath(`/register/school/account/${result.signupRequestId}`);
 
   return {
     ok: true as const,
     message: result.message,
     alreadyProcessed: result.alreadyProcessed ?? false,
-    provision: result.provision ?? undefined,
+    signupRequestId: result.signupRequestId,
+    accountSetupPath: result.accountSetupPath,
   };
 }

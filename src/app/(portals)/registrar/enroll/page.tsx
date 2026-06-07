@@ -3,7 +3,7 @@ import { EnrollUserForm } from "@/components/registrar/enroll-user-form";
 import { auth } from "@/lib/auth";
 import { getEnrollableRolesFor } from "@/lib/enrollment/enrollable-roles";
 import { navForUser } from "@/lib/nav/portal-nav";
-import { getPublicBranches } from "@/lib/services/registrations";
+import { getBranchesForUser } from "@/lib/services/registrations";
 import { getAllSubjects } from "@/lib/services/teacher";
 import { UserRole } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -23,7 +23,7 @@ export default async function RegistrarEnrollPage() {
   if (!canEnroll) redirect("/login");
 
   const [branches, subjects] = await Promise.all([
-    getPublicBranches(),
+    getBranchesForUser(session.user),
     getAllSubjects(),
   ]);
 

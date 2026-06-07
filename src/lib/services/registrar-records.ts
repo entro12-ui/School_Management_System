@@ -1,4 +1,8 @@
 import { UserRole } from "@prisma/client";
+import {
+  userBranchScopeWhere,
+  type SchoolDataScope,
+} from "@/lib/auth/school-data-scope";
 import { prisma } from "@/lib/prisma";
 
 const ENROLLED_ROLES: UserRole[] = [
@@ -37,12 +41,22 @@ export type EnrollmentRecordRow = {
 
 export async function getEnrollmentRecords(options: {
   branchId?: string | null;
+  organizationId?: string;
+  scope?: SchoolDataScope | null;
   includeInactive?: boolean;
 }): Promise<EnrollmentRecordRow[]> {
+  const scope =
+    options.scope ??
+    (options.branchId
+      ? { branchId: options.branchId }
+      : options.organizationId
+        ? { organizationId: options.organizationId }
+        : null);
+
   const users = await prisma.user.findMany({
     where: {
       role: { in: ENROLLED_ROLES },
-      ...(options.branchId ? { branchId: options.branchId } : {}),
+      ...userBranchScopeWhere(scope),
       ...(options.includeInactive ? {} : { isActive: true }),
     },
     include: {

@@ -1,5 +1,10 @@
 import bcrypt from "bcryptjs";
-import { SchoolSignupStatus, UserRole, type Prisma } from "@prisma/client";
+import {
+  PlatformPaymentStatus,
+  SchoolSignupStatus,
+  UserRole,
+  type Prisma,
+} from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { generateOneTimePassword } from "@/lib/otp";
 
@@ -38,29 +43,53 @@ async function uniqueBranchCode(
   throw new Error("Could not generate a unique branch code.");
 }
 
-export type ProvisionSchoolResult = {
+export type ProvisionOrganizationResult = {
   organizationId: string;
   branchId: string;
-  userId: string;
-  email: string;
-  oneTimePassword: string;
+  signupRequestId: string;
 };
 
-export async function provisionSchoolFromSignup(
+export type CompleteSuperAdminAccountResult = {
+  userId: string;
+  email: string;
+  organizationId: string;
+};
+
+/** After successful payment: create org + branch, mark signup PAID (no user yet). */
+export async function provisionOrganizationFromPayment(
   signupRequestId: string,
   tx?: Prisma.TransactionClient
-): Promise<ProvisionSchoolResult> {
+): Promise<ProvisionOrganizationResult> {
   const run = async (db: Prisma.TransactionClient) => {
     const signup = await db.schoolSignupRequest.findUnique({
       where: { id: signupRequestId },
+      include: { superAdminUser: true },
     });
 
     if (!signup) throw new Error("School signup not found.");
+    if (signup.status === SchoolSignupStatus.REJECTED) {
+      throw new Error("This application was rejected.");
+    }
     if (signup.status === SchoolSignupStatus.PROVISIONED && signup.organizationId) {
       throw new Error("This school is already provisioned.");
     }
-    if (signup.status === SchoolSignupStatus.REJECTED) {
-      throw new Error("This application was rejected.");
+    if (signup.status === SchoolSignupStatus.PAID && signup.organizationId) {
+      return {
+        organizationId: signup.organizationId,
+        branchId: (
+          await db.branch.findFirstOrThrow({
+            where: { organizationId: signup.organizationId },
+            orderBy: { createdAt: "asc" },
+          })
+        ).id,
+        signupRequestId: signup.id,
+      };
+    }
+
+    if (signup.superAdminUser) {
+      throw new Error(
+        "This application already has a super admin account. Complete payment provisioning instead."
+      );
     }
 
     const existingUser = await db.user.findUnique({
@@ -72,8 +101,6 @@ export async function provisionSchoolFromSignup(
 
     const orgCode = await uniqueOrgCode(db, signup.schoolName);
     const branchCode = await uniqueBranchCode(db, orgCode);
-    const oneTimePassword = generateOneTimePassword();
-    const passwordHash = await bcrypt.hash(oneTimePassword, 10);
     const now = new Date();
 
     const organization = await db.organization.create({
@@ -102,6 +129,64 @@ export async function provisionSchoolFromSignup(
       },
     });
 
+    await db.schoolSignupRequest.update({
+      where: { id: signup.id },
+      data: {
+        status: SchoolSignupStatus.PAID,
+        organizationId: organization.id,
+      },
+    });
+
+    return {
+      organizationId: organization.id,
+      branchId: branch.id,
+      signupRequestId: signup.id,
+    };
+  };
+
+  if (tx) return run(tx);
+  return prisma.$transaction(run, { maxWait: 10_000, timeout: 30_000 });
+}
+
+/** Public: create super admin account after payment (signup must be PAID). */
+export async function completeSchoolSuperAdminAccount(input: {
+  signupRequestId: string;
+  password: string;
+}): Promise<CompleteSuperAdminAccountResult> {
+  return prisma.$transaction(async (db) => {
+    const signup = await db.schoolSignupRequest.findUnique({
+      where: { id: input.signupRequestId },
+      include: {
+        organization: true,
+        platformPayments: {
+          where: { status: PlatformPaymentStatus.SUCCESS },
+          take: 1,
+        },
+      },
+    });
+
+    if (!signup) throw new Error("Application not found.");
+    if (signup.status === SchoolSignupStatus.PROVISIONED && signup.superAdminUserId) {
+      throw new Error("Super admin account already exists for this school.");
+    }
+    if (signup.status !== SchoolSignupStatus.PAID || !signup.organizationId) {
+      throw new Error("Complete payment before creating your super admin account.");
+    }
+    if (signup.platformPayments.length === 0) {
+      throw new Error("No successful payment found for this application.");
+    }
+    if (signup.superAdminUserId) {
+      throw new Error("Super admin account already exists.");
+    }
+
+    const existingUser = await db.user.findUnique({
+      where: { email: signup.contactEmail.toLowerCase() },
+    });
+    if (existingUser) {
+      throw new Error("An account with this email already exists.");
+    }
+
+    const passwordHash = await bcrypt.hash(input.password, 10);
     const user = await db.user.create({
       data: {
         email: signup.contactEmail.toLowerCase().trim(),
@@ -110,11 +195,10 @@ export async function provisionSchoolFromSignup(
         lastName: signup.contactLastName.trim(),
         phone: signup.phone?.trim() || null,
         role: UserRole.SUPER_ADMIN,
-        organizationId: organization.id,
+        organizationId: signup.organizationId,
         branchId: null,
-        mustChangePassword: true,
-        pendingOtp: oneTimePassword,
-        otpIssuedAt: now,
+        isActive: true,
+        mustChangePassword: false,
       },
     });
 
@@ -122,13 +206,78 @@ export async function provisionSchoolFromSignup(
       where: { id: signup.id },
       data: {
         status: SchoolSignupStatus.PROVISIONED,
-        organizationId: organization.id,
+        superAdminUserId: user.id,
       },
     });
 
     return {
-      organizationId: organization.id,
-      branchId: branch.id,
+      userId: user.id,
+      email: user.email,
+      organizationId: signup.organizationId,
+    };
+  }, { maxWait: 10_000, timeout: 30_000 });
+}
+
+/** Legacy: full provision with OTP when no self-service account page was used. */
+export type ProvisionSchoolResult = {
+  organizationId: string;
+  branchId: string;
+  userId: string;
+  email: string;
+  oneTimePassword?: string;
+};
+
+export async function provisionSchoolFromSignup(
+  signupRequestId: string,
+  tx?: Prisma.TransactionClient
+): Promise<ProvisionSchoolResult> {
+  const run = async (db: Prisma.TransactionClient) => {
+    const signup = await db.schoolSignupRequest.findUnique({
+      where: { id: signupRequestId },
+      include: { superAdminUser: true },
+    });
+
+    if (!signup) throw new Error("School signup not found.");
+    if (signup.status === SchoolSignupStatus.PROVISIONED && signup.organizationId) {
+      throw new Error("This school is already provisioned.");
+    }
+    if (signup.status === SchoolSignupStatus.REJECTED) {
+      throw new Error("This application was rejected.");
+    }
+
+    const orgResult = await provisionOrganizationFromPayment(signupRequestId, db);
+    const oneTimePassword = generateOneTimePassword();
+    const passwordHash = await bcrypt.hash(oneTimePassword, 10);
+    const now = new Date();
+
+    const user = await db.user.create({
+      data: {
+        email: signup.contactEmail.toLowerCase().trim(),
+        passwordHash,
+        firstName: signup.contactFirstName.trim(),
+        lastName: signup.contactLastName.trim(),
+        phone: signup.phone?.trim() || null,
+        role: UserRole.SUPER_ADMIN,
+        organizationId: orgResult.organizationId,
+        branchId: null,
+        mustChangePassword: true,
+        pendingOtp: oneTimePassword,
+        otpIssuedAt: now,
+        isActive: true,
+      },
+    });
+
+    await db.schoolSignupRequest.update({
+      where: { id: signup.id },
+      data: {
+        status: SchoolSignupStatus.PROVISIONED,
+        superAdminUserId: user.id,
+      },
+    });
+
+    return {
+      organizationId: orgResult.organizationId,
+      branchId: orgResult.branchId,
       userId: user.id,
       email: user.email,
       oneTimePassword,
@@ -164,4 +313,31 @@ export async function createOrganizationBranch(input: {
       isActive: true,
     },
   });
+}
+
+export async function getSchoolSignupAccountContext(signupRequestId: string) {
+  const signup = await prisma.schoolSignupRequest.findUnique({
+    where: { id: signupRequestId },
+    include: {
+      organization: true,
+      platformPayments: {
+        where: { status: PlatformPaymentStatus.SUCCESS },
+        orderBy: { paidAt: "desc" },
+        take: 1,
+      },
+    },
+  });
+
+  if (!signup) return null;
+
+  return {
+    id: signup.id,
+    schoolName: signup.schoolName,
+    contactEmail: signup.contactEmail,
+    contactFirstName: signup.contactFirstName,
+    contactLastName: signup.contactLastName,
+    status: signup.status,
+    hasPaid: signup.platformPayments.length > 0,
+    hasAccount: Boolean(signup.superAdminUserId),
+  };
 }

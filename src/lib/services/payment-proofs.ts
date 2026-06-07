@@ -1,5 +1,9 @@
 import { PaymentStatus, UserRole, ChapaTransactionStatus } from "@prisma/client";
 import {
+  paymentScopeWhere,
+  type SchoolDataScope,
+} from "@/lib/auth/school-data-scope";
+import {
   PAYMENT_PROOF_STATUS,
   type PaymentProofStatusValue,
 } from "@/lib/finance/payment-proof-constants";
@@ -29,11 +33,11 @@ export type PaymentProofRow = {
   submitterName: string;
 };
 
-export async function getPendingPaymentProofs(branchId?: string) {
+export async function getPendingPaymentProofs(scope?: SchoolDataScope | null) {
   const proofs = await prisma.paymentProof.findMany({
     where: {
       status: PAYMENT_PROOF_STATUS.PENDING_REVIEW,
-      ...(branchId ? { payment: { branchId } } : {}),
+      payment: paymentScopeWhere(scope ?? null),
     },
     include: {
       payment: {

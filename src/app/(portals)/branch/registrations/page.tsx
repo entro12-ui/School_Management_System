@@ -1,6 +1,7 @@
 import { PortalShell } from "@/components/layout/portal-shell";
 import { RegistrationQueue } from "@/components/branch/registration-queue";
 import { requireBranchAdmin } from "@/lib/auth/branch-session";
+import { getOrganizationScope } from "@/lib/auth/organization-scope";
 import { BRANCH_NAV } from "@/lib/nav/branch-nav";
 import { auth } from "@/lib/auth";
 import { ADMIN_NAV } from "@/lib/nav/admin-nav";
@@ -32,15 +33,24 @@ export default async function BranchRegistrationsPage() {
     const scope = await requireBranchAdmin();
     branchId = scope.branchId;
     subtitle = scope.branchName;
-  } else if (!branchId) {
+  } else {
     nav = ADMIN_NAV;
     title = "Super Admin";
-    subtitle = "All branches";
+    const orgScope = getOrganizationScope(session.user);
+    if (!orgScope) {
+      subtitle = "No school linked";
+    } else {
+      subtitle = session.user.branchName ?? "Your school";
+    }
   }
+
+  const orgScope = isSuperAdmin ? getOrganizationScope(session.user) : undefined;
 
   const requests = branchId
     ? await getPendingRegistrations(branchId)
-    : await getAllPendingRegistrations();
+    : orgScope
+      ? await getAllPendingRegistrations(orgScope)
+      : [];
 
   const counts = branchId
     ? await getRegistrationCounts(branchId)

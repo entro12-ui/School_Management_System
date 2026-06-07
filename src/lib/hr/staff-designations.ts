@@ -21,6 +21,7 @@ export const STAFF_DESIGNATION_BY_ROLE: Record<
   Exclude<
     UserRole,
     | "SUPER_ADMIN"
+    | "PLATFORM_ADMIN"
     | "PARENT"
     | "STUDENT"
     | "TEACHER"

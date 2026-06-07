@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { PaymentReceiptsQueue } from "@/components/finance/payment-receipts-queue";
 import { auth } from "@/lib/auth";
+import { getSchoolDataScope } from "@/lib/auth/school-data-scope";
 import { navForUser } from "@/lib/nav/portal-nav";
 import { canManageFinance } from "@/lib/services/finance";
 import { getPendingPaymentProofs } from "@/lib/services/payment-proofs";
@@ -14,10 +15,8 @@ export default async function FinanceReceiptsPage() {
   const session = await auth();
   if (!session?.user || !canManageFinance(session.user.role)) redirect("/login");
 
-  const branchId =
-    session.user.role === UserRole.SUPER_ADMIN ? undefined : session.user.branchId ?? undefined;
-
-  const proofs = await getPendingPaymentProofs(branchId);
+  const scope = getSchoolDataScope(session.user);
+  const proofs = await getPendingPaymentProofs(scope);
 
   return (
     <PortalShell

@@ -41,7 +41,7 @@ export default async function BranchAdminPage() {
   const [overview, gradeLevels, gradeBands, charts] = await Promise.all([
     getBranchOverview(branchId),
     getBranchGradeLevelBreakdown(branchId),
-    getGradeBandBreakdown(branchId),
+    getGradeBandBreakdown({ branchId }),
     getBranchDashboardCharts(branchId),
   ]);
 

@@ -83,10 +83,11 @@ export function serializeSchoolSignup(row: {
 }
 
 export async function getPlatformDashboardStats() {
-  const [pendingSignups, approvedAwaitingPayment, activeOrganizations, totalStudents] =
+  const [pendingSignups, approvedAwaitingPayment, paidAwaitingAccount, activeOrganizations, totalStudents] =
     await Promise.all([
       prisma.schoolSignupRequest.count({ where: { status: "PENDING" } }),
       prisma.schoolSignupRequest.count({ where: { status: "APPROVED" } }),
+      prisma.schoolSignupRequest.count({ where: { status: "PAID" } }),
       prisma.organization.count({ where: { isActive: true } }),
       prisma.student.count({ where: { isActive: true } }),
     ]);
@@ -94,6 +95,7 @@ export async function getPlatformDashboardStats() {
   return {
     pendingSignups,
     approvedAwaitingPayment,
+    paidAwaitingAccount,
     activeOrganizations,
     totalStudents,
     pricePerStudent: PLATFORM_STUDENT_PRICE_ETB,

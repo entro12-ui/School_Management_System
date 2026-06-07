@@ -28,11 +28,7 @@ export default async function RegistrarSchedulesPage({
   if (!session?.user || !MANAGE_ROLES.includes(session.user.role)) redirect("/login");
 
   const params = await searchParams;
-  const { branchId, branches, branch, isSuperAdmin } = await getSchedulePageBranch(
-    session.user.role,
-    session.user.branchId,
-    params.branchId
-  );
+  const { branchId, branches, branch, isSuperAdmin } = await getSchedulePageBranch(session.user, params.branchId);
 
   const setup = branchId
     ? await getClassScheduleSetup(branchId)

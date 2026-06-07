@@ -35,8 +35,7 @@ export default async function LibraryPortalPage({
 
   const params = await searchParams;
   const { branchId, branches, branch, isSuperAdmin } = await getLibraryPageBranch(
-    session.user.role,
-    session.user.branchId,
+    session.user,
     params.branchId
   );
 

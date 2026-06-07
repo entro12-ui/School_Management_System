@@ -14,6 +14,7 @@ interface PortalLayoutProps {
   userName?: string | null;
   userRole?: string;
   userRoleEnum?: UserRole;
+  organizationName?: string | null;
   branchName?: string | null;
   userPhotoUrl?: string | null;
   signOutAction: () => void | Promise<void>;
@@ -27,6 +28,7 @@ export function PortalLayout({
   userName,
   userRole,
   userRoleEnum,
+  organizationName,
   branchName,
   userPhotoUrl,
   signOutAction,
@@ -49,6 +51,7 @@ export function PortalLayout({
           userName={userName}
           userRole={userRole}
           userRoleEnum={userRoleEnum}
+          organizationName={organizationName}
           branchName={branchName}
           userPhotoUrl={userPhotoUrl}
           onMenuClick={() => setSidebarOpen(true)}

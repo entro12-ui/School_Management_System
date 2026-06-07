@@ -15,20 +15,25 @@ export type OrganizationBranch = {
   roleCounts: Partial<Record<UserRole, number>>;
 };
 
-export async function getOrganizationHierarchy() {
+export async function getOrganizationHierarchy(organizationId?: string) {
   const [branches, roleGroups, centralAdmins] = await Promise.all([
-    getBranchesOverview(),
+    getBranchesOverview(organizationId),
     prisma.user.groupBy({
       by: ["branchId", "role"],
       where: {
         isActive: true,
         branchId: { not: null },
         role: { not: UserRole.SUPER_ADMIN },
+        ...(organizationId ? { branch: { organizationId } } : {}),
       },
       _count: { _all: true },
     }),
     prisma.user.count({
-      where: { isActive: true, role: UserRole.SUPER_ADMIN },
+      where: {
+        isActive: true,
+        role: UserRole.SUPER_ADMIN,
+        ...(organizationId ? { organizationId } : {}),
+      },
     }),
   ]);
 

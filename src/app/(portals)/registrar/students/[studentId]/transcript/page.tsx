@@ -4,6 +4,7 @@ import { UserRole } from "@prisma/client";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { RegistrarSemesterTranscript } from "@/components/registrar/registrar-semester-transcript";
 import { auth } from "@/lib/auth";
+import { getSchoolDataScope } from "@/lib/auth/school-data-scope";
 import { navForUser } from "@/lib/nav/portal-nav";
 import { getRegistrarSemesterTranscript } from "@/lib/services/registrar-transcript";
 
@@ -25,11 +26,9 @@ export default async function RegistrarStudentTranscriptPage({
   if (!MANAGE_ROLES.includes(session.user.role)) redirect("/login");
 
   const { studentId } = await params;
-  const branchId =
-    session.user.role === UserRole.SUPER_ADMIN ? undefined : session.user.branchId ?? undefined;
-
+  const scope = getSchoolDataScope(session.user);
   const transcript = await getRegistrarSemesterTranscript(studentId, {
-    branchId,
+    scope,
     issuedByUserId: session.user.id,
   });
   if (!transcript) notFound();

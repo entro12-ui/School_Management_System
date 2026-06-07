@@ -3,6 +3,7 @@
 import { UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
+import { assertSuperAdminCanAccessBranch } from "@/lib/auth/super-admin-scope";
 import { prisma } from "@/lib/prisma";
 export type ActionResult =
   | { success: true; message: string }
@@ -12,7 +13,11 @@ async function assertCanManageBranchClass(branchId: string) {
   const session = await auth();
   if (!session?.user) return { ok: false as const, error: "Unauthorized" };
 
-  if (session.user.role === UserRole.SUPER_ADMIN) return { ok: true as const, session };
+  if (session.user.role === UserRole.SUPER_ADMIN) {
+    const access = await assertSuperAdminCanAccessBranch(session.user, branchId);
+    if (!access.ok) return { ok: false as const, error: access.error };
+    return { ok: true as const, session };
+  }
 
   if (session.user.role === UserRole.BRANCH_ADMIN && session.user.branchId === branchId) {
     return { ok: true as const, session };

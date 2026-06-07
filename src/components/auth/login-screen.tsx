@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getSession, signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, GraduationCap, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,10 +10,19 @@ import { PasswordInput } from "@/components/ui/password-input";
 
 export function LoginScreen() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("error") === "school-not-linked") {
+      setError(
+        "Your super admin account is not linked to a school yet. Complete school registration, payment, and account setup first."
+      );
+    }
+  }, [searchParams]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -35,6 +44,12 @@ export function LoginScreen() {
       if (statusRes.ok) {
         const status = await statusRes.json();
         if (status.status === "pending") {
+          if (status.role === "SCHOOL_SUPER_ADMIN") {
+            setError(
+              `Your school application for ${status.schoolName} is awaiting platform admin approval.`
+            );
+            return;
+          }
           setError(
             status.role === "HR_MANAGER"
               ? `Your HR Manager application at ${status.branchName} is awaiting admin approval.`
@@ -42,9 +57,23 @@ export function LoginScreen() {
           );
           return;
         }
+        if (status.status === "pending_payment") {
+          setError(
+            `Your school application for ${status.schoolName} was approved. Complete payment: ${window.location.origin}${status.paymentUrl}`
+          );
+          return;
+        }
+        if (status.status === "pending_account") {
+          setError(
+            `Payment received for ${status.schoolName}. Create your super admin account: ${window.location.origin}${status.accountUrl}`
+          );
+          return;
+        }
         if (status.status === "rejected") {
           setError(
-            `Your registration was rejected${status.reason ? `: ${status.reason}` : ""}. You may register again.`
+            status.role === "SCHOOL_SUPER_ADMIN"
+              ? `Your school application was rejected${status.reason ? `: ${status.reason}` : ""}. You may register again.`
+              : `Your registration was rejected${status.reason ? `: ${status.reason}` : ""}. You may register again.`
           );
           return;
         }

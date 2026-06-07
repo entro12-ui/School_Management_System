@@ -1,4 +1,8 @@
 import type { AssessmentType, GradeBand, Prisma } from "@prisma/client";
+import {
+  studentScopeWhere,
+  type SchoolDataScope,
+} from "@/lib/auth/school-data-scope";
 import { prisma } from "@/lib/prisma";
 import { formatGradeLevel } from "@/lib/grade-utils";
 import {
@@ -203,11 +207,21 @@ export type RegistrarStudentAcademicRecord = {
 
 export async function getRegistrarStudentList(options: {
   branchId?: string;
+  organizationId?: string;
+  scope?: SchoolDataScope | null;
   includeInactive?: boolean;
 }): Promise<RegistrarStudentListRow[]> {
+  const scope =
+    options.scope ??
+    (options.branchId
+      ? { branchId: options.branchId }
+      : options.organizationId
+        ? { organizationId: options.organizationId }
+        : null);
+
   const students = await prisma.student.findMany({
     where: {
-      ...(options.branchId ? { branchId: options.branchId } : {}),
+      ...studentScopeWhere(scope),
       ...(options.includeInactive ? {} : { isActive: true }),
     },
     include: {
@@ -261,11 +275,21 @@ export async function getRegistrarStudentList(options: {
 
 export async function getRegistrarStudentIdCards(options: {
   branchId?: string;
+  organizationId?: string;
+  scope?: SchoolDataScope | null;
   includeInactive?: boolean;
 }): Promise<RegistrarStudentIdCardRow[]> {
+  const scope =
+    options.scope ??
+    (options.branchId
+      ? { branchId: options.branchId }
+      : options.organizationId
+        ? { organizationId: options.organizationId }
+        : null);
+
   const students = await prisma.student.findMany({
     where: {
-      ...(options.branchId ? { branchId: options.branchId } : {}),
+      ...studentScopeWhere(scope),
       ...(options.includeInactive ? {} : { isActive: true }),
     },
     include: idCardStudentInclude,
@@ -277,10 +301,20 @@ export async function getRegistrarStudentIdCards(options: {
 
 export async function getGeneratedStudentIdCards(options: {
   branchId?: string;
+  organizationId?: string;
+  scope?: SchoolDataScope | null;
 }): Promise<GeneratedStudentIdCardRow[]> {
+  const scope =
+    options.scope ??
+    (options.branchId
+      ? { branchId: options.branchId }
+      : options.organizationId
+        ? { organizationId: options.organizationId }
+        : null);
+
   const cards = await prisma.studentIdCard.findMany({
     where: {
-      ...(options.branchId ? { branchId: options.branchId } : {}),
+      student: studentScopeWhere(scope),
     },
     include: {
       student: { include: idCardStudentInclude },
@@ -303,10 +337,17 @@ export async function getGeneratedStudentIdCards(options: {
 
 export async function getRegistrarStudentAcademicRecord(
   studentId: string,
-  options?: { branchId?: string }
+  options?: { branchId?: string; scope?: SchoolDataScope | null }
 ): Promise<RegistrarStudentAcademicRecord | null> {
-  const student = await prisma.student.findUnique({
-    where: { id: studentId },
+  const student = await prisma.student.findFirst({
+    where: {
+      id: studentId,
+      ...(options?.scope
+        ? studentScopeWhere(options.scope)
+        : options?.branchId
+          ? { branchId: options.branchId }
+          : {}),
+    },
     include: {
       branch: { select: { name: true } },
       class: { include: { academicYear: { select: { name: true } } } },
@@ -320,7 +361,6 @@ export async function getRegistrarStudentAcademicRecord(
   });
 
   if (!student) return null;
-  if (options?.branchId && student.branchId !== options.branchId) return null;
 
   const [gradeRecords, gpaRecords, computedGpa, attendanceRows, classAssessments] =
     await Promise.all([

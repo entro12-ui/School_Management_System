@@ -39,10 +39,11 @@ export async function getBranchesOverview(organizationId?: string) {
   }));
 }
 
-export async function getAuditLogs(limit = 200) {
+export async function getAuditLogs(limit = 200, organizationId?: string) {
   return prisma.auditLog.findMany({
     take: limit,
     orderBy: { createdAt: "desc" },
+    where: organizationId ? { branch: { organizationId } } : undefined,
     include: {
       branch: { select: { name: true, code: true } },
       actor: { select: { firstName: true, lastName: true, email: true, role: true } },
@@ -52,6 +53,11 @@ export async function getAuditLogs(limit = 200) {
 
 export async function getAdminSummary(user?: { role: UserRole; organizationId?: string | null }) {
   const orgScope = user ? getOrganizationScope(user) : undefined;
+
+  if (user?.role === UserRole.SUPER_ADMIN && !orgScope) {
+    return { branches: 0, users: 0, auditCount: 0, pendingRegistrations: 0 };
+  }
+
   const branchFilter = orgScope ? { organizationId: orgScope, isActive: true } : { isActive: true };
 
   const [branches, users, auditCount, pendingRegistrations] = await Promise.all([

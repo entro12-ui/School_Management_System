@@ -4,6 +4,7 @@ import { UserRole } from "@prisma/client";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { StudentIntelligenceHubSection } from "@/components/students/student-intelligence-hub-section";
 import { auth } from "@/lib/auth";
+import { getSchoolDataScope, studentScopeWhere } from "@/lib/auth/school-data-scope";
 import { formatGradeLevel } from "@/lib/grade-utils";
 import { TEACHER_NAV } from "@/lib/nav/teacher-nav";
 import { prisma } from "@/lib/prisma";
@@ -29,14 +30,14 @@ export default async function TeacherStudentDetailPage({
   const classData = await getTeacherClasses(session.user.id);
   const classIds = classData?.classes.map((cls) => cls.id) ?? [];
 
+  const scope = getSchoolDataScope(session.user);
   const student = await prisma.student.findFirst({
     where: {
       id: studentId,
       isActive: true,
-      branchId: teacher.branchId,
       ...(session.user.role === UserRole.SUPER_ADMIN
-        ? {}
-        : { classId: { in: classIds } }),
+        ? studentScopeWhere(scope)
+        : { branchId: teacher.branchId, classId: { in: classIds } }),
     },
     include: {
       branch: { select: { name: true } },

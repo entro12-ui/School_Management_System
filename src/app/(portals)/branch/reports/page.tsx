@@ -18,9 +18,9 @@ export default async function BranchReportsPage() {
 
   const [overview, finance, gradeLevels, gradeBands] = await Promise.all([
     getBranchOverview(branchId),
-    getFinanceDashboardStats(branchId),
+    getFinanceDashboardStats({ branchId }),
     getBranchGradeLevelBreakdown(branchId),
-    getGradeBandBreakdown(branchId),
+    getGradeBandBreakdown({ branchId }),
   ]);
 
   return (

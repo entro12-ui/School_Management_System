@@ -40,7 +40,7 @@ export default async function RegisterPage() {
               <Link href="/register/school" className="font-medium text-premium-accent hover:underline">
                 Register your school on EduSync SMS
               </Link>{" "}
-              — pay 30 ETB per student after approval.
+              — apply, wait for platform approval, pay, then create your super admin account.
             </p>
             <p>
               <strong className="text-premium-ink">Registrar office</strong> — use the form below.

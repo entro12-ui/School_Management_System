@@ -3,11 +3,12 @@ import { PortalShell } from "@/components/layout/portal-shell";
 import { FeeStructuresManager } from "@/components/finance/fee-structures-manager";
 import { FeeStructuresTable } from "@/components/finance/fee-structures-table";
 import { auth } from "@/lib/auth";
+import { resolveSchoolDataScope } from "@/lib/auth/school-data-scope";
+import { resolveOrganizationPageBranch } from "@/lib/auth/super-admin-scope";
 import { buildBandSemesterMatrix, formatGradeBand } from "@/lib/fee-structures";
 import { navForUser } from "@/lib/nav/portal-nav";
 import { formatSemesterLabel } from "@/lib/semester-fees";
 import { canManageFinance, getFeeStructures } from "@/lib/services/finance";
-import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { UserRole } from "@prisma/client";
 
@@ -22,21 +23,23 @@ export default async function FinanceFeesPage({
   if (!session?.user || !canManageFinance(session.user.role)) redirect("/login");
 
   const params = await searchParams;
-  const isSuperAdmin = session.user.role === UserRole.SUPER_ADMIN;
+  const pageBranch = await resolveOrganizationPageBranch(session.user, params.branchId);
 
-  let branchId = session.user.branchId ?? undefined;
-  if (isSuperAdmin) {
-    branchId = params.branchId;
-    if (!branchId) {
-      const first = await prisma.branch.findFirst({
-        where: { isActive: true },
-        orderBy: { name: "asc" },
-        select: { id: true },
-      });
-      branchId = first?.id;
-    }
+  if (pageBranch.organizationMissing) {
+    return (
+      <PortalShell
+        title="Finance"
+        subtitle="Fee structures"
+        nav={navForUser(session.user.role, "finance")}
+      >
+        <p className="text-slate-500">
+          Your account is not linked to a school organization. Contact platform support.
+        </p>
+      </PortalShell>
+    );
   }
 
+  const branchId = pageBranch.branchId;
   if (!branchId) {
     return (
       <PortalShell
@@ -44,27 +47,19 @@ export default async function FinanceFeesPage({
         subtitle="Fee structures"
         nav={navForUser(session.user.role, "finance")}
       >
-        <p className="text-slate-500">No branch configured.</p>
+        <p className="text-slate-500">No branch configured for your school.</p>
       </PortalShell>
     );
   }
 
-  const [fees, branches, branch] = await Promise.all([
-    getFeeStructures(branchId),
-    isSuperAdmin
-      ? prisma.branch.findMany({
-          where: { isActive: true },
-          orderBy: { name: "asc" },
-          select: { id: true, name: true },
-        })
-      : Promise.resolve([]),
-    prisma.branch.findUnique({
-      where: { id: branchId },
-      select: { name: true },
-    }),
+  const scope = await resolveSchoolDataScope(session.user, branchId);
+  const [fees, branch] = await Promise.all([
+    getFeeStructures(scope),
+    Promise.resolve(pageBranch.branch),
   ]);
 
   const matrix = buildBandSemesterMatrix(fees);
+  const branches = pageBranch.branches.map(({ id, name }) => ({ id, name }));
 
   return (
     <PortalShell
@@ -92,14 +87,14 @@ export default async function FinanceFeesPage({
         branchId={branchId}
         branches={branches}
         matrix={matrix}
-        showBranchPicker={isSuperAdmin}
+        showBranchPicker={pageBranch.isSuperAdmin}
       />
 
       {fees.length > 0 && (
         <section className="mt-10">
           <h2 className="mb-4 text-lg font-semibold text-slate-900">All saved records</h2>
           <FeeStructuresTable
-            showBranch={isSuperAdmin}
+            showBranch={pageBranch.isSuperAdmin}
             fees={fees.map((f) => ({
               id: f.id,
               name: f.name,

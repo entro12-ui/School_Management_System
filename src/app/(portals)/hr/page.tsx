@@ -6,7 +6,7 @@ import { hrNavForRole } from "@/lib/nav/hr-nav";
 import {
   canAccessHr,
   getHrDashboardStats,
-  resolveHrBranchId,
+  getHrPageBranch,
 } from "@/lib/services/hr";
 import {
   Briefcase,
@@ -34,20 +34,31 @@ const MODULE_LINKS = [
   { href: "/hr/settings", label: "HR roles & manager", icon: UserCheck },
 ];
 
-export default async function HrDashboardPage() {
+export default async function HrDashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ branchId?: string }>;
+}) {
   const session = await auth();
   if (!session?.user || !canAccessHr(session.user.role)) redirect("/login");
 
-  const branchId = resolveHrBranchId(
-    session.user.role,
-    session.user.branchId
-  );
+  const params = await searchParams;
+  const { branchId, branch } = await getHrPageBranch(session.user, params.branchId);
+
+  if (!branchId) {
+    return (
+      <PortalShell title="Human Resources" nav={hrNavForRole(session.user.role)}>
+        <p className="text-slate-500">No branch configured for your school.</p>
+      </PortalShell>
+    );
+  }
+
   const stats = await getHrDashboardStats(branchId);
 
   return (
     <PortalShell
       title="Human Resources"
-      subtitle={session.user.branchName ?? "Staff lifecycle & payroll"}
+      subtitle={branch?.name ?? session.user.branchName ?? "Staff lifecycle & payroll"}
       nav={hrNavForRole(session.user.role)}
     >
       <div className="mb-6">

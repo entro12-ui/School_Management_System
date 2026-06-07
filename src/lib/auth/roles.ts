@@ -30,9 +30,18 @@ export const STAFF_ROLES: UserRole[] = [
 export function canAccessBranch(
   role: UserRole,
   userBranchId: string | null | undefined,
-  targetBranchId: string | null | undefined
+  targetBranchId: string | null | undefined,
+  options?: {
+    userOrganizationId?: string | null;
+    targetOrganizationId?: string | null;
+  }
 ): boolean {
-  if (role === UserRole.PLATFORM_ADMIN || role === UserRole.SUPER_ADMIN) return true;
+  if (role === UserRole.PLATFORM_ADMIN) return true;
+  if (role === UserRole.SUPER_ADMIN) {
+    if (!options?.userOrganizationId) return false;
+    if (!targetBranchId) return true;
+    return options.userOrganizationId === options.targetOrganizationId;
+  }
   if (!targetBranchId) return true;
   return userBranchId === targetBranchId;
 }

@@ -28,9 +28,9 @@ export default async function SchoolSignupSubmittedPage({
         <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6">
           <h1 className="text-2xl font-bold text-slate-900">Application submitted</h1>
           <p className="mt-2 text-slate-600">
-            Our platform team will review your school application. Once approved, you can pay{" "}
-            <strong>{PLATFORM_STUDENT_PRICE_ETB} ETB per student</strong> to activate your
-            workspace and create your branches.
+            Our platform team will review your school application. Once approved, pay{" "}
+            <strong>{PLATFORM_STUDENT_PRICE_ETB} ETB per student</strong>, then create your super
+            admin account to sign in and manage branches.
           </p>
           {id && (
             <p className="mt-4 text-sm text-slate-500">

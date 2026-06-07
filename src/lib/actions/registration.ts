@@ -7,6 +7,7 @@ import {
 } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
+import { assertSuperAdminCanAccessBranch } from "@/lib/auth/super-admin-scope";
 import { prisma } from "@/lib/prisma";
 import { createRegistrarFromApproval } from "@/lib/services/enrollment";
 import { createHrManagerFromApproval } from "@/lib/services/hr-manager-approval";
@@ -144,6 +145,13 @@ export async function approveRegistration(
     return { success: false, error: "You can only approve applications for your branch." };
   }
 
+  if (session.user.role === UserRole.SUPER_ADMIN) {
+    const access = await assertSuperAdminCanAccessBranch(session.user, request.branchId);
+    if (!access.ok) {
+      return { success: false, error: "You can only approve applications for your school." };
+    }
+  }
+
   const existingUser = await prisma.user.findUnique({
     where: { email: request.email },
   });
@@ -246,6 +254,13 @@ export async function rejectRegistration(
     session.user.branchId !== request.branchId
   ) {
     return { success: false, error: "You can only reject applications for your branch." };
+  }
+
+  if (session.user.role === UserRole.SUPER_ADMIN) {
+    const access = await assertSuperAdminCanAccessBranch(session.user, request.branchId);
+    if (!access.ok) {
+      return { success: false, error: "You can only reject applications for your school." };
+    }
   }
 
   await prisma.$transaction(async (tx) => {

@@ -1,4 +1,8 @@
 import { ChapaTransactionStatus } from "@prisma/client";
+import {
+  paymentScopeWhere,
+  type SchoolDataScope,
+} from "@/lib/auth/school-data-scope";
 import { prisma } from "@/lib/prisma";
 import { formatSemesterLabel } from "@/lib/semester-fees";
 import { fullName } from "@/lib/utils";
@@ -24,9 +28,9 @@ export type FinanceChapaTransactionRow = {
   paymentId: string;
 };
 
-export async function getChapaTransactionsForFinance(branchId?: string) {
+export async function getChapaTransactionsForFinance(scope?: SchoolDataScope | null) {
   const rows = await prisma.chapaTransaction.findMany({
-    where: branchId ? { payment: { branchId } } : {},
+    where: { payment: paymentScopeWhere(scope ?? null) },
     include: {
       payment: {
         include: {
@@ -67,8 +71,8 @@ export async function getChapaTransactionsForFinance(branchId?: string) {
   });
 }
 
-export async function getChapaTransactionStats(branchId?: string) {
-  const where = branchId ? { payment: { branchId } } : {};
+export async function getChapaTransactionStats(scope?: SchoolDataScope | null) {
+  const where = { payment: paymentScopeWhere(scope ?? null) };
   const [success, pending, failed] = await Promise.all([
     prisma.chapaTransaction.count({ where: { ...where, status: ChapaTransactionStatus.SUCCESS } }),
     prisma.chapaTransaction.count({ where: { ...where, status: ChapaTransactionStatus.PENDING } }),

@@ -22,11 +22,7 @@ export default async function LibraryFinesPage({
   if (!session?.user || !canAccessLibrary(session.user.role)) redirect("/login");
 
   const params = await searchParams;
-  const { branchId, branches, isSuperAdmin } = await getLibraryPageBranch(
-    session.user.role,
-    session.user.branchId,
-    params.branchId
-  );
+  const { branchId, branches, isSuperAdmin } = await getLibraryPageBranch(session.user, params.branchId);
   if (!branchId) redirect("/library");
 
   const fines = await getLibraryFines(branchId);

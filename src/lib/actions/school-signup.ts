@@ -102,7 +102,8 @@ export async function registerSchoolSignup(formData: FormData): Promise<ActionRe
 
   return {
     success: true,
-    message: "Application submitted. Our team will review it and send payment instructions.",
+    message:
+      "Application submitted. Our platform team will review it and send payment instructions.",
     data: { id: signup.id },
   };
 }

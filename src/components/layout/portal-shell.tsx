@@ -28,6 +28,7 @@ export async function PortalShell({
       userName={user?.name}
       userRole={user ? ROLE_LABELS[user.role] : undefined}
       userRoleEnum={user?.role}
+      organizationName={user?.organizationName}
       branchName={user?.branchName}
       userPhotoUrl={user?.photoUrl}
       signOutAction={signOutUser}

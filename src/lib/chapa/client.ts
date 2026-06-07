@@ -80,7 +80,7 @@ export async function initializeChapaTransaction(
     };
   }
 
-  const payload: Record<string, unknown> = {
+  const requestBody: Record<string, unknown> = {
     currency: "ETB",
     amount: input.amount,
     email,
@@ -92,11 +92,11 @@ export async function initializeChapaTransaction(
   };
 
   if (input.phone_number) {
-    payload.phone_number = input.phone_number;
+    requestBody.phone_number = input.phone_number;
   }
 
   if (input.customization) {
-    payload.customization = {
+    requestBody.customization = {
       title: sanitizeChapaText(input.customization.title ?? "", 16),
       description: sanitizeChapaText(input.customization.description ?? "", 50),
     };
@@ -106,19 +106,25 @@ export async function initializeChapaTransaction(
     const response = await fetch(`${CHAPA_API}/transaction/initialize`, {
       method: "POST",
       headers: authHeaders(),
-      body: JSON.stringify(payload),
+      body: JSON.stringify(requestBody),
     });
 
-    const payload = (await response.json()) as ChapaApiResponse<{ checkout_url?: string }>;
+    const responseBody = (await response.json()) as ChapaApiResponse<{
+      checkout_url?: string;
+    }>;
 
-    if (!response.ok || payload.status !== "success" || !payload.data?.checkout_url) {
+    if (
+      !response.ok ||
+      responseBody.status !== "success" ||
+      !responseBody.data?.checkout_url
+    ) {
       return {
         ok: false,
-        error: formatChapaErrorMessage(payload.message),
+        error: formatChapaErrorMessage(responseBody.message),
       };
     }
 
-    return { ok: true, checkoutUrl: payload.data.checkout_url };
+    return { ok: true, checkoutUrl: responseBody.data.checkout_url };
   } catch (error) {
     return {
       ok: false,

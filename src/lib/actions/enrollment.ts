@@ -3,6 +3,7 @@
 import { UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
+import { assertSuperAdminCanAccessBranch } from "@/lib/auth/super-admin-scope";
 import { gradeBandForDepartment } from "@/lib/academic-catalog";
 import { gradeLevelToBand } from "@/lib/grade-utils";
 import {
@@ -62,6 +63,13 @@ export async function enrollUser(formData: FormData): Promise<ActionResult<Enrol
 
   if (!canActorEnrollRole(session.user.role, d.role)) {
     return { success: false, error: "You are not allowed to enroll this role." };
+  }
+
+  if (
+    session.user.role === UserRole.SUPER_ADMIN &&
+    !(await assertSuperAdminCanAccessBranch(session.user, branchId)).ok
+  ) {
+    return { success: false, error: "You can only enroll users for branches in your school." };
   }
 
   if (

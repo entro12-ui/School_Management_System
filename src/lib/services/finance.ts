@@ -1,4 +1,10 @@
 import { AcademicTerm, PaymentStatus, UserRole } from "@prisma/client";
+import {
+  feeStructureScopeWhere,
+  paymentScopeWhere,
+  studentScopeWhere,
+  type SchoolDataScope,
+} from "@/lib/auth/school-data-scope";
 import { formatGradeLevel } from "@/lib/grade-utils";
 import { prisma } from "@/lib/prisma";
 import {
@@ -36,11 +42,14 @@ function toIso(d: Date | null | undefined): string | null {
   return d ? d.toISOString() : null;
 }
 
-export async function getFinancePaymentsSheet(branchId?: string) {
+export async function getFinancePaymentsSheet(scope?: SchoolDataScope | null) {
+  const studentWhere = studentScopeWhere(scope ?? null);
+  const branchId = scope?.branchId;
+
   const students = await prisma.student.findMany({
     where: {
       isActive: true,
-      ...(branchId ? { branchId } : {}),
+      ...studentWhere,
     },
     include: {
       branch: { select: { name: true } },
@@ -122,21 +131,22 @@ export async function getFinancePaymentsSheet(branchId?: string) {
   return rows;
 }
 
-export async function getFinanceDashboardStats(branchId?: string) {
-  const where = branchId ? { branchId } : {};
+export async function getFinanceDashboardStats(scope?: SchoolDataScope | null) {
+  const studentWhere = studentScopeWhere(scope ?? null);
+  const paymentWhere = paymentScopeWhere(scope ?? null);
 
   const [students, paid, pending, partial] = await Promise.all([
-    prisma.student.count({ where: { ...where, isActive: true } }),
-    prisma.payment.count({ where: { ...where, status: PaymentStatus.PAID } }),
+    prisma.student.count({ where: { isActive: true, ...studentWhere } }),
+    prisma.payment.count({ where: { ...paymentWhere, status: PaymentStatus.PAID } }),
     prisma.payment.count({
-      where: { ...where, status: { in: [PaymentStatus.PENDING, PaymentStatus.OVERDUE] } },
+      where: { ...paymentWhere, status: { in: [PaymentStatus.PENDING, PaymentStatus.OVERDUE] } },
     }),
-    prisma.payment.count({ where: { ...where, status: PaymentStatus.PARTIAL } }),
+    prisma.payment.count({ where: { ...paymentWhere, status: PaymentStatus.PARTIAL } }),
   ]);
 
   const outstanding = await prisma.payment.findMany({
     where: {
-      ...where,
+      ...paymentWhere,
       status: { in: [PaymentStatus.PENDING, PaymentStatus.PARTIAL, PaymentStatus.OVERDUE] },
     },
     select: { amount: true, paidAmount: true },
@@ -150,9 +160,9 @@ export async function getFinanceDashboardStats(branchId?: string) {
   return { students, paid, pending, partial, totalOutstanding };
 }
 
-export async function getFeeStructures(branchId?: string) {
+export async function getFeeStructures(scope?: SchoolDataScope | null) {
   return prisma.feeStructure.findMany({
-    where: branchId ? { branchId } : {},
+    where: feeStructureScopeWhere(scope ?? null),
     include: { branch: { select: { name: true } } },
     orderBy: [{ branchId: "asc" }, { gradeBand: "asc" }, { term: "asc" }],
   });

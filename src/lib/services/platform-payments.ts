@@ -9,7 +9,7 @@ import {
   formatPlatformAmount,
   PLATFORM_STUDENT_PRICE_ETB,
 } from "@/lib/platform/billing";
-import { provisionSchoolFromSignup } from "@/lib/services/platform-provisioning";
+import { provisionOrganizationFromPayment } from "@/lib/services/platform-provisioning";
 
 export async function finalizePlatformChapaTransaction(txRef: string) {
   const payment = await prisma.platformPayment.findUnique({
@@ -25,6 +25,7 @@ export async function finalizePlatformChapaTransaction(txRef: string) {
       alreadyProcessed: true,
       message: "Platform subscription payment was already recorded.",
       signupRequestId: payment.signupRequestId,
+      accountSetupPath: `/register/school/account/${payment.signupRequestId}`,
     };
   }
 
@@ -53,7 +54,8 @@ export async function finalizePlatformChapaTransaction(txRef: string) {
     };
   }
 
-  let provisionResult: Awaited<ReturnType<typeof provisionSchoolFromSignup>> | null = null;
+  let organizationResult: Awaited<ReturnType<typeof provisionOrganizationFromPayment>> | null =
+    null;
 
   await prisma.$transaction(async (tx) => {
     await tx.platformPayment.update({
@@ -65,11 +67,19 @@ export async function finalizePlatformChapaTransaction(txRef: string) {
       },
     });
 
-    if (payment.signupRequest.status !== SchoolSignupStatus.PROVISIONED) {
-      provisionResult = await provisionSchoolFromSignup(payment.signupRequestId, tx);
+    if (
+      payment.signupRequest.status !== SchoolSignupStatus.PROVISIONED &&
+      payment.signupRequest.status !== SchoolSignupStatus.PAID
+    ) {
+      organizationResult = await provisionOrganizationFromPayment(payment.signupRequestId, tx);
       await tx.platformPayment.update({
         where: { id: payment.id },
-        data: { organizationId: provisionResult.organizationId },
+        data: { organizationId: organizationResult.organizationId },
+      });
+    } else if (payment.signupRequest.organizationId) {
+      await tx.platformPayment.update({
+        where: { id: payment.id },
+        data: { organizationId: payment.signupRequest.organizationId },
       });
     }
   }, { maxWait: 10_000, timeout: 30_000 });
@@ -77,9 +87,10 @@ export async function finalizePlatformChapaTransaction(txRef: string) {
   return {
     ok: true as const,
     alreadyProcessed: false,
-    message: "Payment confirmed. Your school workspace is ready.",
+    message: "Payment confirmed. Create your super admin account to finish setup.",
     signupRequestId: payment.signupRequestId,
-    provision: provisionResult,
+    accountSetupPath: `/register/school/account/${payment.signupRequestId}`,
+    organization: organizationResult,
   };
 }
 
@@ -98,6 +109,12 @@ export async function createPlatformPaymentRecord(signupRequestId: string) {
   }
   if (signup.status === SchoolSignupStatus.PROVISIONED) {
     return { ok: false as const, error: "This school is already active." };
+  }
+  if (signup.status === SchoolSignupStatus.PAID) {
+    return {
+      ok: false as const,
+      error: "Payment received. Finish setting up your super admin account.",
+    };
   }
   if (signup.status !== SchoolSignupStatus.APPROVED) {
     return {

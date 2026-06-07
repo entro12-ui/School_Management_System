@@ -2,6 +2,7 @@ import { AuditLogTable } from "@/components/shared/audit-log-table";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { ADMIN_NAV } from "@/lib/nav/admin-nav";
 import { getAuditLogs } from "@/lib/services/admin";
+import { getOrganizationScope } from "@/lib/auth/organization-scope";
 import { ROLE_LABELS } from "@/lib/auth/roles";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -12,7 +13,8 @@ export default async function AdminAuditPage() {
   const session = await auth();
   if (!session?.user || session.user.role !== "SUPER_ADMIN") redirect("/login");
 
-  const logs = await getAuditLogs();
+  const orgScope = getOrganizationScope(session.user);
+  const logs = await getAuditLogs(200, orgScope);
 
   const rows = logs.map((log) => ({
     id: log.id,
@@ -31,7 +33,7 @@ export default async function AdminAuditPage() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-900">Audit logs</h1>
         <p className="text-slate-500">
-          System activity across branches — registrations, enrollments, and admin actions.
+          System activity across your school branches — registrations, enrollments, and admin actions.
         </p>
       </div>
 

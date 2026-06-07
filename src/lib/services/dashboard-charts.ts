@@ -3,6 +3,11 @@ import {
   PaymentStatus,
   UserRole,
 } from "@prisma/client";
+import {
+  paymentScopeWhere,
+  studentScopeWhere,
+  type SchoolDataScope,
+} from "@/lib/auth/school-data-scope";
 import { prisma } from "@/lib/prisma";
 import {
   getConsolidatedStats,
@@ -29,10 +34,12 @@ function bandLabel(band: string) {
   return band.replace(/_/g, " ");
 }
 
-export async function getAdminDashboardCharts(): Promise<DashboardChartConfig[]> {
+export async function getAdminDashboardCharts(
+  organizationId?: string
+): Promise<DashboardChartConfig[]> {
   const [stats, gradeBands] = await Promise.all([
-    getConsolidatedStats(),
-    getGradeBandBreakdown(),
+    getConsolidatedStats(organizationId),
+    getGradeBandBreakdown({ organizationId }),
   ]);
 
   return [
@@ -80,7 +87,7 @@ export async function getBranchDashboardCharts(
 ): Promise<DashboardChartConfig[]> {
   const [gradeLevels, gradeBands, weekAttendance, financial] = await Promise.all([
     getBranchGradeLevelBreakdown(branchId),
-    getGradeBandBreakdown(branchId),
+    getGradeBandBreakdown({ branchId }),
     getAttendanceLast7Days(branchId),
     getBranchFinancialSplit(branchId),
   ]);
@@ -114,16 +121,16 @@ export async function getBranchDashboardCharts(
 }
 
 export async function getFinanceDashboardCharts(
-  branchId?: string
+  scope?: SchoolDataScope | null
 ): Promise<DashboardChartConfig[]> {
-  const where = branchId ? { branchId } : {};
+  const where = paymentScopeWhere(scope ?? null);
   const [statusGroups, bandOutstanding] = await Promise.all([
     prisma.payment.groupBy({
       by: ["status"],
       where,
       _count: { id: true },
     }),
-    getOutstandingByGradeBand(branchId),
+    getOutstandingByGradeBand(scope),
   ]);
 
   const statusLabels: Record<string, string> = {
@@ -369,9 +376,9 @@ async function getBranchFinancialSplit(branchId: string): Promise<NamedValue[]> 
   ];
 }
 
-async function getOutstandingByGradeBand(branchId?: string): Promise<NamedValue[]> {
+async function getOutstandingByGradeBand(scope?: SchoolDataScope | null): Promise<NamedValue[]> {
   const students = await prisma.student.findMany({
-    where: { isActive: true, ...(branchId ? { branchId } : {}) },
+    where: { isActive: true, ...studentScopeWhere(scope ?? null) },
     select: {
       gradeBand: true,
       payments: {

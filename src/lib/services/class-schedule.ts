@@ -6,6 +6,10 @@ import {
 } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { formatGradeLevel, gradeLevelToBand } from "@/lib/grade-utils";
+import {
+  resolveOrganizationPageBranch,
+  type BranchScopeUser,
+} from "@/lib/auth/super-admin-scope";
 
 export const CLASS_SCHEDULE_DAYS: ClassScheduleDay[] = [
   ClassScheduleDay.MONDAY,
@@ -29,47 +33,15 @@ const DAY_ORDER = new Map(CLASS_SCHEDULE_DAYS.map((day, index) => [day, index]))
 const SCHEDULE_GRADE_LEVELS = Array.from({ length: 13 }, (_, index) => index);
 
 function resolveScheduleBranchId(
-  role: UserRole,
-  userBranchId: string | null | undefined,
+  user: BranchScopeUser,
   overrideBranchId?: string
 ): string | undefined {
-  if (role === UserRole.SUPER_ADMIN) return overrideBranchId;
-  return userBranchId ?? undefined;
+  if (user.role === UserRole.SUPER_ADMIN) return overrideBranchId;
+  return user.branchId ?? undefined;
 }
 
-export async function getSchedulePageBranch(
-  role: UserRole,
-  userBranchId: string | null | undefined,
-  searchBranchId?: string
-) {
-  const isSuperAdmin = role === UserRole.SUPER_ADMIN;
-  let branchId = resolveScheduleBranchId(role, userBranchId, searchBranchId);
-
-  if (isSuperAdmin && !branchId) {
-    const first = await prisma.branch.findFirst({
-      where: { isActive: true },
-      orderBy: { name: "asc" },
-      select: { id: true },
-    });
-    branchId = first?.id;
-  }
-
-  const branches = isSuperAdmin
-    ? await prisma.branch.findMany({
-        where: { isActive: true },
-        orderBy: { name: "asc" },
-        select: { id: true, name: true, code: true },
-      })
-    : [];
-
-  const branch = branchId
-    ? await prisma.branch.findUnique({
-        where: { id: branchId },
-        select: { id: true, name: true, code: true },
-      })
-    : null;
-
-  return { branchId, branches, branch, isSuperAdmin };
+export async function getSchedulePageBranch(user: BranchScopeUser, searchBranchId?: string) {
+  return resolveOrganizationPageBranch(user, searchBranchId);
 }
 
 export type ScheduleClassOption = {

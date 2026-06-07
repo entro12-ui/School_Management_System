@@ -2,7 +2,6 @@ import Link from "next/link";
 import { GraduationCap } from "lucide-react";
 import { notFound } from "next/navigation";
 import { SchoolSignupPayButton } from "@/components/platform/school-signup-pay-button";
-import { PlatformPaymentReturnHandler } from "@/components/platform/platform-payment-return-handler";
 import { platformPaymentSummary } from "@/lib/services/platform-payments";
 import { getSchoolSignupById } from "@/lib/services/school-signups";
 
@@ -41,12 +40,10 @@ export default async function SchoolSignupPayPage({
         <p className="mt-2 text-slate-600">Subscription activation for EduSync SMS</p>
 
         <div className="mt-8 space-y-6">
-          <PlatformPaymentReturnHandler />
-
           {signup.status === "PENDING" && (
             <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
-              Your application is awaiting platform review. Once approved, a payment link will be
-          emailed to your contact address.
+              Your application is awaiting platform admin review. Once approved, a payment link will
+              be emailed to your contact address.
             </div>
           )}
 
@@ -54,6 +51,16 @@ export default async function SchoolSignupPayPage({
             <div className="rounded-xl border border-red-200 bg-red-50 p-5 text-sm text-red-800">
               This application was not approved.
               {signup.rejectionReason ? ` Reason: ${signup.rejectionReason}` : ""}
+            </div>
+          )}
+
+          {signup.status === "PAID" && (
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-900">
+              Payment received.{" "}
+              <Link href={`/register/school/account/${signup.id}`} className="font-medium underline">
+                Create your super admin account
+              </Link>{" "}
+              to finish setup.
             </div>
           )}
 

@@ -2,9 +2,12 @@ import { prisma } from "@/lib/prisma";
 import { AttendanceStatus, PaymentStatus, UserRole } from "@prisma/client";
 import { formatCurrency, formatPercent } from "@/lib/utils";
 
-export async function getConsolidatedStats() {
+export async function getConsolidatedStats(organizationId?: string) {
   const branches = await prisma.branch.findMany({
-    where: { isActive: true },
+    where: {
+      isActive: true,
+      ...(organizationId ? { organizationId } : {}),
+    },
     orderBy: { name: "asc" },
   });
 
@@ -136,8 +139,15 @@ export async function getBranchStats(branchId: string) {
   };
 }
 
-export async function getGradeBandBreakdown(branchId?: string) {
-  const where = branchId ? { branchId, isActive: true } : { isActive: true };
+export async function getGradeBandBreakdown(options?: {
+  branchId?: string;
+  organizationId?: string;
+}) {
+  const where = options?.branchId
+    ? { branchId: options.branchId, isActive: true }
+    : options?.organizationId
+      ? { isActive: true, branch: { organizationId: options.organizationId } }
+      : { isActive: true };
   const groups = await prisma.student.groupBy({
     by: ["gradeBand"],
     where,

@@ -2,6 +2,7 @@ import { PortalShell } from "@/components/layout/portal-shell";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { getConsolidatedStats, getGradeBandBreakdown } from "@/lib/services/dashboard";
 import { getAdminSummary } from "@/lib/services/admin";
+import { getOrganizationScope } from "@/lib/auth/organization-scope";
 import { auth } from "@/lib/auth";
 import { formatCurrency, formatPercent } from "@/lib/utils";
 import {
@@ -14,6 +15,7 @@ import {
   Wallet,
 } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ADMIN_NAV } from "@/lib/nav/admin-nav";
 import { DashboardGraphs } from "@/components/dashboard/dashboard-graphs";
@@ -25,12 +27,15 @@ export const dynamic = "force-dynamic";
 
 export default async function SuperAdminPage() {
   const session = await auth();
+  if (!session?.user || session.user.role !== "SUPER_ADMIN") redirect("/login");
+
+  const orgScope = getOrganizationScope(session.user);
   const [stats, gradeBreakdown, charts, adminSummary, performanceAnalytics] = await Promise.all([
-    getConsolidatedStats(),
-    getGradeBandBreakdown(),
-    getAdminDashboardCharts(),
-    getAdminSummary(session?.user),
-    getStudentPerformanceAnalytics(),
+    getConsolidatedStats(orgScope),
+    getGradeBandBreakdown({ organizationId: orgScope }),
+    getAdminDashboardCharts(orgScope),
+    getAdminSummary(session.user),
+    getStudentPerformanceAnalytics(orgScope),
   ]);
 
   return (
@@ -67,7 +72,7 @@ export default async function SuperAdminPage() {
         <StatCard
           title="Total enrollment"
           value={String(stats.totals.enrollment)}
-          subtitle="KG–12 across all branches"
+          subtitle="KG–12 across your school branches"
           icon={Users}
         />
         <StatCard

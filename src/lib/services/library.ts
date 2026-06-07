@@ -8,6 +8,10 @@ import {
 import { calculateOverdueFine, daysBetween } from "@/lib/library/fines";
 import { dueDateFromPolicy } from "@/lib/library/borrowing-rules";
 import { GRADE_BAND_LIBRARY_LABELS } from "@/lib/library/borrowing-rules";
+import {
+  resolveOrganizationPageBranch,
+  type BranchScopeUser,
+} from "@/lib/auth/super-admin-scope";
 import { prisma } from "@/lib/prisma";
 import { formatGradeLevel } from "@/lib/grade-utils";
 
@@ -20,47 +24,15 @@ export function canAccessLibrary(role: UserRole): boolean {
 }
 
 export function resolveLibraryBranchId(
-  role: UserRole,
-  userBranchId: string | null | undefined,
+  user: BranchScopeUser,
   overrideBranchId?: string
 ): string | undefined {
-  if (role === "SUPER_ADMIN") return overrideBranchId;
-  return userBranchId ?? undefined;
+  if (user.role === "SUPER_ADMIN") return overrideBranchId;
+  return user.branchId ?? undefined;
 }
 
-export async function getLibraryPageBranch(
-  role: UserRole,
-  userBranchId: string | null | undefined,
-  searchBranchId?: string
-) {
-  const isSuperAdmin = role === "SUPER_ADMIN";
-  let branchId = resolveLibraryBranchId(role, userBranchId, searchBranchId);
-
-  if (isSuperAdmin && !branchId) {
-    const first = await prisma.branch.findFirst({
-      where: { isActive: true },
-      orderBy: { name: "asc" },
-      select: { id: true },
-    });
-    branchId = first?.id;
-  }
-
-  const branches = isSuperAdmin
-    ? await prisma.branch.findMany({
-        where: { isActive: true },
-        orderBy: { name: "asc" },
-        select: { id: true, name: true, code: true },
-      })
-    : [];
-
-  const branch = branchId
-    ? await prisma.branch.findUnique({
-        where: { id: branchId },
-        select: { id: true, name: true, code: true },
-      })
-    : null;
-
-  return { branchId, branches, branch, isSuperAdmin };
+export async function getLibraryPageBranch(user: BranchScopeUser, searchBranchId?: string) {
+  return resolveOrganizationPageBranch(user, searchBranchId);
 }
 
 export async function getLibraryStats(branchId: string) {

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { UserRole } from "@prisma/client";
 import { auth } from "@/lib/auth";
+import { getOrganizationScope } from "@/lib/auth/organization-scope";
 import { getAdminMonthlyReport } from "@/lib/services/admin-monthly-report";
 
 export const runtime = "nodejs";
@@ -13,7 +14,13 @@ async function requireSuperAdmin() {
   if (session.user.role !== UserRole.SUPER_ADMIN) {
     return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
   }
-  return { userId: session.user.id };
+  const organizationId = getOrganizationScope(session.user);
+  if (!organizationId) {
+    return {
+      error: NextResponse.json({ error: "School account is not linked to an organization." }, { status: 403 }),
+    };
+  }
+  return { userId: session.user.id, organizationId };
 }
 
 export async function GET(request: Request) {
@@ -34,7 +41,12 @@ export async function GET(request: Request) {
   }
 
   try {
-    const report = await getAdminMonthlyReport({ month, year, branchId });
+    const report = await getAdminMonthlyReport({
+      month,
+      year,
+      branchId,
+      organizationId: guard.organizationId,
+    });
     return NextResponse.json(report);
   } catch (error) {
     console.error("[admin-monthly-report] failed:", error);

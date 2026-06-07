@@ -22,11 +22,7 @@ export default async function HrEmployeeIdCardsPage({
   if (!session?.user || !canAccessHr(session.user.role)) redirect("/login");
 
   const params = await searchParams;
-  const { branchId, branches, branch, isSuperAdmin } = await getHrPageBranch(
-    session.user.role,
-    session.user.branchId,
-    params.branchId
-  );
+  const { branchId, branches, branch, isSuperAdmin } = await getHrPageBranch(session.user, params.branchId);
 
   if (!branchId) {
     return (

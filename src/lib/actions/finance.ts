@@ -4,6 +4,8 @@ import { AcademicTerm, FeePaymentChannel, PaymentStatus, UserRole } from "@prism
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { assertUserCanAccessBranch } from "@/lib/auth/super-admin-scope";
+import { getOrganizationScope } from "@/lib/auth/organization-scope";
 import { prisma } from "@/lib/prisma";
 import {
   ensureSemesterPayment,
@@ -40,8 +42,12 @@ export async function syncBranchSemesterInvoices(): Promise<ActionResult> {
   let totalCreated = 0;
 
   if (session.user.role === UserRole.SUPER_ADMIN && !session.user.branchId) {
+    const organizationId = getOrganizationScope(session.user);
+    if (!organizationId) {
+      return { success: false, error: "Your account is not linked to a school organization." };
+    }
     const branches = await prisma.branch.findMany({
-      where: { isActive: true },
+      where: { isActive: true, organizationId },
       select: { id: true },
     });
     for (const b of branches) {
@@ -93,12 +99,8 @@ export async function recordSemesterPayment(formData: FormData): Promise<ActionR
 
   if (!payment) return { success: false, error: "Payment record not found." };
 
-  if (
-    session.user.role !== UserRole.SUPER_ADMIN &&
-    session.user.branchId !== payment.branchId
-  ) {
-    return { success: false, error: "You cannot record payments for another branch." };
-  }
+  const access = await assertUserCanAccessBranch(session.user, payment.branchId);
+  if (!access.ok) return { success: false, error: access.error };
 
   const total = Number(payment.amount);
   const newPaid = Math.min(total, Number(payment.paidAmount) + amount);
@@ -138,12 +140,8 @@ export async function markSemesterFullyPaid(paymentId: string): Promise<ActionRe
   const payment = await prisma.payment.findUnique({ where: { id: paymentId } });
   if (!payment) return { success: false, error: "Payment not found." };
 
-  if (
-    session.user.role !== UserRole.SUPER_ADMIN &&
-    session.user.branchId !== payment.branchId
-  ) {
-    return { success: false, error: "Unauthorized for this branch." };
-  }
+  const access = await assertUserCanAccessBranch(session.user, payment.branchId);
+  if (!access.ok) return { success: false, error: access.error };
 
   const total = Number(payment.amount);
 

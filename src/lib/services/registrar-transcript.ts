@@ -1,4 +1,8 @@
 import { AcademicTerm, type AssessmentType, type GradeBand } from "@prisma/client";
+import {
+  studentScopeWhere,
+  type SchoolDataScope,
+} from "@/lib/auth/school-data-scope";
 import { prisma } from "@/lib/prisma";
 import { formatGradeLevel } from "@/lib/grade-utils";
 import { getSystemSettings } from "@/lib/system-settings";
@@ -89,10 +93,17 @@ export type RegistrarSemesterTranscriptData = {
 
 export async function getRegistrarSemesterTranscript(
   studentId: string,
-  options?: { branchId?: string; issuedByUserId?: string }
+  options?: { branchId?: string; scope?: SchoolDataScope | null; issuedByUserId?: string }
 ): Promise<RegistrarSemesterTranscriptData | null> {
-  const student = await prisma.student.findUnique({
-    where: { id: studentId },
+  const student = await prisma.student.findFirst({
+    where: {
+      id: studentId,
+      ...(options?.scope
+        ? studentScopeWhere(options.scope)
+        : options?.branchId
+          ? { branchId: options.branchId }
+          : {}),
+    },
     include: {
       branch: {
         select: { name: true, city: true, address: true, phone: true },
@@ -104,7 +115,6 @@ export async function getRegistrarSemesterTranscript(
   });
 
   if (!student) return null;
-  if (options?.branchId && student.branchId !== options.branchId) return null;
 
   const [settings, issuedBy] = await Promise.all([
     getSystemSettings(),

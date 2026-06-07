@@ -1,9 +1,10 @@
 "use server";
 
-import { AcademicTerm, GradeBand, UserRole } from "@prisma/client";
+import { AcademicTerm, GradeBand } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { assertUserCanAccessBranch } from "@/lib/auth/super-admin-scope";
 import { canManageFinance } from "@/lib/services/finance";
 import {
   DEFAULT_SEMESTER_AMOUNTS,
@@ -28,11 +29,9 @@ async function assertFinanceAccess(branchId: string) {
     return { ok: false as const, error: "Unauthorized" };
   }
 
-  if (
-    session.user.role !== UserRole.SUPER_ADMIN &&
-    session.user.branchId !== branchId
-  ) {
-    return { ok: false as const, error: "You can only manage fees for your branch." };
+  const access = await assertUserCanAccessBranch(session.user, branchId);
+  if (!access.ok) {
+    return { ok: false as const, error: access.error };
   }
 
   return { ok: true as const, session };

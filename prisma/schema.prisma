@@ -139,6 +139,7 @@ enum RegistrationRole {
 enum SchoolSignupStatus {
   PENDING
   APPROVED
+  PAID
   REJECTED
   PROVISIONED
 }
@@ -186,11 +187,13 @@ model SchoolSignupRequest {
   reviewedAt        DateTime?
   reviewedById      String?
   organizationId    String?            @unique
+  superAdminUserId  String?            @unique
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
 
   organization     Organization?     @relation(fields: [organizationId], references: [id])
   reviewedBy       User?             @relation("SchoolSignupReviewer", fields: [reviewedById], references: [id])
+  superAdminUser   User?             @relation("SchoolSignupSuperAdmin", fields: [superAdminUserId], references: [id], onDelete: SetNull)
   platformPayments PlatformPayment[]
 
   @@index([status])
@@ -306,6 +309,7 @@ model User {
   messagesSent                Message[]             @relation("MessageSender")
   reviewedRegistrations       RegistrationRequest[] @relation("RegistrationReviewer")
   reviewedSchoolSignups       SchoolSignupRequest[] @relation("SchoolSignupReviewer")
+  schoolSignupAsSuperAdmin    SchoolSignupRequest?  @relation("SchoolSignupSuperAdmin")
   hrUserRoles                 HrUserRole[]
   hrEmployee                  HrEmployee?
   hrLeaveApprovals            HrLeaveRequest[]      @relation("LeaveApprover")

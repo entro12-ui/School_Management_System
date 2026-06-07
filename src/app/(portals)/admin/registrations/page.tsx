@@ -3,6 +3,7 @@ import { RegistrationQueue } from "@/components/branch/registration-queue";
 import { auth } from "@/lib/auth";
 import { ADMIN_NAV } from "@/lib/nav/admin-nav";
 import { getAllPendingRegistrations } from "@/lib/services/registrations";
+import { getOrganizationScope } from "@/lib/auth/organization-scope";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
@@ -14,7 +15,8 @@ export default async function AdminRegistrationsPage() {
     redirect("/login");
   }
 
-  const requests = await getAllPendingRegistrations();
+  const orgScope = getOrganizationScope(session.user);
+  const requests = await getAllPendingRegistrations(orgScope);
 
   return (
     <PortalShell title="Super Admin" subtitle="Staff applications" nav={ADMIN_NAV}>
@@ -22,7 +24,7 @@ export default async function AdminRegistrationsPage() {
         <h1 className="text-2xl font-bold text-slate-900">Staff applications</h1>
         <p className="text-slate-500">
           Review and approve <strong>Registrar</strong> and <strong>HR Manager</strong>{" "}
-          applications from all branches.
+          applications for your school branches.
         </p>
         <Link
           href="/branch/registrations"
@@ -32,7 +34,7 @@ export default async function AdminRegistrationsPage() {
         </Link>
         <div className="mt-4">
           <span className="rounded-full bg-amber-50 px-3 py-1 text-sm font-medium text-amber-800">
-            {requests.length} pending across all branches
+            {requests.length} pending in your school
           </span>
         </div>
       </div>

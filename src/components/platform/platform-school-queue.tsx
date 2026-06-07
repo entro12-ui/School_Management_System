@@ -15,6 +15,7 @@ import Link from "next/link";
 const STATUS_LABELS: Record<SchoolSignupStatus, string> = {
   PENDING: "Pending review",
   APPROVED: "Approved",
+  PAID: "Paid — setup account",
   REJECTED: "Rejected",
   PROVISIONED: "Active",
 };
@@ -22,6 +23,7 @@ const STATUS_LABELS: Record<SchoolSignupStatus, string> = {
 const STATUS_COLORS: Record<SchoolSignupStatus, string> = {
   PENDING: "bg-amber-50 text-amber-800",
   APPROVED: "bg-sky-50 text-sky-800",
+  PAID: "bg-indigo-50 text-indigo-800",
   REJECTED: "bg-red-50 text-red-700",
   PROVISIONED: "bg-emerald-50 text-emerald-700",
 };
@@ -46,6 +48,13 @@ function paymentLabel(row: SchoolSignupClient) {
       label: "Not paid",
       color: "bg-amber-50 text-amber-800",
       detail: "Awaiting Chapa payment",
+    };
+  }
+  if (row.status === "PAID") {
+    return {
+      label: "Paid",
+      color: "bg-indigo-50 text-indigo-800",
+      detail: "Awaiting super admin account",
     };
   }
   if (row.status === "PROVISIONED") {
@@ -207,6 +216,15 @@ export function PlatformSchoolQueue({ requests }: { requests: SchoolSignupClient
                             Reject
                           </Button>
                         </div>
+                      )}
+                      {row.status === "PAID" && (
+                        <Link
+                          href={`/register/school/account/${row.id}`}
+                          className="text-xs font-medium text-indigo-600 hover:underline"
+                          target="_blank"
+                        >
+                          Open account setup →
+                        </Link>
                       )}
                       {row.status === "APPROVED" && !paidRecord && (
                         <div className="flex flex-col gap-1.5">

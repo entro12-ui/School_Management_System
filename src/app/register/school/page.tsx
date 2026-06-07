@@ -28,9 +28,10 @@ export default function RegisterSchoolPage() {
         </Link>
         <h1 className="mt-4 text-2xl font-bold text-slate-900">Register your school</h1>
         <p className="mt-2 text-slate-600">
-          Apply to use EduSync SMS for your KG–12 school. After review, pay{" "}
-          <strong>{PLATFORM_STUDENT_PRICE_ETB} ETB per student</strong> to activate your workspace
-          and create your branches.
+          Apply to use EduSync SMS for your KG–12 school. The platform team will review your
+          application, then you pay{" "}
+          <strong>{PLATFORM_STUDENT_PRICE_ETB} ETB per student</strong>, create your super admin
+          account, and manage branches.
         </p>
 
         <div className="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">

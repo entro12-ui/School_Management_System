@@ -22,11 +22,7 @@ export default async function LibraryCatalogPage({
   if (!session?.user || !canAccessLibrary(session.user.role)) redirect("/login");
 
   const params = await searchParams;
-  const { branchId, branches, branch, isSuperAdmin } = await getLibraryPageBranch(
-    session.user.role,
-    session.user.branchId,
-    params.branchId
-  );
+  const { branchId, branches, branch, isSuperAdmin } = await getLibraryPageBranch(session.user, params.branchId);
 
   if (!branchId) {
     return (

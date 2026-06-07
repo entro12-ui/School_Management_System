@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { EnrollmentDataTable } from "@/components/registrar/enrollment-data-table";
 import { auth } from "@/lib/auth";
+import { getSchoolDataScope } from "@/lib/auth/school-data-scope";
 import { navForUser } from "@/lib/nav/portal-nav";
 import { getEnrollmentRecords } from "@/lib/services/registrar-records";
 import { UserRole } from "@prisma/client";
@@ -20,18 +21,16 @@ export default async function RegistrarRecordsPage() {
   ];
   if (!manageRoles.includes(session.user.role)) redirect("/login");
 
-  const branchId =
-    session.user.role === UserRole.SUPER_ADMIN ? undefined : session.user.branchId;
-
+  const scope = getSchoolDataScope(session.user);
   const records = await getEnrollmentRecords({
-    branchId: branchId ?? undefined,
+    scope,
     includeInactive: true,
   });
 
   return (
     <PortalShell
       title={session.user.role === UserRole.BRANCH_ADMIN ? "Branch Admin" : "Enrollment records"}
-      subtitle={session.user.branchName ?? "All branches"}
+      subtitle={session.user.branchName ?? "Your school branches"}
       nav={navForUser(session.user.role, "registrar")}
     >
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
