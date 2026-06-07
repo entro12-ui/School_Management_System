@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { RegistrarStudentGradesTable } from "@/components/registrar/registrar-student-grades-table";
+import { StudentIntelligenceHubSection } from "@/components/students/student-intelligence-hub-section";
 import { auth } from "@/lib/auth";
 import { navForUser } from "@/lib/nav/portal-nav";
 import { getRegistrarStudentAcademicRecord } from "@/lib/services/registrar-students";
@@ -105,6 +106,13 @@ export default async function RegistrarStudentDetailPage({
           </div>
         )}
       </div>
+
+      <StudentIntelligenceHubSection
+        studentId={student.id}
+        studentName={`${student.firstName} ${student.lastName}`}
+        userRole={session.user.role}
+        branchId={branchId}
+      />
 
       <section className="mb-8 rounded-xl border border-slate-200 bg-white p-6">
         <h2 className="mb-4 text-lg font-semibold text-slate-900">Student information</h2>

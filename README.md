@@ -336,23 +336,23 @@ The Render build uses `prisma generate` during `npm run build`; apply schema cha
 
 ## Usage guide
 
-### Demo accounts
+### Accounts and sign-in
 
-After seeding, sign in at `/login` with password **`demo1234`**:
+EduSync SMS ships **without public demo accounts**. Accounts are provisioned per
+deployment:
 
-| Role | Email |
-|------|-------|
-| Super Admin | `superadmin@school.et` |
-| Branch Admin (Addis) | `admin.addis@school.et` |
-| Branch Admin (Bishoftu) | `admin.bishoftu@school.et` |
-| Registrar | `registrar.addis@school.et` |
-| Teacher | `teacher.addis@school.et` |
-| Finance Officer | `finance.addis@school.et` |
-| Librarian | `library.addis@school.et` |
-| HR Officer | `hr.addis@school.et` |
-| Parent | `parent@school.et` |
-| Student | `student@school.et` |
-| Student (Grade 10) | `student.grade10@school.et` |
+- The first **Super Admin** is created during environment setup (see your
+  deployment runbook / `prisma/ensure-demo-login.ts` is intended for internal
+  development environments only and should not be run in production).
+- **Branch staff** are created by admins or apply through `/register/*` for approval.
+- **Students and parents** are enrolled by the registrar and receive a one-time
+  password (OTP) for first sign-in.
+
+Sign in at `/login` with the email and password issued to your account.
+
+> For local development only, sample data can be generated with `npm run db:seed`.
+> Sample credentials are intended for local testing and must never be enabled in a
+> production deployment.
 
 ### Portal entry points
 

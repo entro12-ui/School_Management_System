@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { NAV_ICONS, type NavItemConfig } from "@/lib/nav/icons";
-import { X } from "lucide-react";
+import { GraduationCap, X } from "lucide-react";
 
 interface AppSidebarProps {
   nav: NavItemConfig[];
@@ -20,7 +20,6 @@ export function AppSidebar({ nav, open, onClose }: AppSidebarProps) {
       return pathname === href;
     }
     if (pathname === href) return true;
-    // Avoid highlighting parent when a more specific nav item matches (e.g. grading vs grading/single)
     const hasMoreSpecificMatch = nav.some(
       (item) =>
         item.href !== href &&
@@ -34,8 +33,8 @@ export function AppSidebar({ nav, open, onClose }: AppSidebarProps) {
   const gradingHrefs = ["/teacher/grading", "/teacher/grading/single"];
 
   const content = (
-    <nav className="flex flex-1 flex-col gap-1 p-4">
-      <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+    <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
+      <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-portal-sidebar-muted">
         Menu
       </p>
       {nav.map((item) => {
@@ -48,7 +47,7 @@ export function AppSidebar({ nav, open, onClose }: AppSidebarProps) {
         return (
           <div key={item.href}>
             {showGradingLabel && (
-              <p className="mb-1 mt-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400 first:mt-0">
+              <p className="mb-1 mt-3 px-3 text-xs font-semibold uppercase tracking-wider text-portal-sidebar-muted first:mt-0">
                 Grading
               </p>
             )}
@@ -58,12 +57,15 @@ export function AppSidebar({ nav, open, onClose }: AppSidebarProps) {
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                 active
-                  ? "bg-indigo-600 text-white shadow-sm"
-                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  ? "bg-portal-sidebar-active text-white"
+                  : "text-portal-sidebar-text hover:bg-portal-sidebar-hover hover:text-white"
               )}
             >
               <Icon
-                className={cn("h-5 w-5 shrink-0", active ? "text-white" : "text-slate-400")}
+                className={cn(
+                  "h-5 w-5 shrink-0",
+                  active ? "text-white" : "text-portal-sidebar-muted"
+                )}
               />
               {item.label}
             </Link>
@@ -86,20 +88,33 @@ export function AppSidebar({ nav, open, onClose }: AppSidebarProps) {
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-slate-200 bg-white transition-transform duration-200 lg:static lg:z-0 lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-portal-sidebar transition-transform duration-200 lg:static lg:z-0 lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex h-16 items-center justify-between border-b border-slate-100 px-4 lg:hidden">
-          <span className="text-sm font-semibold text-slate-900">Navigation</span>
+        <div className="hidden h-16 shrink-0 items-center gap-2.5 border-b border-white/10 px-5 lg:flex">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white">
+            <GraduationCap className="h-4 w-4" />
+          </div>
+          <span className="text-sm font-bold tracking-tight text-white">EduSync SMS</span>
+        </div>
+
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-white/10 px-4 lg:hidden">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white">
+              <GraduationCap className="h-4 w-4" />
+            </div>
+            <span className="text-sm font-bold text-white">EduSync SMS</span>
+          </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100"
+            className="rounded-lg p-1.5 text-portal-sidebar-text hover:bg-portal-sidebar-hover hover:text-white"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
+
         {content}
       </aside>
     </>

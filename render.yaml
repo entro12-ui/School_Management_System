@@ -58,6 +58,26 @@ services:
         value: "8"
       - key: OLLAMA_KEEP_ALIVE
         value: "15m"
+      - key: CHAPA_SECRET_KEY
+        sync: false
+      - key: CHAPA_PUBLIC_KEY
+        sync: false
+      # Platform SaaS billing (ETB per student for new school signups)
+      - key: PLATFORM_STUDENT_PRICE_ETB
+        value: "30"
+      # Email — payment links on school approval (set in Render dashboard, never commit secrets)
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      - key: MAIL_TO
+        sync: false
 
   # Ollama LLM — private service (not public). Requires Starter+ plan for most models.
   - type: pserv

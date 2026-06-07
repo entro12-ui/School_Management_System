@@ -1,4 +1,4 @@
-import { PaymentStatus } from "@prisma/client";
+import { PaymentStatus, UserRole } from "@prisma/client";
 import {
   PARENT_COMMUNICATION_LANGUAGE_LABELS,
   PARENT_COMMUNICATION_MESSAGE_TYPE_LABELS,
@@ -574,174 +574,6 @@ function amharicDraft(
   };
 }
 
-function oromoDraft(
-  parentName: string,
-  summary: ParentCommunicationChildSummary,
-  messageType: ParentCommunicationMessageType,
-  tone: ParentCommunicationTone,
-  additionalNotes?: string
-): ParentCommunicationDraft {
-  const greeting = tone === "formal" ? `${parentName} kabajamaa,` : `Akkam ${parentName},`;
-  const closing =
-    tone === "formal"
-      ? "Galatoomaa tumsa fi deeggarsa itti fufsiiftaniif."
-      : "Deeggarsa mana keessaa itti fufsiiftaniif galatoomaa.";
-  const childName = summary.studentName;
-  const performance =
-    summary.averagePercent != null
-      ? `${childName} qormaata dhihoo irratti giddugaleessaan ${summary.averagePercent}% galmeesseera.`
-      : `Ragaan qabxii ${childName} irratti guutuun hin gahin, garuu hojii isaa/ishii itti dhiyeenyaan hordofamaa jira.`;
-  const attendance =
-    summary.attendanceRate != null
-      ? `Guyyoota 30 darban keessatti argamni ${summary.attendanceRate}% ture; hafuun ${summary.absencesLast30Days} fi tursiisuun ${summary.lateLast30Days} galmaa'eera.`
-      : "Ragaan argamaa guyyaa 30 darban irraa guutuun hin argamne.";
-  const fees =
-    summary.outstandingBalance > 0
-      ? `Kaffaltiin hafe ${formatCurrency(summary.outstandingBalance)} jira.`
-      : "Kaffaltiin yeroo ammaa guutameera.";
-  const note = additionalNotes?.trim()
-    ? `Yaadannoo dabalataa: ${additionalNotes.trim()}`
-    : null;
-
-  const drafts: Record<ParentCommunicationMessageType, Omit<ParentCommunicationDraft, "language" | "languageLabel" | "messageType" | "messageTypeLabel" | "tone" | "source">> =
-    {
-      progress_report: {
-        subject: `Gabaasa hojii barnootaa ${childName}`,
-        preview: `Hojii barnootaa, argamaa fi tarkaanfii deeggarsaa gabaabinaan ibsa.`,
-        body: [
-          greeting,
-          "",
-          performance,
-          summary.strongestSubject
-            ? `Kutaan inni/ishiin jabaatee mul'ate ${summary.strongestSubject} dha.`
-            : null,
-          summary.watchSubject
-            ? `${summary.watchSubject} irratti deeggarsi dabalataa barbaachisuu danda'a.`
-            : null,
-          attendance,
-          fees,
-          note,
-          "",
-          closing,
-        ]
-          .filter(Boolean)
-          .join("\n"),
-        highlights: [
-          summary.averagePercent != null ? `Giddugaleessa: ${summary.averagePercent}%` : "Giddugaleessa: ragaan dabalataa eeggamaa jira",
-          summary.strongestSubject ? `Jabina: ${summary.strongestSubject}` : "Jabina: hin murtoofne",
-          summary.watchSubject ? `Ilaalcha barbaada: ${summary.watchSubject}` : "Ilaalcha barbaada: hin jiru",
-        ],
-      },
-      attendance_alert: {
-        subject: `Beeksisa argamaa ${childName}`,
-        preview: `Hafuufi yeroo boodatti dhufu ilaalchisee ergaa qophaa'e.`,
-        body: [
-          greeting,
-          "",
-          `Argama ${childName} yeroo dhihoo hordofuuf isin qunnamna.`,
-          attendance,
-          "Maaloo waa'ee yeroon mana barumsaa dhaqqabuu fi argamaa itti fufiinsa qabu irratti waliin mari'adhaa.",
-          note,
-          "",
-          closing,
-        ]
-          .filter(Boolean)
-          .join("\n"),
-        highlights: [
-          `Hafuu: ${summary.absencesLast30Days}`,
-          `Tursiisuu: ${summary.lateLast30Days}`,
-          summary.attendanceRate != null ? `Argama: ${summary.attendanceRate}%` : "Argama: ragaan hin jiru",
-        ],
-      },
-      fee_alert: {
-        subject: `Yaadachiisa kaffaltii ${childName}`,
-        preview: `Haala kaffaltii hafee ifaan ibsuun ergaa kabajamaa qopheessa.`,
-        body: [
-          greeting,
-          "",
-          `Ergaan kun haala kaffaltii mana barumsaa ${childName} yaadachiisuuf qophaa'eera.`,
-          fees,
-          summary.outstandingBalance > 0
-            ? "Maaloo kaffaltii hafe yeroo isin danda'etti xumuraa."
-            : "Ammaaf tarkaanfiin dabalataa hin barbaachisu.",
-          note,
-          "",
-          closing,
-        ]
-          .filter(Boolean)
-          .join("\n"),
-        highlights: [
-          `Kaffaltii hafe: ${formatCurrency(summary.outstandingBalance)}`,
-          `Wantoota kaffaltii hafan: ${summary.pendingFeeItems}`,
-          summary.averagePercent != null ? `Giddugaleessa barnootaa: ${summary.averagePercent}%` : "Giddugaleessa barnootaa: ragaan dabalataa eeggamaa jira",
-        ],
-      },
-      positive_update: {
-        subject: `Odeeffannoo gaarii ${childName}`,
-        preview: `Milkaa'ina fi fooyya'iinsa yeroo dhihoo kabajuuf ergaa ho'aa.`,
-        body: [
-          greeting,
-          "",
-          `Waa'ee ${childName} odeeffannoo gaarii isin waliin qooduuf gammachuu guddaan qabna.`,
-          performance,
-          summary.strongestSubject
-            ? `${summary.strongestSubject} keessatti fooyya'iinsi gaariin mul'ateera.`
-            : null,
-          summary.attendanceRate != null
-            ? `Argamni guyyaa 30 darbe keessatti ${summary.attendanceRate}% ture.`
-            : null,
-          note,
-          "",
-          closing,
-        ]
-          .filter(Boolean)
-          .join("\n"),
-        highlights: [
-          summary.strongestSubject ? `Kutaa cimaa: ${summary.strongestSubject}` : "Kutaa cimaa: hin murtoofne",
-          summary.latestAssessmentPercent != null ? `Qabxii dhumaa: ${summary.latestAssessmentPercent}%` : "Qabxii dhumaa: hin jiru",
-          summary.attendanceRate != null ? `Argama: ${summary.attendanceRate}%` : "Argama: ragaan hin jiru",
-        ],
-      },
-      meeting_request: {
-        subject: `Gaaffii walga'ii ${childName}`,
-        preview: `Guddina barnootaa fi deeggarsa irratti hojii mana barumsaa waliin mari'achuuf ergaa kabajamaa.`,
-        body: [
-          greeting,
-          "",
-          `Guddina ${childName} fi akkamitti waliin deeggaruu danda'u ilaaluuf walga'ii qopheessuuf gaafachuu barbaada.`,
-          `${childName} ${summary.gradeLabel}, kutaa ${summary.className}, ${summary.branchName} keessatti galmaa'eera.`,
-          summary.homeroomTeacherName
-            ? `Yoo ta'e ${summary.homeroomTeacherName} waliin walitti qabuu nan barbaada.`
-            : null,
-          performance,
-          attendance,
-          note,
-          "",
-          `Mari'achuuf guyyaa fi sa'aatni jiran naaf himaa.`,
-          closing,
-        ]
-          .filter(Boolean)
-          .join("\n"),
-        highlights: [
-          summary.homeroomTeacherName
-            ? `Barsiisaa kutaa: ${summary.homeroomTeacherName}`
-            : "Barsiisaa kutaa: waajjira mana barumsaa qunnamaa",
-          summary.averagePercent != null ? `Giddugaleessa: ${summary.averagePercent}%` : "Giddugaleessa: ragaan dabalataa eeggamaa jira",
-          summary.attendanceRate != null ? `Argama: ${summary.attendanceRate}%` : "Argama: ragaan hin jiru",
-        ],
-      },
-    };
-
-  return {
-    ...drafts[messageType],
-    language: "om",
-    languageLabel: PARENT_COMMUNICATION_LANGUAGE_LABELS.om,
-    messageType,
-    messageTypeLabel: PARENT_COMMUNICATION_MESSAGE_TYPE_LABELS[messageType],
-    tone,
-    source: "rules",
-  };
-}
 
 function buildLocalizedDraft(
   parentName: string,
@@ -753,9 +585,6 @@ function buildLocalizedDraft(
 ) {
   if (language === "am") {
     return amharicDraft(parentName, summary, messageType, tone, additionalNotes);
-  }
-  if (language === "om") {
-    return oromoDraft(parentName, summary, messageType, tone, additionalNotes);
   }
   return englishDraft(parentName, summary, messageType, tone, additionalNotes);
 }
@@ -948,6 +777,135 @@ export async function generateTeacherCommunicationDraft(
     summary,
     draft: buildLocalizedDraft(
       recipientName,
+      summary,
+      input.messageType,
+      input.language,
+      input.tone,
+      input.additionalNotes
+    ),
+  };
+}
+
+export const STAFF_STUDENT_COMMUNICATION_ROLES: UserRole[] = [
+  UserRole.SUPER_ADMIN,
+  UserRole.BRANCH_ADMIN,
+  UserRole.REGISTRAR,
+  UserRole.TEACHER,
+  UserRole.FINANCE_OFFICER,
+];
+
+export type StaffStudentCommunicationUser = {
+  userId: string;
+  role: UserRole;
+  branchId: string | null;
+  displayName: string;
+};
+
+const staffStudentSelect = {
+  id: true,
+  studentId: true,
+  firstName: true,
+  lastName: true,
+  gradeLevel: true,
+  classId: true,
+  branch: { select: { name: true } },
+  class: { select: { name: true } },
+} as const;
+
+async function findStaffAccessibleStudent(
+  studentId: string,
+  staff: Pick<StaffStudentCommunicationUser, "userId" | "role" | "branchId">
+) {
+  if (staff.role === UserRole.TEACHER) {
+    const [teacher, classData] = await Promise.all([
+      getTeacherByUserId(staff.userId),
+      getTeacherClasses(staff.userId),
+    ]);
+    if (!teacher || !classData || classData.classes.length === 0) return null;
+
+    const accessibleClassIds = classData.classes.map((cls) => cls.id);
+    return prisma.student.findFirst({
+      where: {
+        id: studentId,
+        isActive: true,
+        branchId: teacher.branchId,
+        classId: { in: accessibleClassIds },
+      },
+      select: staffStudentSelect,
+    });
+  }
+
+  if (staff.role === UserRole.SUPER_ADMIN) {
+    return prisma.student.findFirst({
+      where: { id: studentId, isActive: true },
+      select: staffStudentSelect,
+    });
+  }
+
+  if (!staff.branchId) return null;
+
+  return prisma.student.findFirst({
+    where: {
+      id: studentId,
+      isActive: true,
+      branchId: staff.branchId,
+    },
+    select: staffStudentSelect,
+  });
+}
+
+export async function getStaffStudentCommunicationContext(
+  studentId: string,
+  staff: StaffStudentCommunicationUser
+): Promise<ParentCommunicationBotContext | null> {
+  const student = await findStaffAccessibleStudent(studentId, staff);
+  if (!student) return null;
+
+  const summary = await buildChildSummary({
+    id: student.id,
+    studentId: student.studentId,
+    firstName: student.firstName,
+    lastName: student.lastName,
+    gradeLabel: formatGradeLevel(student.gradeLevel),
+    className: student.class?.name ?? "Unassigned",
+    branchName: student.branch.name,
+    classId: student.classId,
+  });
+
+  return {
+    parentName: staff.displayName,
+    defaultChildId: summary.id,
+    children: [summary],
+  };
+}
+
+export async function generateStaffStudentCommunicationDraft(
+  staff: StaffStudentCommunicationUser,
+  input: ParentCommunicationDraftInput
+): Promise<{
+  parentName: string;
+  summary: ParentCommunicationChildSummary;
+  draft: ParentCommunicationDraft;
+} | null> {
+  const student = await findStaffAccessibleStudent(input.childId, staff);
+  if (!student) return null;
+
+  const summary = await buildChildSummary({
+    id: student.id,
+    studentId: student.studentId,
+    firstName: student.firstName,
+    lastName: student.lastName,
+    gradeLabel: formatGradeLevel(student.gradeLevel),
+    className: student.class?.name ?? "Unassigned",
+    branchName: student.branch.name,
+    classId: student.classId,
+  });
+
+  return {
+    parentName: staff.displayName,
+    summary,
+    draft: buildLocalizedDraft(
+      "Parent/Guardian",
       summary,
       input.messageType,
       input.language,

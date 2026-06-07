@@ -29,7 +29,7 @@ export function AppHeader({
   signOutAction,
 }: AppHeaderProps) {
   return (
-    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-4 border-b border-slate-200 bg-white px-4 shadow-sm">
+    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-4 border-b border-slate-200/80 bg-white px-4">
       <button
         type="button"
         onClick={onMenuClick}
@@ -40,7 +40,7 @@ export function AppHeader({
       </button>
 
       <div className="flex min-w-0 flex-1 items-center gap-3">
-        <div className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-white sm:flex">
+        <div className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-portal-sidebar text-white sm:flex">
           <GraduationCap className="h-5 w-5" />
         </div>
         <div className="min-w-0">

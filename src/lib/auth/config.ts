@@ -65,6 +65,7 @@ export const authConfig = {
             email: user.email,
             name: `${user.firstName} ${user.lastName}`,
             role: user.role,
+            organizationId: user.organizationId,
             branchId: user.branchId,
             branchName: user.branch?.name ?? null,
             mustChangePassword: user.mustChangePassword,

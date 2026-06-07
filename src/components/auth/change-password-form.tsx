@@ -27,10 +27,10 @@ export function ChangePasswordForm() {
 
   if (status === "unauthenticated") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-        <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-          <p className="text-slate-600">Please sign in first.</p>
-          <Link href="/login" className="mt-4 inline-block text-indigo-600 hover:underline">
+      <div className="flex min-h-screen items-center justify-center bg-premium-canvas px-4">
+        <div className="rounded-xl border border-premium-ink/8 bg-white p-8 text-center shadow-[var(--shadow-premium-sm)]">
+          <p className="text-premium-ink/65">Please sign in first.</p>
+          <Link href="/login" className="mt-4 inline-block text-premium-accent hover:underline">
             Go to login
           </Link>
         </div>
@@ -59,14 +59,14 @@ export function ChangePasswordForm() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4 py-12">
-      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 shadow-md">
+    <div className="flex min-h-screen items-center justify-center bg-premium-canvas px-4 py-12">
+      <div className="w-full max-w-md rounded-2xl border border-premium-ink/8 bg-white p-8 shadow-[var(--shadow-premium-md)]">
         <div className="mb-6 flex items-center gap-2">
-          <GraduationCap className="h-7 w-7 shrink-0 text-indigo-600" />
-          <span className="text-lg font-semibold text-slate-900">Set your password</span>
+          <GraduationCap className="h-7 w-7 shrink-0 text-premium-accent" strokeWidth={1.75} />
+          <span className="text-lg font-semibold text-premium-ink">Set your password</span>
         </div>
 
-        <p className="mb-6 text-sm leading-relaxed text-slate-600">
+        <p className="mb-6 text-sm leading-relaxed text-premium-ink/65">
           You signed in with a <strong>one-time password</strong> from your branch admin.
           Enter that OTP as the current password, then choose a new password to continue.
         </p>

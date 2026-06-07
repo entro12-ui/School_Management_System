@@ -2,6 +2,7 @@ import { PortalShell } from "@/components/layout/portal-shell";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { getConsolidatedStats, getGradeBandBreakdown } from "@/lib/services/dashboard";
 import { getAdminSummary } from "@/lib/services/admin";
+import { auth } from "@/lib/auth";
 import { formatCurrency, formatPercent } from "@/lib/utils";
 import {
   Building2,
@@ -23,11 +24,12 @@ import { getStudentPerformanceAnalytics } from "@/lib/services/student-performan
 export const dynamic = "force-dynamic";
 
 export default async function SuperAdminPage() {
+  const session = await auth();
   const [stats, gradeBreakdown, charts, adminSummary, performanceAnalytics] = await Promise.all([
     getConsolidatedStats(),
     getGradeBandBreakdown(),
     getAdminDashboardCharts(),
-    getAdminSummary(),
+    getAdminSummary(session?.user),
     getStudentPerformanceAnalytics(),
   ]);
 

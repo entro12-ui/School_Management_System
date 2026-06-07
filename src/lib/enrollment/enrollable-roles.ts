@@ -2,7 +2,7 @@ import { UserRole } from "@prisma/client";
 import { ROLE_LABELS } from "@/lib/auth/roles";
 
 /** Roles that may never be created from the enrollment desk. */
-const BLOCKED: UserRole[] = [UserRole.SUPER_ADMIN];
+const BLOCKED: UserRole[] = [UserRole.SUPER_ADMIN, UserRole.PLATFORM_ADMIN];
 
 const BASE: UserRole[] = [
   UserRole.STUDENT,

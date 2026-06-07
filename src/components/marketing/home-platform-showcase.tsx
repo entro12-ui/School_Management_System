@@ -2,11 +2,9 @@
 
 import { useMemo, useState } from "react";
 import {
-  Activity,
   BellRing,
-  Brain,
   CalendarCheck,
-  CheckCircle2,
+  Check,
   ChevronRight,
   FileText,
   GraduationCap,
@@ -16,217 +14,128 @@ import {
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { MarketingSectionHeader } from "@/components/marketing/marketing-primitives";
+import { useLandingLanguage } from "@/lib/marketing/landing-language-context";
+import type { LandingExperienceId } from "@/lib/marketing/landing-content.types";
 
-const EXPERIENCES = [
-  {
-    id: "leadership",
-    label: "Leadership",
-    title: "A live command center for every campus",
-    description:
-      "Central office can compare branches, monitor enrollment, generate AI monthly executive reports, and review audit activity without waiting for manual reporting cycles.",
-    icon: ShieldCheck,
-    accent: "from-violet-600 to-indigo-600",
-    metrics: [
-      { label: "Branch visibility", value: "All campuses" },
-      { label: "Risk review", value: "Daily" },
-      { label: "AI reporting", value: "Monthly brief" },
-    ],
-    actions: [
-      "Track enrollment, attendance, revenue, and outstanding fees together.",
-      "Use early warning analytics to flag students who need academic or attendance intervention.",
-      "Generate owner-ready monthly summaries from one trusted system record.",
-    ],
-  },
-  {
-    id: "teachers",
-    label: "Teachers",
-    title: "Less paperwork, more teaching time",
-    description:
-      "Teachers manage class rosters, daily attendance, grading, weekly reports, AI lesson planning, and parent-ready communication from one workspace.",
-    icon: GraduationCap,
-    accent: "from-emerald-500 to-teal-600",
-    metrics: [
-      { label: "Class work", value: "Roster + grades" },
-      { label: "Attendance", value: "Daily / weekly" },
-      { label: "Insights", value: "Trend-aware" },
-    ],
-    actions: [
-      "Enter marks once and reuse them for reports, portals, and analytics.",
-      "See which students are slipping before exam season arrives.",
-      "Generate lesson plans and coordinate with parents through clear, ready-to-use updates.",
-    ],
-  },
-  {
-    id: "families",
-    label: "Families",
-    title: "Parents and students stay connected",
-    description:
-      "Families can follow attendance, results, fees, library activity, transcripts, and AI-supported study help from secure role-based portals.",
-    icon: Users,
-    accent: "from-cyan-500 to-blue-600",
-    metrics: [
-      { label: "Parent portal", value: "Linked children" },
-      { label: "Student portal", value: "Self-service" },
-      { label: "Messages", value: "Multilingual" },
-    ],
-    actions: [
-      "Give parents timely visibility into performance, attendance, and fees.",
-      "Help students access schedules, assignments, GPA, transcripts, and AI Study Tutor support.",
-      "Create professional WhatsApp or Telegram-ready parent messages.",
-    ],
-  },
-] as const;
+const EXPERIENCE_ICONS = {
+  leadership: ShieldCheck,
+  teachers: GraduationCap,
+  families: Users,
+} as const;
 
-const OUTCOMES = [
-  {
-    title: "Early warning analytics",
-    description: "Combines grade trends and attendance records to flag at-risk students.",
-    icon: Brain,
-  },
-  {
-    title: "AI executive reporting",
-    description: "Turns monthly school performance data into owner-ready summaries and next steps.",
-    icon: FileText,
-  },
-  {
-    title: "Attendance-to-action flow",
-    description: "Absence patterns become visible to staff and families before they grow.",
-    icon: BellRing,
-  },
-  {
-    title: "Academic continuity",
-    description: "Grades, GPA, transcripts, and reports share the same student record.",
-    icon: LineChart,
-  },
-  {
-    title: "Family communication",
-    description: "Parent message drafts support English, Amharic, and Afaan Oromo.",
-    icon: MessageSquare,
-  },
-] as const;
+const OUTCOME_ICONS = [LineChart, FileText, BellRing, CalendarCheck, MessageSquare] as const;
 
 export function HomePlatformShowcase() {
-  const [activeId, setActiveId] = useState<(typeof EXPERIENCES)[number]["id"]>(
-    EXPERIENCES[0].id
-  );
+  const { content } = useLandingLanguage();
+  const { experience } = content;
+  const [activeId, setActiveId] = useState<LandingExperienceId>("leadership");
+
   const active = useMemo(
-    () => EXPERIENCES.find((item) => item.id === activeId) ?? EXPERIENCES[0],
-    [activeId]
+    () => experience.experiences.find((item) => item.id === activeId) ?? experience.experiences[0],
+    [activeId, experience.experiences]
   );
-  const ActiveIcon = active.icon;
+  const ActiveIcon = EXPERIENCE_ICONS[active.id];
 
   return (
-    <section id="experience" className="scroll-mt-28 mt-16 sm:mt-20">
-      <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-        <div>
-          <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-indigo-700 shadow-sm ring-1 ring-indigo-100">
-            <Activity className="h-3.5 w-3.5" />
-            Interactive experience
-          </span>
-          <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-            A school system that feels{" "}
-            <span className="bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-transparent">
-              alive and accountable
-            </span>
-          </h2>
-          <p className="mt-3 text-slate-600">
-            EduSync connects the daily work of administrators, teachers, families,
-            finance, HR, and library teams so every decision is backed by the latest
-            student record.
-          </p>
+    <section id="experience" className="scroll-mt-28 mt-24 sm:mt-28">
+      <MarketingSectionHeader
+        eyebrow={experience.eyebrow}
+        title={experience.title}
+        lead={experience.lead}
+      />
 
-          <div className="mt-6 grid gap-3">
-            {EXPERIENCES.map((item) => {
-              const Icon = item.icon;
-              const activeTab = item.id === active.id;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => setActiveId(item.id)}
+      <div className="mt-12 grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <div className="space-y-2">
+          {experience.experiences.map((item) => {
+            const Icon = EXPERIENCE_ICONS[item.id];
+            const activeTab = item.id === active.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActiveId(item.id)}
+                className={cn(
+                  "flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-all duration-200",
+                  activeTab
+                    ? "border-premium-accent/30 bg-white shadow-[var(--shadow-premium-sm)]"
+                    : "border-transparent bg-white/60 hover:border-premium-ink/10 hover:bg-white"
+                )}
+              >
+                <span
                   className={cn(
-                    "group flex items-center gap-3 rounded-2xl border p-4 text-left transition",
-                    activeTab
-                      ? "border-indigo-200 bg-white shadow-lg shadow-indigo-100"
-                      : "border-white bg-white/70 hover:border-indigo-100 hover:bg-white"
+                    "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors",
+                    activeTab ? "bg-premium-accent text-white" : "bg-premium-accent/10 text-premium-ink"
                   )}
                 >
-                  <span
-                    className={cn(
-                      "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-sm",
-                      item.accent
-                    )}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-semibold text-slate-900">{item.label}</span>
-                    <span className="mt-0.5 block text-sm text-slate-500">{item.title}</span>
-                  </span>
-                  <ChevronRight
-                    className={cn(
-                      "h-4 w-4 text-slate-300 transition group-hover:text-indigo-500",
-                      activeTab && "translate-x-0.5 text-indigo-500"
-                    )}
-                  />
-                </button>
-              );
-            })}
-          </div>
+                  <Icon className="h-5 w-5" strokeWidth={1.75} />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-semibold text-premium-ink">{item.label}</span>
+                  <span className="mt-0.5 block text-sm text-premium-ink/55">{item.title}</span>
+                </span>
+                <ChevronRight
+                  className={cn(
+                    "h-4 w-4 shrink-0 transition-colors",
+                    activeTab ? "text-premium-accent" : "text-premium-ink/25"
+                  )}
+                />
+              </button>
+            );
+          })}
         </div>
 
-        <div className="overflow-hidden rounded-3xl border border-white bg-white/90 shadow-2xl shadow-indigo-200/40 ring-1 ring-indigo-100/80">
-          <div className={cn("bg-gradient-to-br p-6 text-white sm:p-8", active.accent)}>
+        <div className="overflow-hidden rounded-2xl border border-premium-ink/8 bg-white shadow-[var(--shadow-premium-md)]">
+          <div className="border-b border-premium-accent/20 bg-premium-accent px-6 py-6 text-white sm:px-8">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold text-white/80">{active.label} workspace</p>
-                <h3 className="mt-2 text-2xl font-bold">{active.title}</h3>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-white/85">
-                  {active.description}
+                <p className="text-xs font-medium uppercase tracking-[0.14em] text-white/45">
+                  {active.label}
                 </p>
+                <h3 className="mt-2 text-xl font-semibold leading-snug">{active.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/65">{active.description}</p>
               </div>
-              <div className="hidden rounded-2xl bg-white/15 p-3 backdrop-blur sm:block">
-                <ActiveIcon className="h-7 w-7" />
+              <div className="hidden rounded-xl bg-white/10 p-3 sm:block">
+                <ActiveIcon className="h-6 w-6" strokeWidth={1.75} />
               </div>
             </div>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="mt-5 grid gap-2 sm:grid-cols-3">
               {active.metrics.map((metric) => (
-                <div key={metric.label} className="rounded-2xl bg-white/15 p-3 backdrop-blur">
-                  <p className="text-xs text-white/70">{metric.label}</p>
-                  <p className="mt-1 font-bold">{metric.value}</p>
+                <div
+                  key={metric.label}
+                  className="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5"
+                >
+                  <p className="text-[10px] uppercase tracking-wider text-white/40">{metric.label}</p>
+                  <p className="mt-0.5 text-sm font-medium">{metric.value}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="grid gap-5 p-6 sm:p-8">
-            <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
-              <div className="mb-3 flex items-center gap-2">
-                <CalendarCheck className="h-4 w-4 text-indigo-600" />
-                <p className="text-sm font-semibold text-slate-900">What changes day to day</p>
-              </div>
-              <ul className="space-y-2">
+          <div className="space-y-6 p-6 sm:p-8">
+            <div>
+              <p className="text-sm font-semibold text-premium-ink">{experience.inPractice}</p>
+              <ul className="mt-3 space-y-2.5">
                 {active.actions.map((action) => (
-                  <li key={action} className="flex gap-2 text-sm leading-6 text-slate-600">
-                    <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-emerald-500" />
-                    <span>{action}</span>
+                  <li key={action} className="flex gap-3 text-sm leading-relaxed text-premium-ink/70">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-premium-accent" strokeWidth={2.5} />
+                    {action}
                   </li>
                 ))}
               </ul>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
-              {OUTCOMES.map((outcome) => {
-                const Icon = outcome.icon;
+              {experience.outcomes.map((outcome, index) => {
+                const Icon = OUTCOME_ICONS[index] ?? LineChart;
                 return (
                   <article
                     key={outcome.title}
-                    className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                    className="rounded-xl border border-premium-ink/8 bg-premium-canvas/40 p-4"
                   >
-                    <Icon className="h-5 w-5 text-indigo-600" />
-                    <h4 className="mt-3 font-semibold text-slate-900">{outcome.title}</h4>
-                    <p className="mt-1 text-sm leading-6 text-slate-500">
+                    <Icon className="h-4 w-4 text-premium-accent" strokeWidth={1.75} />
+                    <h4 className="mt-2.5 text-sm font-semibold text-premium-ink">{outcome.title}</h4>
+                    <p className="mt-1 text-sm leading-relaxed text-premium-ink/55">
                       {outcome.description}
                     </p>
                   </article>

@@ -1,6 +1,11 @@
+import { Suspense } from "react";
 import { PortalShell } from "@/components/layout/portal-shell";
-import { PaymentProofSubmitForm } from "@/components/fees/payment-proof-submit-form";
+import { ChapaPaymentReturnHandler } from "@/components/fees/chapa-payment-return-handler";
+import { CancelChapaCheckoutButton } from "@/components/fees/cancel-chapa-checkout-button";
+import { FeePaymentReceiptCard } from "@/components/fees/fee-payment-receipt";
+import { OnlinePaymentOptions } from "@/components/fees/online-payment-options";
 import { auth } from "@/lib/auth";
+import { isChapaConfigured } from "@/lib/chapa/config";
 import { STUDENT_NAV } from "@/lib/nav/student-nav";
 import { getStudentFees } from "@/lib/services/student-fees";
 import { formatCurrency } from "@/lib/utils";
@@ -15,13 +20,21 @@ export default async function StudentFeesPage() {
   const data = await getStudentFees(session.user.id);
   if (!data) redirect("/student");
 
+  const chapaEnabled = isChapaConfigured();
+
   return (
     <PortalShell title="Student Portal" subtitle="Fees" nav={STUDENT_NAV}>
       <h1 className="mb-2 text-2xl font-bold text-slate-900">Fees & online payment</h1>
       <p className="mb-6 text-slate-500">
-        Pay semester tuition online, upload your bank receipt, and finance will confirm. You can
+        Pay semester tuition with Chapa or upload a bank receipt for finance to confirm. You can
         also pay cash at the school finance office.
       </p>
+
+      <Suspense fallback={null}>
+        <div className="mb-6">
+          <ChapaPaymentReturnHandler />
+        </div>
+      </Suspense>
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
         <div className="rounded-xl border border-slate-200 bg-white p-4">
@@ -77,14 +90,28 @@ export default async function StudentFeesPage() {
                 </p>
               )}
 
-              {p.canPayOnline && (
-                <div className="mt-3">
-                  <PaymentProofSubmitForm
-                    paymentId={p.id}
-                    feeName={p.name}
-                    outstanding={p.outstanding}
-                  />
+              {p.pendingChapa && (
+                <div className="mt-3 rounded-lg bg-indigo-50 px-3 py-2 text-sm text-indigo-800">
+                  <p>
+                    Chapa checkout in progress — you opened a payment but did not finish it. Cancel
+                    below to start again.
+                  </p>
+                  <CancelChapaCheckoutButton paymentId={p.id} />
                 </div>
+              )}
+
+              {p.canPayOnline && (
+                <OnlinePaymentOptions
+                  paymentId={p.id}
+                  feeName={p.name}
+                  outstanding={p.outstanding}
+                  returnPath="/student/fees"
+                  chapaEnabled={chapaEnabled}
+                />
+              )}
+
+              {(p.status === "PAID" || p.paidAmount > 0) && (
+                <FeePaymentReceiptCard receipt={p.receipt} studentName={data.studentName} />
               )}
             </article>
           ))

@@ -18,6 +18,9 @@ export type ParentFeeRow = {
   paidAmount: number;
   status: string;
   dueDate: string | null;
+  paidAt: string | null;
+  reference: string | null;
+  paidChannel: string | null;
   scholarship: boolean;
 };
 
@@ -66,6 +69,28 @@ export function ParentFeesTable({ payments }: { payments: ParentFeeRow[] }) {
             {r.status}
           </span>
         ),
+      },
+      {
+        id: "reference",
+        header: "Reference",
+        sortable: true,
+        sortValue: (r) => r.reference ?? "",
+        cell: (r) =>
+          r.reference ? (
+            <span className="font-mono text-xs text-slate-600">{r.reference}</span>
+          ) : (
+            "—"
+          ),
+      },
+      {
+        id: "paidAt",
+        header: "Paid on",
+        sortable: true,
+        sortValue: (r) => (r.paidAt ? new Date(r.paidAt).getTime() : 0),
+        cell: (r) =>
+          r.paidAt
+            ? new Date(r.paidAt).toLocaleDateString("en-ET", { dateStyle: "medium" })
+            : "—",
       },
       {
         id: "due",

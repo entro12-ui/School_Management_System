@@ -10,6 +10,7 @@ datasource db {
 // ─── Enums ───────────────────────────────────────────────────────────────────
 
 enum UserRole {
+  PLATFORM_ADMIN
   SUPER_ADMIN
   BRANCH_ADMIN
   REGISTRAR
@@ -75,6 +76,12 @@ enum PaymentProofStatus {
   REJECTED
 }
 
+enum ChapaTransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
 enum BookStatus {
   AVAILABLE
   ISSUED
@@ -129,19 +136,102 @@ enum RegistrationRole {
   HR_MANAGER
 }
 
-// ─── Organization ────────────────────────────────────────────────────────────
+enum SchoolSignupStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PROVISIONED
+}
+
+enum PlatformPaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+// ─── SaaS platform (school tenants) ───────────────────────────────────────────
+
+model Organization {
+  id           String    @id @default(cuid())
+  name         String
+  code         String    @unique
+  city         String
+  address      String?
+  phone        String?
+  contactEmail String
+  studentLimit Int
+  isActive     Boolean   @default(true)
+  activatedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  branches         Branch[]
+  users            User[]
+  signupRequest    SchoolSignupRequest?
+  platformPayments PlatformPayment[]
+}
+
+model SchoolSignupRequest {
+  id                String             @id @default(cuid())
+  schoolName        String
+  city              String
+  address           String?
+  phone             String?
+  contactEmail      String
+  contactFirstName  String
+  contactLastName   String
+  estimatedStudents Int
+  status            SchoolSignupStatus @default(PENDING)
+  rejectionReason   String?
+  reviewedAt        DateTime?
+  reviewedById      String?
+  organizationId    String?            @unique
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  organization     Organization?     @relation(fields: [organizationId], references: [id])
+  reviewedBy       User?             @relation("SchoolSignupReviewer", fields: [reviewedById], references: [id])
+  platformPayments PlatformPayment[]
+
+  @@index([status])
+  @@index([contactEmail])
+}
+
+model PlatformPayment {
+  id              String                @id @default(cuid())
+  signupRequestId String
+  organizationId  String?
+  txRef           String                @unique
+  amount          Decimal               @db.Decimal(12, 2)
+  studentCount    Int
+  pricePerStudent Decimal               @default(30) @db.Decimal(10, 2)
+  status          PlatformPaymentStatus @default(PENDING)
+  chapaReference  String?
+  paidAt          DateTime?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  signupRequest SchoolSignupRequest @relation(fields: [signupRequestId], references: [id], onDelete: Cascade)
+  organization  Organization?       @relation(fields: [organizationId], references: [id])
+
+  @@index([signupRequestId, status])
+}
+
+// ─── Organization branches ───────────────────────────────────────────────────
 
 model Branch {
-  id        String   @id @default(cuid())
-  code      String   @unique
-  name      String
-  city      String
-  address   String?
-  phone     String?
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(cuid())
+  organizationId String?
+  code           String   @unique
+  name           String
+  city           String
+  address        String?
+  phone          String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
+  organization         Organization?         @relation(fields: [organizationId], references: [id])
   users                User[]
   academicYears        AcademicYear[]
   classes              Class[]
@@ -197,6 +287,7 @@ model User {
   phone              String?
   photoUrl           String?
   role               UserRole
+  organizationId     String?
   branchId           String?
   isActive           Boolean   @default(true)
   mustChangePassword Boolean   @default(false)
@@ -206,6 +297,7 @@ model User {
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
+  organization                Organization?         @relation(fields: [organizationId], references: [id])
   branch                      Branch?               @relation(fields: [branchId], references: [id])
   staffProfile                StaffProfile?
   parentProfile               ParentProfile?
@@ -213,12 +305,14 @@ model User {
   auditLogs                   AuditLog[]            @relation("AuditActor")
   messagesSent                Message[]             @relation("MessageSender")
   reviewedRegistrations       RegistrationRequest[] @relation("RegistrationReviewer")
+  reviewedSchoolSignups       SchoolSignupRequest[] @relation("SchoolSignupReviewer")
   hrUserRoles                 HrUserRole[]
   hrEmployee                  HrEmployee?
   hrLeaveApprovals            HrLeaveRequest[]      @relation("LeaveApprover")
   hrPerformanceReviews        HrPerformanceReview[] @relation("PerformanceReviewer")
   paymentProofsSubmitted      PaymentProof[]        @relation("PaymentProofSubmitter")
   paymentProofsReviewed       PaymentProof[]        @relation("PaymentProofReviewer")
+  chapaTransactionsInitiated  ChapaTransaction[]    @relation("ChapaTransactionInitiator")
   libraryBorrowals            BookIssue[]           @relation("LibraryBorrower")
   libraryReservations         BookReservation[]     @relation("LibraryReservationBorrower")
   libraryFines                LibraryFine[]         @relation("LibraryFineBorrower")
@@ -592,6 +686,7 @@ model Payment {
   academicYear AcademicYear   @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
   feeStructure FeeStructure?  @relation(fields: [feeStructureId], references: [id])
   proofs       PaymentProof[]
+  chapaTransactions ChapaTransaction[]
 
   @@unique([studentId, academicYearId, term])
   @@index([status, branchId])
@@ -618,6 +713,25 @@ model PaymentProof {
   payment     Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
   submittedBy User    @relation("PaymentProofSubmitter", fields: [submittedById], references: [id])
   reviewedBy  User?   @relation("PaymentProofReviewer", fields: [reviewedById], references: [id])
+
+  @@index([paymentId, status])
+  @@index([status, createdAt])
+}
+
+/// Chapa checkout session for semester fee payments.
+model ChapaTransaction {
+  id            String                 @id @default(cuid())
+  paymentId     String
+  txRef         String                 @unique
+  amount        Decimal                @db.Decimal(12, 2)
+  status        ChapaTransactionStatus @default(PENDING)
+  chapaRefId    String?
+  initiatedById String
+  createdAt     DateTime               @default(now())
+  completedAt   DateTime?
+
+  payment     Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  initiatedBy User    @relation("ChapaTransactionInitiator", fields: [initiatedById], references: [id])
 
   @@index([paymentId, status])
   @@index([status, createdAt])

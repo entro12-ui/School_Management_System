@@ -6,6 +6,7 @@ declare module "next-auth" {
     user: {
       id: string;
       role: UserRole;
+      organizationId: string | null;
       branchId: string | null;
       branchName: string | null;
       mustChangePassword: boolean;
@@ -15,6 +16,7 @@ declare module "next-auth" {
 
   interface User {
     role: UserRole;
+    organizationId: string | null;
     branchId: string | null;
     branchName: string | null;
     mustChangePassword: boolean;
@@ -26,6 +28,7 @@ declare module "next-auth/jwt" {
   interface JWT {
     id: string;
     role: UserRole;
+    organizationId: string | null;
     branchId: string | null;
     branchName: string | null;
     mustChangePassword: boolean;

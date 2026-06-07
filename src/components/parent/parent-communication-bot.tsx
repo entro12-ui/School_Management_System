@@ -19,13 +19,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Field, Label, Select } from "@/components/ui/input";
 import { cn, formatCurrency } from "@/lib/utils";
+import { ContentLanguagePicker } from "@/components/parent/content-language-picker";
 import {
   PARENT_COMMUNICATION_LANGUAGE_LABELS,
-  PARENT_COMMUNICATION_LANGUAGES,
   PARENT_COMMUNICATION_MESSAGE_TYPE_LABELS,
   PARENT_COMMUNICATION_MESSAGE_TYPES,
   PARENT_COMMUNICATION_TONE_LABELS,
   PARENT_COMMUNICATION_TONES,
+  type ParentCommunicationContentLanguage,
   type ParentCommunicationLanguage,
   type ParentCommunicationMessageType,
   type ParentCommunicationTone,
@@ -116,15 +117,26 @@ export function ParentCommunicationBot({
   emptyTitle = "No linked children found",
   emptyDescription = "Link a child account first to generate parent communication drafts.",
   introText = "Choose a child and message type to generate a draft you can copy and send to the school.",
+  variant = "floating",
+  forcedChildId,
+  contentLanguage,
+  onContentLanguageChange,
+  hideContentLanguagePicker = false,
 }: {
   apiPath?: string;
   emptyTitle?: string;
   emptyDescription?: string;
   introText?: string;
+  variant?: "floating" | "embedded";
+  forcedChildId?: string;
+  contentLanguage?: ParentCommunicationContentLanguage;
+  onContentLanguageChange?: (language: ParentCommunicationContentLanguage) => void;
+  hideContentLanguagePicker?: boolean;
 }) {
   const pathname = usePathname();
+  const embedded = variant === "embedded";
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(embedded);
   const [reloadKey, setReloadKey] = useState(0);
   const [context, setContext] = useState<BotContextResponse | null>(null);
   const [draftResult, setDraftResult] = useState<DraftResponse | null>(null);
@@ -134,7 +146,15 @@ export function ParentCommunicationBot({
   const [selectedChildId, setSelectedChildId] = useState("");
   const [messageType, setMessageType] =
     useState<ParentCommunicationMessageType>("progress_report");
-  const [language, setLanguage] = useState<ParentCommunicationLanguage>("en");
+  const [internalLanguage, setInternalLanguage] = useState<ParentCommunicationLanguage>("en");
+  const language = contentLanguage ?? internalLanguage;
+  const setLanguage = useCallback(
+    (next: ParentCommunicationContentLanguage) => {
+      if (onContentLanguageChange) onContentLanguageChange(next);
+      else setInternalLanguage(next);
+    },
+    [onContentLanguageChange]
+  );
   const [tone, setTone] = useState<ParentCommunicationTone>("warm");
   const [additionalNotes, setAdditionalNotes] = useState("");
   const [copied, setCopied] = useState(false);
@@ -161,16 +181,16 @@ export function ParentCommunicationBot({
   );
 
   useEffect(() => {
-    if (!open) return;
+    if (embedded || !open) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+  }, [embedded, open]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open && !embedded) return;
 
     let cancelled = false;
 
@@ -203,16 +223,18 @@ export function ParentCommunicationBot({
         const urlChildId = readUrlChildId();
         const childIds = data.children.map((child) => child.id);
         setSelectedChildId(
-          resolveInitialChildId(childIds, {
-            urlChildId,
-            savedChildId: saved.childId,
-            defaultChildId: data.defaultChildId,
-          })
+          forcedChildId && childIds.includes(forcedChildId)
+            ? forcedChildId
+            : resolveInitialChildId(childIds, {
+                urlChildId,
+                savedChildId: saved.childId,
+                defaultChildId: data.defaultChildId,
+              })
         );
 
         if (!prefsHydratedRef.current) {
           if (saved.messageType) setMessageType(saved.messageType);
-          if (saved.language) setLanguage(saved.language);
+          if (saved.language && !contentLanguage) setInternalLanguage(saved.language);
           if (saved.tone) setTone(saved.tone);
           prefsHydratedRef.current = true;
         }
@@ -234,7 +256,7 @@ export function ParentCommunicationBot({
     return () => {
       cancelled = true;
     };
-  }, [apiPath, open, pathname, reloadKey]);
+  }, [apiPath, contentLanguage, embedded, forcedChildId, open, pathname, reloadKey]);
 
   const shareText = useMemo(() => {
     if (!draftResult) return "";
@@ -330,17 +352,25 @@ export function ParentCommunicationBot({
   return (
     <div
       className={cn(
-        "pointer-events-none fixed z-50 flex flex-col items-stretch justify-end gap-3",
-        "inset-x-3 bottom-3 sm:inset-x-auto sm:right-6 sm:bottom-6 sm:items-end"
+        embedded
+          ? "w-full"
+          : cn(
+              "pointer-events-none fixed z-50 flex flex-col items-stretch justify-end gap-3",
+              "inset-x-3 bottom-3 sm:inset-x-auto sm:right-6 sm:bottom-6 sm:items-end"
+            )
       )}
     >
       {open ? (
         <section
           id="parent-message-drafts-panel"
           className={cn(
-            "pointer-events-auto flex w-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg",
-            "max-h-[calc(100dvh-9rem)] sm:max-h-[min(640px,calc(100dvh-9rem))]",
-            "sm:w-[min(100vw-3rem,410px)]"
+            embedded
+              ? "w-full overflow-hidden rounded-xl border border-slate-200 bg-white"
+              : cn(
+                  "pointer-events-auto flex w-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg",
+                  "max-h-[calc(100dvh-9rem)] sm:max-h-[min(640px,calc(100dvh-9rem))]",
+                  "sm:w-[min(100vw-3rem,410px)]"
+                )
           )}
         >
           <header className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-3.5">
@@ -350,24 +380,28 @@ export function ParentCommunicationBot({
               </div>
               <div className="min-w-0 flex-1">
                 <h2 className="text-sm font-semibold leading-snug text-slate-900">
-                  Message drafts
+                  {embedded ? "Family-ready parent drafts" : "Message drafts"}
                 </h2>
                 <p className="mt-0.5 text-xs leading-snug text-slate-500">
-                  School updates from your children&apos;s records
+                  {embedded
+                    ? "Content language: English, Amharic · WhatsApp & Telegram sharing"
+                    : "School updates from your children's records"}
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              aria-label="Close message drafts"
-              onClick={() => setOpen(false)}
-              className="shrink-0 rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            {!embedded ? (
+              <button
+                type="button"
+                aria-label="Close message drafts"
+                onClick={() => setOpen(false)}
+                className="shrink-0 rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            ) : null}
           </header>
 
-          <div className="min-h-0 flex-1 overflow-y-auto p-4">
+          <div className={cn("min-h-0 flex-1 overflow-y-auto p-4", embedded && "max-h-none")}>
             {loadingContext && !context ? (
               <div className="rounded-lg border border-slate-200 bg-white p-6 text-center">
                 <Loader2 className="mx-auto h-5 w-5 animate-spin text-slate-600" />
@@ -414,21 +448,23 @@ export function ParentCommunicationBot({
                 </p>
 
                 <div className="grid gap-3 rounded-lg border border-slate-200 bg-slate-50/50 p-4">
-                  <Field label="Child">
-                    <Select
-                      value={selectedChildId}
-                      onChange={(event) => {
-                        setSelectedChildId(event.target.value);
-                        persistPrefs({ childId: event.target.value });
-                      }}
-                    >
-                      {context?.children.map((child) => (
-                        <option key={child.id} value={child.id}>
-                          {child.studentName} · {child.gradeLabel}
-                        </option>
-                      ))}
-                    </Select>
-                  </Field>
+                  {!forcedChildId ? (
+                    <Field label="Child">
+                      <Select
+                        value={selectedChildId}
+                        onChange={(event) => {
+                          setSelectedChildId(event.target.value);
+                          persistPrefs({ childId: event.target.value });
+                        }}
+                      >
+                        {context?.children.map((child) => (
+                          <option key={child.id} value={child.id}>
+                            {child.studentName} · {child.gradeLabel}
+                          </option>
+                        ))}
+                      </Select>
+                    </Field>
+                  ) : null}
 
                   <div className="grid gap-3 sm:grid-cols-2">
                     <Field label="Draft type">
@@ -465,22 +501,16 @@ export function ParentCommunicationBot({
                     </Field>
                   </div>
 
-                  <Field label="Language">
-                    <Select
+                  {!hideContentLanguagePicker ? (
+                    <ContentLanguagePicker
                       value={language}
-                      onChange={(event) => {
-                        const value = event.target.value as ParentCommunicationLanguage;
-                        setLanguage(value);
-                        persistPrefs({ language: value });
+                      onChange={(next) => {
+                        setLanguage(next);
+                        persistPrefs({ language: next });
                       }}
-                    >
-                      {PARENT_COMMUNICATION_LANGUAGES.map((option) => (
-                        <option key={option} value={option}>
-                          {PARENT_COMMUNICATION_LANGUAGE_LABELS[option]}
-                        </option>
-                      ))}
-                    </Select>
-                  </Field>
+                      compact
+                    />
+                  ) : null}
 
                   <div>
                     <Label htmlFor="parent-bot-notes">Extra context (optional)</Label>
@@ -728,17 +758,19 @@ export function ParentCommunicationBot({
         </section>
       ) : null}
 
-      <Button
-        type="button"
-        size="lg"
-        onClick={() => setOpen((current) => !current)}
-        className="pointer-events-auto ms-auto h-12 shrink-0 rounded-full px-4 shadow-md sm:ms-0"
-        aria-expanded={open}
-        aria-controls="parent-message-drafts-panel"
-      >
-        <MessageSquare className="h-4 w-4" />
-        Messages
-      </Button>
+      {!embedded ? (
+        <Button
+          type="button"
+          size="lg"
+          onClick={() => setOpen((current) => !current)}
+          className="pointer-events-auto ms-auto h-12 shrink-0 rounded-full px-4 shadow-md sm:ms-0"
+          aria-expanded={open}
+          aria-controls="parent-message-drafts-panel"
+        >
+          <MessageSquare className="h-4 w-4" />
+          Messages
+        </Button>
+      ) : null}
     </div>
   );
 }

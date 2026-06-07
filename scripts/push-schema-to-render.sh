@@ -45,6 +45,6 @@ echo "→ Pushing Prisma schema to Render (school_sms)…"
 DATABASE_URL="$RENDER_URL" npx prisma db push --accept-data-loss
 
 echo ""
-echo "✓ Schema on Render is up to date (HR module tables included)."
-echo "  Optional: npm run db:seed-hr-render  — add HR demo user + sample rows"
-echo "  Optional: npm run db:sync-to-render   — copy ALL local data to Render (destructive)"
+echo "✓ Schema on Render is up to date (platform SaaS, Chapa, HR, etc.)."
+echo "  Next: npm run db:ensure-demo-render  — platform admin + demo logins"
+echo "  Optional: npm run db:deploy-render   — copy ALL local data to Render"

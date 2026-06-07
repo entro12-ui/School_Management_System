@@ -2,6 +2,7 @@ import { UserRole } from "@prisma/client";
 import { ROLE_HOME as ROLE_HOME_PATHS } from "@/lib/auth/role-home";
 
 export const ROLE_LABELS: Record<UserRole, string> = {
+  PLATFORM_ADMIN: "Platform Admin",
   SUPER_ADMIN: "Super Admin",
   BRANCH_ADMIN: "Branch Admin",
   REGISTRAR: "Registrar",
@@ -16,6 +17,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
 export const ROLE_HOME = ROLE_HOME_PATHS as Record<UserRole, string>;
 
 export const STAFF_ROLES: UserRole[] = [
+  UserRole.PLATFORM_ADMIN,
   UserRole.SUPER_ADMIN,
   UserRole.BRANCH_ADMIN,
   UserRole.REGISTRAR,
@@ -30,11 +32,15 @@ export function canAccessBranch(
   userBranchId: string | null | undefined,
   targetBranchId: string | null | undefined
 ): boolean {
-  if (role === UserRole.SUPER_ADMIN) return true;
+  if (role === UserRole.PLATFORM_ADMIN || role === UserRole.SUPER_ADMIN) return true;
   if (!targetBranchId) return true;
   return userBranchId === targetBranchId;
 }
 
 export function isLeadershipRole(role: UserRole): boolean {
-  return role === UserRole.SUPER_ADMIN || role === UserRole.BRANCH_ADMIN;
+  return (
+    role === UserRole.PLATFORM_ADMIN ||
+    role === UserRole.SUPER_ADMIN ||
+    role === UserRole.BRANCH_ADMIN
+  );
 }

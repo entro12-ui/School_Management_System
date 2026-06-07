@@ -39,7 +39,11 @@ export default async function FinancePaymentsPage() {
         <h1 className="text-2xl font-bold text-slate-900">Student payments</h1>
         <p className="mt-1 text-slate-500">
           <strong>Cash:</strong> mark paid here when the family pays at the office.{" "}
-          <strong>Online:</strong> review uploaded receipts on{" "}
+          <strong>Online:</strong> Chapa payments are auto-confirmed — review them on{" "}
+          <Link href="/finance/chapa" className="text-indigo-600 hover:underline">
+            Chapa payments
+          </Link>
+          . Uploaded bank receipts are on{" "}
           <Link href="/finance/receipts" className="text-indigo-600 hover:underline">
             Online receipts
           </Link>

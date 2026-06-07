@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo } from "react";
 import { DataTable, type DataTableColumn } from "@/components/ui/data-table";
 
@@ -54,6 +55,18 @@ export function TeacherStudentsTable({ students }: { students: TeacherStudentRow
         sortable: true,
         sortValue: (r) => r.email,
         cell: (r) => <span className="text-slate-600">{r.email || "—"}</span>,
+      },
+      {
+        id: "actions",
+        header: "",
+        cell: (r) => (
+          <Link
+            href={`/teacher/students/${r.id}`}
+            className="text-sm font-medium text-indigo-600 hover:underline"
+          >
+            Intelligence hub →
+          </Link>
+        ),
       },
     ],
     []

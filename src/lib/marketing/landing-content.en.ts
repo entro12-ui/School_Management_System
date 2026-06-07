@@ -1,0 +1,416 @@
+import type { LandingContent } from "@/lib/marketing/landing-content.types";
+export const EN_CONTENT: LandingContent = {
+  header: {
+    tagline: "Entro Ethiopia",
+    contentLanguageLabel: "Content language",
+    nav: [
+      { href: "#overview", label: "Overview" },
+      { href: "#experience", label: "Experience" },
+      { href: "#tools", label: "Tools" },
+      { href: "#portals", label: "Portals" },
+      { href: "#features", label: "Modules" },
+      { href: "#pricing", label: "Pricing" },
+      { href: "#contact", label: "Contact" },
+    ],
+    signIn: "Sign in",
+    dashboard: "Dashboard",
+    openDashboard: "Open dashboard",
+    bookWalkthrough: "Book a walkthrough",
+    scheduleCall: "Schedule a call",
+    openPortal: "Open your portal",
+    signInToSchool: "Sign in to your school",
+    mobileMenuOpen: "Open menu",
+    mobileMenuClose: "Close menu",
+    parentDraftsNote: "Parent drafts available in English & Amharic",
+  },
+  hero: {
+    eyebrow: "School management · KG–12",
+    titleLine1: "Your whole school,",
+    titleLine2: "one calm workspace",
+    lead: "Enrollment, attendance, fees, report cards, and parent updates — connected for administrators, teachers, and families across every branch.",
+    bullets: [
+      "Dedicated portal for every role",
+      "Multi-branch from a single central office",
+      "Parent message drafts in English and Amharic content language",
+    ],
+    cardBranch: "Monday · Addis branch",
+    cardView: "Staff morning view",
+    todayLabel: "Today",
+    highlights: [
+      { title: "Academics", desc: "Grades & transcripts" },
+      { title: "Finance", desc: "Fees & payments" },
+      { title: "Library", desc: "Catalog & loans" },
+      { title: "Attendance", desc: "Daily records" },
+    ],
+    todayItems: [
+      { title: "Grade 8B — attendance slipping", desc: "Homeroom teacher notified" },
+      { title: "12 fee reminders ready to send", desc: "Finance can review first" },
+      { title: "4 classes still need weekly marks", desc: "Visible on teacher dashboard" },
+    ],
+  },
+  experience: {
+    eyebrow: "Experience",
+    title: "Designed for how schools actually run",
+    lead: "Administrators, teachers, finance, HR, library staff, and families each get a workspace that fits their job — all tied to the same student records.",
+    inPractice: "In practice",
+    experiences: [
+      {
+        id: "leadership",
+        label: "Leadership",
+        title: "Every branch, one clear picture",
+        description:
+          "Compare enrollment, attendance, and fees without chasing spreadsheets. Pull monthly summaries when leadership or the board needs them.",
+        metrics: [
+          { label: "Branches", value: "Unified view" },
+          { label: "Reports", value: "On demand" },
+          { label: "Audit", value: "Full trail" },
+        ],
+        actions: [
+          "Enrollment and collections per branch in one dashboard.",
+          "Students who need follow-up surface before grades fall further.",
+          "Export-ready data for ministry or board meetings.",
+        ],
+      },
+      {
+        id: "teachers",
+        label: "Teachers",
+        title: "Marks once. Reports follow.",
+        description:
+          "Attendance, grading, and parent updates from one workspace — no copying between notebooks and Excel.",
+        metrics: [
+          { label: "Classes", value: "Your roster" },
+          { label: "Attendance", value: "Daily" },
+          { label: "Reports", value: "Automatic" },
+        ],
+        actions: [
+          "Grades flow into report cards and parent portals.",
+          "See absences stacking up before they become a pattern.",
+          "Draft parent messages; you send when ready.",
+        ],
+      },
+      {
+        id: "families",
+        label: "Families",
+        title: "Parents stay informed",
+        description:
+          "Attendance, results, fees, and library activity — on their phone, without calling the office every week.",
+        metrics: [
+          { label: "Parents", value: "All children" },
+          { label: "Students", value: "Self-service" },
+          { label: "Content language", value: "English & Amharic" },
+        ],
+        actions: [
+          "Fee balance and payment history at a glance.",
+          "Schedules, assignments, and transcripts for students.",
+          "Parent drafts in English and Amharic.",
+        ],
+      },
+    ],
+    outcomes: [
+      {
+        title: "Early alerts",
+        description: "Grades and attendance together flag students who need a conversation.",
+      },
+      {
+        title: "Monthly summaries",
+        description: "Leadership gets a readable month-end picture without manual compilation.",
+      },
+      {
+        title: "Attendance flow",
+        description: "Absences visible to staff and families before they escalate.",
+      },
+      {
+        title: "One record",
+        description: "GPA, transcripts, and fees share the same student profile.",
+      },
+      {
+        title: "Parent messages",
+        description: "Draft updates in English and Amharic content language — you review first.",
+      },
+    ],
+  },
+  tools: {
+    eyebrow: "Tools",
+    title: "Time saved — people stay in charge",
+    lead: "Optional assistants help teachers plan, students study, and leadership report. Your team always reviews before anything goes to a parent or student.",
+    helpfulTools: [
+      {
+        title: "Study companion",
+        description:
+          "Guided explanations for students — teachers stay in control of what reaches the classroom.",
+      },
+      {
+        title: "Lesson planning",
+        description:
+          "Draft objectives, activities, and assessments by grade and subject. Edit before you teach.",
+      },
+      {
+        title: "Performance insights",
+        description:
+          "Grades and attendance combined to highlight students who may need a homeroom conversation.",
+      },
+      {
+        title: "Monthly summary",
+        description: "Enrollment, academics, attendance, and finance in one leadership-ready report.",
+      },
+      {
+        title: "Message drafts",
+        description:
+          "Clear parent updates for fees, attendance, or progress — in English and Amharic content language.",
+      },
+    ],
+    coverageTitle: "Full platform coverage",
+    coverageLead: "Registrar, finance, library, HR, and family portals — not just assistants.",
+    coverageItems: [
+      "Multi-branch dashboards for central office",
+      "Enrollment, records, ID cards, and transcripts",
+      "Teacher rosters, grading, and attendance",
+      "Fees, payments, receipts, and finance reports",
+      "Library catalog, loans, reservations, and fines",
+      "HR, payroll, leave, and recruitment",
+      "Parent and student portals (English & Amharic message drafts)",
+      "Role-based access and audit logs",
+    ],
+  },
+  structure: {
+    eyebrow: "Structure",
+    title: "Organized around roles and grade levels",
+    lead: "Central office oversees branches. Each branch runs day-to-day work through dedicated portals for staff, teachers, and families.",
+    centralOffice: {
+      subtitle: "Super Admin · system-wide control",
+      title: "Central Office",
+      description:
+        "Cross-branch dashboards, global settings, audit logs, and consolidated exports for leadership.",
+      capabilities: [
+        "All branches & enrollment",
+        "Global settings & policies",
+        "Audit trail & compliance",
+        "PDF / Excel / CSV exports",
+      ],
+    },
+    branchStaffHeading: "Branch staff",
+    branchStaffLabels: [
+      "Branch Admin",
+      "Registrar",
+      "Teacher",
+      "Finance Officer",
+      "Librarian",
+      "HR Officer",
+    ],
+    gradeBandsHeading: "Grade bands",
+    academicLayers: [
+      { label: "Grade bands", detail: "KG · Primary 1–5 · Junior 6–8 · Senior 9–12" },
+      { label: "Classes", detail: "Sections per branch & academic year" },
+      { label: "Homeroom", detail: "One teacher per section" },
+      { label: "Students", detail: "Roster, attendance, assessments" },
+    ],
+    familyPortalsHeading: "Family portals",
+    familyRoles: [
+      { label: "Parent", description: "Fees, results, attendance for linked children" },
+      { label: "Student", description: "Personal timetable, grades, announcements" },
+    ],
+    orgMapPrefix: "Signed-in admins can view the",
+    orgMapLink: "live organization map",
+  },
+  portals: {
+    eyebrow: "Portals",
+    title: "Each role opens the tools they need",
+    lead: "After sign-in, users land in a workspace matched to their job — registrar, teacher, parent, and so on.",
+    centralOfficeHeading: "Central office",
+    branchStaffHeading: "Branch staff",
+    familiesHeading: "Families",
+    central: {
+      label: "Super Admin",
+      description: "Central office — all branches, settings, audit",
+    },
+    branchStaff: [
+      { label: "Branch Admin", description: "Branch KPIs, staff, classes, registrar approvals" },
+      { label: "Registrar", description: "Enroll students, staff, and parent accounts" },
+      { label: "Teacher", description: "Grading, weekly attendance, class rosters" },
+      { label: "Finance Officer", description: "Semester fees, payments, financial reports" },
+      { label: "Librarian", description: "Catalog, issue/return, fines" },
+      { label: "HR Officer", description: "Employees, payroll, leave, recruitment" },
+    ],
+    family: [
+      { label: "Parent", description: "Fees, results, attendance for linked children" },
+      { label: "Student", description: "Personal timetable, grades, announcements" },
+    ],
+    registerPrefix: "New staff?",
+    registerLink: "Apply through your school's registration page",
+  },
+  programs: {
+    eyebrow: "Programs",
+    title: "KG through Grade 12",
+    lead: "One platform that adapts to each stage — from kindergarten routines to senior transcripts.",
+    items: [
+      {
+        title: "Kindergarten",
+        grades: "KG",
+        desc: "Simple routines, picture books, and early progress parents can follow.",
+      },
+      {
+        title: "Primary",
+        grades: "Grades 1–5",
+        desc: "Subject grading, reading habits, and parent updates in English and Amharic.",
+      },
+      {
+        title: "Junior High",
+        grades: "Grades 6–8",
+        desc: "Assessment trends and attendance follow-up before gaps widen.",
+      },
+      {
+        title: "Senior High",
+        grades: "Grades 9–12",
+        desc: "Streams, exam prep, transcripts, GPA, and graduation reporting.",
+      },
+    ],
+  },
+  modules: {
+    eyebrow: "Modules",
+    title: "One student record, every department",
+    lead: "Academic, attendance, finance, library, and HR teams work from the same data — not separate spreadsheets.",
+    items: [
+      {
+        id: "academic",
+        title: "Academic",
+        description: "KG–12 teaching & assessment",
+        items: ["Weighted grading", "Report cards", "GPA & transcripts"],
+      },
+      {
+        id: "attendance",
+        title: "Attendance",
+        description: "Daily & weekly tracking",
+        items: ["Weekly sheet", "Daily summary", "Parent visibility"],
+      },
+      {
+        id: "finance",
+        title: "Finance",
+        description: "Tuition & collections",
+        items: ["Semester fees", "Payment plans", "Outstanding balance"],
+      },
+      {
+        id: "library",
+        title: "Library",
+        description: "Resources & circulation",
+        items: ["Catalog", "Issue / return", "Fines"],
+      },
+      {
+        id: "analytics",
+        title: "Analytics",
+        description: "Early warning & leadership insight",
+        items: ["At-risk flags", "Dropout warning", "Intervention suggestions"],
+      },
+      {
+        id: "communication",
+        title: "Communication",
+        description: "Family-ready updates in English & Amharic",
+        items: ["Parent drafts", "English & Amharic content", "WhatsApp / Telegram"],
+      },
+      {
+        id: "assistive-tools",
+        title: "Helpful tools",
+        description: "Optional assistants for staff and students",
+        items: [
+          "Study companion for students",
+          "Lesson planning drafts for teachers",
+          "Monthly school summaries for leadership",
+          "Parent message drafts (English & Amharic)",
+          "Early alerts from grades and attendance",
+        ],
+      },
+      {
+        id: "registrar",
+        title: "Registrar",
+        description: "Student records and onboarding",
+        items: ["Enrollment", "ID cards", "Transcript export"],
+      },
+      {
+        id: "hr",
+        title: "Human resources",
+        description: "People operations for schools",
+        items: ["Payroll", "Leave", "Recruitment"],
+      },
+      {
+        id: "security",
+        title: "Security",
+        description: "Role-based system protection",
+        items: ["NextAuth", "RBAC", "Audit logs"],
+      },
+    ],
+  },
+  pricing: {
+    eyebrow: "Pricing",
+    title: "Plans that fit your school",
+    lead: "Register online — pay 30 ETB per student after approval to activate your workspace and branches.",
+    recommended: "Recommended",
+    plans: [
+      {
+        name: "Starter",
+        tagline: "Single school getting organized",
+        price: "30 ETB",
+        priceNote: "per student / month after approval",
+        ctaHref: "/register/school",
+        features: [
+          "1 branch to start, add more anytime",
+          "Academics, attendance & report cards",
+          "Parent & student portals",
+          "Email support",
+        ],
+        cta: "Register your school",
+      },
+      {
+        name: "Growth",
+        tagline: "Multi-branch schools",
+        price: "30 ETB",
+        priceNote: "per student · scales with enrollment",
+        highlighted: true,
+        ctaHref: "/register/school",
+        features: [
+          "Unlimited branches after activation",
+          "Finance, library & HR modules",
+          "Study companion & message drafts (English & Amharic)",
+          "Leadership dashboards & audit logs",
+          "Priority onboarding & support",
+        ],
+        cta: "Register your school",
+      },
+      {
+        name: "Enterprise",
+        tagline: "Networks & ministries",
+        price: "Custom",
+        priceNote: "dedicated deployment",
+        features: [
+          "Everything in Growth",
+          "Dedicated environment",
+          "Custom integrations & exports",
+          "Staff training included",
+          "Account manager",
+        ],
+        cta: "Contact us",
+      },
+    ],
+  },
+  cta: {
+    eyebrow: "Next step",
+    title: "See if EduSync fits your school",
+    lead: "We'll walk you through the portals, answer setup questions, and share pricing for your branch count and student size.",
+    signIn: "Sign in",
+    contactUs: "Contact us",
+  },
+  footer: {
+    tagline: "Entro Ethiopia",
+    description:
+      "School management for KG–12 — enrollment, academics, finance, library, HR, and family portals in one secure system.",
+    location: "Designed and built in Ethiopia",
+    linksHeading: "Links",
+    signIn: "Sign in",
+    staffRegistration: "Staff registration",
+    pricing: "Pricing",
+    modules: "Modules",
+    contactHeading: "Contact",
+    contactLabels: { website: "Website", phone: "Phone", email: "Email" },
+    copyright: "EduSync SMS · Entro Ethiopia Software Development PLC. All rights reserved.",
+    terms: "Terms",
+    privacy: "Privacy",
+  },
+};

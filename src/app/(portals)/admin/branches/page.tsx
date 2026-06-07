@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { PortalShell } from "@/components/layout/portal-shell";
+import { CreateBranchForm } from "@/components/admin/create-branch-form";
 import { ADMIN_NAV } from "@/lib/nav/admin-nav";
+import { getOrganizationScope } from "@/lib/auth/organization-scope";
 import { getBranchesOverview } from "@/lib/services/admin";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -12,16 +14,26 @@ export default async function AdminBranchesPage() {
   const session = await auth();
   if (!session?.user || session.user.role !== "SUPER_ADMIN") redirect("/login");
 
-  const branches = await getBranchesOverview();
+  const orgScope = getOrganizationScope(session.user);
+  const branches = await getBranchesOverview(orgScope);
+  const canCreateBranches = Boolean(orgScope);
 
   return (
     <PortalShell title="Super Admin" subtitle="Branch management" nav={ADMIN_NAV}>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-900">Branches</h1>
         <p className="text-slate-500">
-          All school branches — enrollment, staff, and academic year per location.
+          {canCreateBranches
+            ? "Manage campuses under your school organization."
+            : "All school branches — enrollment, staff, and academic year per location."}
         </p>
       </div>
+
+      {canCreateBranches && (
+        <div className="mb-8">
+          <CreateBranchForm />
+        </div>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2">
         {branches.map((b) => (

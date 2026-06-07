@@ -1,7 +1,36 @@
-import { PaymentStatus } from "@prisma/client";
+import { ChapaTransactionStatus, PaymentStatus } from "@prisma/client";
 import { PAYMENT_PROOF_STATUS } from "@/lib/finance/payment-proof-constants";
+import { buildFeePaymentReceipt } from "@/lib/services/fee-receipts";
 import { prisma } from "@/lib/prisma";
 import { formatSemesterLabel } from "@/lib/semester-fees";
+
+const receiptProofSelect = {
+  id: true,
+  amount: true,
+  reference: true,
+  status: true,
+  reviewedAt: true,
+  createdAt: true,
+} as const;
+
+const receiptChapaSelect = {
+  id: true,
+  txRef: true,
+  chapaRefId: true,
+  amount: true,
+  status: true,
+  completedAt: true,
+  createdAt: true,
+} as const;
+
+function isPendingChapa(
+  rows: { status: ChapaTransactionStatus; createdAt: Date }[]
+) {
+  const hourAgo = new Date(Date.now() - 60 * 60 * 1000);
+  return rows.some(
+    (row) => row.status === ChapaTransactionStatus.PENDING && row.createdAt >= hourAgo
+  );
+}
 
 export async function getStudentFees(userId: string) {
   const student = await prisma.student.findUnique({
@@ -15,10 +44,10 @@ export async function getStudentFees(userId: string) {
     include: {
       academicYear: { select: { name: true } },
       feeStructure: { select: { name: true } },
-      proofs: {
-        where: { status: PAYMENT_PROOF_STATUS.PENDING_REVIEW },
-        take: 1,
-        select: { id: true },
+      proofs: { select: receiptProofSelect },
+      chapaTransactions: {
+        select: receiptChapaSelect,
+        orderBy: { createdAt: "desc" },
       },
     },
     orderBy: [{ academicYear: { startDate: "desc" } }, { term: "asc" }],
@@ -36,22 +65,31 @@ export async function getStudentFees(userId: string) {
     totalPaid += paidAmount;
     if (p.status !== PaymentStatus.PAID) outstanding += balance;
 
+    const feeName = `${formatSemesterLabel(p.term)} · ${p.academicYear.name}${
+      p.feeStructure?.name ? ` · ${p.feeStructure.name}` : ""
+    }`;
+    const pendingProof = p.proofs.some((proof) => proof.status === PAYMENT_PROOF_STATUS.PENDING_REVIEW);
+    const pendingChapa = isPendingChapa(p.chapaTransactions);
+
     return {
       id: p.id,
-      name: `${formatSemesterLabel(p.term)} · ${p.academicYear.name}${
-        p.feeStructure?.name ? ` · ${p.feeStructure.name}` : ""
-      }`,
+      name: feeName,
       amount,
       paidAmount,
       outstanding: balance,
       status: p.status,
       dueDate: p.dueDate?.toISOString() ?? null,
+      paidAt: p.paidAt?.toISOString() ?? null,
       paidChannel: p.paidChannel,
-      pendingProof: p.proofs.length > 0,
+      reference: p.reference,
+      pendingProof,
+      pendingChapa,
       canPayOnline:
         balance > 0 &&
         p.status !== PaymentStatus.PAID &&
-        p.proofs.length === 0,
+        !pendingProof &&
+        !pendingChapa,
+      receipt: buildFeePaymentReceipt(p, feeName),
     };
   });
 

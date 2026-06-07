@@ -2,6 +2,23 @@
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Premium palette — ink · parchment · teal (3 colors only) */
+  --color-premium-ink: #0c1222;
+  --color-premium-canvas: #f7f5f0;
+  --color-premium-accent: #0d6960;
+
+  /* Portal shell — dark sidebar · light canvas */
+  --color-portal-sidebar: #05192d;
+  --color-portal-sidebar-text: rgb(255 255 255 / 0.78);
+  --color-portal-sidebar-muted: rgb(255 255 255 / 0.45);
+  --color-portal-sidebar-hover: rgb(255 255 255 / 0.08);
+  --color-portal-sidebar-active: rgb(255 255 255 / 0.14);
+  --color-portal-canvas: #f5f7f8;
+
+  --shadow-premium-sm: 0 1px 2px rgb(12 18 34 / 0.04), 0 4px 16px rgb(12 18 34 / 0.06);
+  --shadow-premium-md: 0 4px 6px rgb(12 18 34 / 0.04), 0 12px 40px rgb(12 18 34 / 0.08);
+  --shadow-premium-lg: 0 8px 24px rgb(12 18 34 / 0.06), 0 24px 64px rgb(12 18 34 / 0.1);
 }
 
 html {
@@ -11,4 +28,65 @@ html {
 body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  color: var(--color-premium-ink);
+  background-color: var(--color-premium-canvas);
+}
+
+/* Premium marketing utilities */
+.marketing-card {
+  border-radius: 1rem;
+  border: 1px solid rgb(12 18 34 / 0.08);
+  background: #fff;
+  box-shadow: var(--shadow-premium-sm);
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.marketing-card:hover {
+  border-color: rgb(13 105 96 / 0.25);
+  box-shadow: var(--shadow-premium-md);
+  transform: translateY(-2px);
+}
+
+.marketing-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.625rem;
+  background: var(--color-premium-accent);
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  box-shadow: 0 4px 14px rgb(13 105 96 / 0.35);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.marketing-btn-primary:hover {
+  background: #0a524b;
+  box-shadow: 0 6px 20px rgb(13 105 96 / 0.4);
+  transform: translateY(-1px);
+}
+
+.marketing-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.625rem;
+  border: 1px solid rgb(12 18 34 / 0.12);
+  background: #fff;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-premium-ink);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.marketing-btn-ghost:hover {
+  border-color: rgb(13 105 96 / 0.4);
+  background: rgb(13 105 96 / 0.04);
 }

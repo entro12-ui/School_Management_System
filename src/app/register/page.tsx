@@ -10,16 +10,16 @@ export default async function RegisterPage() {
   const branches = await getPublicBranches();
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white">
-              <GraduationCap className="h-5 w-5" />
+    <div className="min-h-screen bg-premium-canvas">
+      <header className="border-b border-premium-ink/8 bg-white/90 backdrop-blur-sm">
+        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3.5">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-premium-accent text-white">
+              <GraduationCap className="h-5 w-5" strokeWidth={1.75} />
             </div>
-            <span className="font-semibold text-slate-900">EduSync SMS</span>
+            <span className="font-semibold text-premium-ink">EduSync SMS</span>
           </Link>
-          <Link href="/login" className="text-sm text-indigo-600 hover:underline">
+          <Link href="/login" className="text-sm font-medium text-premium-accent hover:underline">
             Sign in
           </Link>
         </div>
@@ -30,18 +30,25 @@ export default async function RegisterPage() {
           title="Registrar office application"
           description="Students, teachers, and other roles are enrolled by the registrar office — not self-registered online."
         >
-          <div className="mb-6 space-y-3 rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600">
+          <div className="mb-6 space-y-3 rounded-xl border border-premium-ink/8 bg-white p-5 text-sm text-premium-ink/65 shadow-[var(--shadow-premium-sm)]">
             <p>
-              <strong>Already have an account?</strong> Sign in with the one-time password from
-              your branch, then set your permanent password.
+              <strong className="text-premium-ink">Already have an account?</strong> Sign in with
+              the one-time password from your branch, then set your permanent password.
             </p>
             <p>
-              <strong>Registrar office</strong> — use the form below. Approved by branch or super
-              admin.
+              <strong className="text-premium-ink">New school?</strong>{" "}
+              <Link href="/register/school" className="font-medium text-premium-accent hover:underline">
+                Register your school on EduSync SMS
+              </Link>{" "}
+              — pay 30 ETB per student after approval.
             </p>
             <p>
-              <strong>HR Manager</strong> —{" "}
-              <Link href="/register/hr-manager" className="font-medium text-indigo-600 hover:underline">
+              <strong className="text-premium-ink">Registrar office</strong> — use the form below.
+              Approved by branch or super admin.
+            </p>
+            <p>
+              <strong className="text-premium-ink">HR Manager</strong> —{" "}
+              <Link href="/register/hr-manager" className="font-medium text-premium-accent hover:underline">
                 apply here
               </Link>{" "}
               (online registration, then approval).

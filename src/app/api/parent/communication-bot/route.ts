@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import {
-  PARENT_COMMUNICATION_LANGUAGES,
+  isParentCommunicationContentLanguage,
+  PARENT_COMMUNICATION_CONTENT_LANGUAGES,
   PARENT_COMMUNICATION_MESSAGE_TYPES,
   PARENT_COMMUNICATION_TONES,
-  type ParentCommunicationLanguage,
   type ParentCommunicationMessageType,
   type ParentCommunicationTone,
 } from "@/lib/parent-communication";
@@ -19,8 +19,8 @@ function isMessageType(value: string): value is ParentCommunicationMessageType {
   return (PARENT_COMMUNICATION_MESSAGE_TYPES as readonly string[]).includes(value);
 }
 
-function isLanguage(value: string): value is ParentCommunicationLanguage {
-  return (PARENT_COMMUNICATION_LANGUAGES as readonly string[]).includes(value);
+function isLanguage(value: string) {
+  return isParentCommunicationContentLanguage(value);
 }
 
 function isTone(value: string): value is ParentCommunicationTone {
@@ -48,7 +48,7 @@ export async function GET() {
     return NextResponse.json({
       ...context,
       stats: {
-        multilingualSupport: 3,
+        contentLanguages: PARENT_COMMUNICATION_CONTENT_LANGUAGES.length,
         workloadReduction: "~40%",
         draftTypes: PARENT_COMMUNICATION_MESSAGE_TYPES.length,
       },

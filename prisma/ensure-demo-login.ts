@@ -32,6 +32,13 @@ type DemoUser = {
 
 const DEMO_USERS: DemoUser[] = [
   {
+    email: "platform@entroethiopia.com",
+    firstName: "Platform",
+    lastName: "Owner",
+    role: UserRole.PLATFORM_ADMIN,
+    branchId: null,
+  },
+  {
     email: "superadmin@school.et",
     firstName: "Central",
     lastName: "Administrator",

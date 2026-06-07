@@ -1,4 +1,4 @@
-import { PaymentStatus, UserRole } from "@prisma/client";
+import { PaymentStatus, UserRole, ChapaTransactionStatus } from "@prisma/client";
 import {
   PAYMENT_PROOF_STATUS,
   type PaymentProofStatusValue,
@@ -126,6 +126,21 @@ export async function assertCanSubmitForPayment(
     return {
       ok: false,
       error: "A payment receipt is already awaiting finance review for this semester.",
+    };
+  }
+
+  const pendingChapa = await prisma.chapaTransaction.findFirst({
+    where: {
+      paymentId,
+      status: ChapaTransactionStatus.PENDING,
+      createdAt: { gte: new Date(Date.now() - 60 * 60 * 1000) },
+    },
+  });
+  if (pendingChapa) {
+    return {
+      ok: false,
+      error:
+        "A Chapa checkout is in progress for this semester. Complete it or wait before trying again.",
     };
   }
 

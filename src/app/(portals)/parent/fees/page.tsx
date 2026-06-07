@@ -1,9 +1,14 @@
+import { Suspense } from "react";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { ChildTabs } from "@/components/parent/child-tabs";
 import { NoChildrenMessage } from "@/components/parent/no-children";
-import { PaymentProofSubmitForm } from "@/components/fees/payment-proof-submit-form";
+import { ChapaPaymentReturnHandler } from "@/components/fees/chapa-payment-return-handler";
+import { CancelChapaCheckoutButton } from "@/components/fees/cancel-chapa-checkout-button";
+import { FeePaymentReceiptCard } from "@/components/fees/fee-payment-receipt";
+import { OnlinePaymentOptions } from "@/components/fees/online-payment-options";
 import { ParentFeesTable } from "@/components/parent/parent-fees-table";
 import { auth } from "@/lib/auth";
+import { isChapaConfigured } from "@/lib/chapa/config";
 import { PARENT_NAV } from "@/lib/nav/parent-nav";
 import {
   getChildFeesForParent,
@@ -40,6 +45,8 @@ export default async function ParentFeesPage({
   if (!child) redirect("/parent/fees");
 
   const { payments, totals } = await getChildFeesForParent(child.id);
+  const chapaEnabled = isChapaConfigured();
+  const returnPath = `/parent/fees?childId=${child.id}`;
 
   return (
     <PortalShell
@@ -49,9 +56,15 @@ export default async function ParentFeesPage({
     >
       <h1 className="mb-2 text-2xl font-bold text-slate-900">Fees & payments</h1>
       <p className="mb-6 text-slate-500">
-        Pay online and upload a bank receipt for finance to approve, or pay cash at the school
+        Pay with Chapa, upload a bank receipt for finance to approve, or pay cash at the school
         office. Semester 2 opens after Semester 1 is fully paid.
       </p>
+
+      <Suspense fallback={null}>
+        <div className="mb-6">
+          <ChapaPaymentReturnHandler />
+        </div>
+      </Suspense>
 
       <ChildTabs linkedChildren={children} activeChildId={child.id} basePath="/parent/fees" />
 
@@ -90,13 +103,31 @@ export default async function ParentFeesPage({
                   <p className="text-xs text-slate-500">
                     Outstanding {formatCurrency(p.outstanding)}
                   </p>
-                  <PaymentProofSubmitForm
+                  {p.pendingChapa && (
+                    <div className="mt-2 rounded-lg bg-indigo-50 px-3 py-2 text-xs text-indigo-800">
+                      <p>Chapa checkout in progress for this invoice.</p>
+                      <CancelChapaCheckoutButton paymentId={p.id} />
+                    </div>
+                  )}
+                  <OnlinePaymentOptions
                     paymentId={p.id}
                     feeName={p.name}
                     outstanding={p.outstanding}
+                    returnPath={returnPath}
+                    chapaEnabled={chapaEnabled}
                   />
                 </article>
               ))}
+            {payments
+              .filter((p) => p.status === "PAID" || p.paidAmount > 0)
+              .map((p) => (
+                <FeePaymentReceiptCard
+                  key={`receipt-${p.id}`}
+                  receipt={p.receipt}
+                  studentName={`${child.firstName} ${child.lastName}`}
+                />
+              ))}
+
             {payments.some((p) => p.pendingProof) && (
               <p className="rounded-lg bg-amber-50 px-4 py-2 text-sm text-amber-800">
                 A payment receipt is awaiting finance review. You will be notified when it is
@@ -113,6 +144,9 @@ export default async function ParentFeesPage({
               paidAmount: p.paidAmount,
               status: p.status,
               dueDate: p.dueDate?.toISOString() ?? null,
+              paidAt: p.paidAt?.toISOString() ?? null,
+              reference: p.reference,
+              paidChannel: p.paidChannel,
               scholarship: p.scholarship,
             }))}
           />

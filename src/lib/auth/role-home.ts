@@ -1,5 +1,6 @@
 /** Portal home paths by role — edge-safe (no Prisma import). */
 export const ROLE_HOME: Record<string, string> = {
+  PLATFORM_ADMIN: "/platform",
   SUPER_ADMIN: "/admin",
   BRANCH_ADMIN: "/branch",
   REGISTRAR: "/registrar",

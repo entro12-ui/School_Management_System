@@ -1,5 +1,6 @@
-import { PaymentStatus } from "@prisma/client";
+import { ChapaTransactionStatus, PaymentStatus } from "@prisma/client";
 import { PAYMENT_PROOF_STATUS } from "@/lib/finance/payment-proof-constants";
+import { buildFeePaymentReceipt } from "@/lib/services/fee-receipts";
 import { prisma } from "@/lib/prisma";
 import { formatGradeLevel } from "@/lib/grade-utils";
 import { formatSemesterLabel } from "@/lib/semester-fees";
@@ -130,9 +131,26 @@ export async function getChildFeesForParent(studentId: string) {
       feeStructure: { select: { name: true } },
       academicYear: { select: { name: true } },
       proofs: {
-        where: { status: PAYMENT_PROOF_STATUS.PENDING_REVIEW },
-        take: 1,
-        select: { id: true },
+        select: {
+          id: true,
+          amount: true,
+          reference: true,
+          status: true,
+          reviewedAt: true,
+          createdAt: true,
+        },
+      },
+      chapaTransactions: {
+        select: {
+          id: true,
+          txRef: true,
+          chapaRefId: true,
+          amount: true,
+          status: true,
+          completedAt: true,
+          createdAt: true,
+        },
+        orderBy: { createdAt: "desc" },
       },
     },
     orderBy: [{ academicYear: { startDate: "desc" } }, { term: "asc" }],
@@ -141,6 +159,7 @@ export async function getChildFeesForParent(studentId: string) {
   let totalDue = 0;
   let totalPaid = 0;
   let outstanding = 0;
+  const hourAgo = new Date(Date.now() - 60 * 60 * 1000);
 
   for (const p of payments) {
     const amount = Number(p.amount);
@@ -157,11 +176,20 @@ export async function getChildFeesForParent(studentId: string) {
       const amount = Number(p.amount);
       const paidAmount = Number(p.paidAmount);
       const outstanding = Math.max(0, amount - paidAmount);
+      const feeName = `${formatSemesterLabel(p.term)} · ${p.academicYear.name}${
+        p.feeStructure?.name ? ` · ${p.feeStructure.name}` : ""
+      }`;
+      const pendingProof = p.proofs.some(
+        (proof) => proof.status === PAYMENT_PROOF_STATUS.PENDING_REVIEW
+      );
+      const pendingChapa = p.chapaTransactions.some(
+        (row) =>
+          row.status === ChapaTransactionStatus.PENDING && row.createdAt >= hourAgo
+      );
+
       return {
         id: p.id,
-        name: `${formatSemesterLabel(p.term)} · ${p.academicYear.name}${
-          p.feeStructure?.name ? ` · ${p.feeStructure.name}` : ""
-        }`,
+        name: feeName,
         amount,
         paidAmount,
         outstanding,
@@ -172,11 +200,14 @@ export async function getChildFeesForParent(studentId: string) {
         scholarship: p.scholarship,
         reference: p.reference,
         term: p.term,
-        pendingProof: p.proofs.length > 0,
+        pendingProof,
+        pendingChapa,
         canPayOnline:
           outstanding > 0 &&
           p.status !== PaymentStatus.PAID &&
-          p.proofs.length === 0,
+          !pendingProof &&
+          !pendingChapa,
+        receipt: buildFeePaymentReceipt(p, feeName),
       };
     }),
     totals: { totalDue, totalPaid, outstanding },

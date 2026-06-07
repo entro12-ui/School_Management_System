@@ -1,8 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { RegistrationRole, RegistrationStatus, UserRole } from "@prisma/client";
+import { getOrganizationScope } from "@/lib/auth/organization-scope";
 
-export async function getBranchesOverview() {
+export async function getBranchesOverview(organizationId?: string) {
   const branches = await prisma.branch.findMany({
+    where: organizationId ? { organizationId } : undefined,
     orderBy: { name: "asc" },
     include: {
       _count: {
@@ -48,15 +50,25 @@ export async function getAuditLogs(limit = 200) {
   });
 }
 
-export async function getAdminSummary() {
+export async function getAdminSummary(user?: { role: UserRole; organizationId?: string | null }) {
+  const orgScope = user ? getOrganizationScope(user) : undefined;
+  const branchFilter = orgScope ? { organizationId: orgScope, isActive: true } : { isActive: true };
+
   const [branches, users, auditCount, pendingRegistrations] = await Promise.all([
-    prisma.branch.count({ where: { isActive: true } }),
-    prisma.user.count({ where: { isActive: true, role: { not: UserRole.SUPER_ADMIN } } }),
-    prisma.auditLog.count(),
+    prisma.branch.count({ where: branchFilter }),
+    prisma.user.count({
+      where: {
+        isActive: true,
+        role: { notIn: [UserRole.SUPER_ADMIN, UserRole.PLATFORM_ADMIN] },
+        ...(orgScope ? { organizationId: orgScope } : {}),
+      },
+    }),
+    prisma.auditLog.count(orgScope ? { where: { branch: { organizationId: orgScope } } } : undefined),
     prisma.registrationRequest.count({
       where: {
         status: RegistrationStatus.PENDING,
         role: { in: [RegistrationRole.REGISTRAR, RegistrationRole.HR_MANAGER] },
+        ...(orgScope ? { branch: { organizationId: orgScope } } : {}),
       },
     }),
   ]);

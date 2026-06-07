@@ -6,6 +6,7 @@ import { fullName } from "@/lib/utils";
 export type StudentRiskLevel = "critical" | "high" | "moderate" | "stable";
 
 export type StudentPerformanceRisk = {
+  watchRank: number;
   studentId: string;
   studentCode: string;
   studentName: string;
@@ -178,125 +179,168 @@ function buildInterventions(risk: {
   return suggestions.slice(0, 4);
 }
 
-export async function getStudentPerformanceAnalytics(): Promise<StudentPerformanceAnalytics> {
+type StudentRiskSource = {
+  id: string;
+  studentId: string;
+  firstName: string;
+  lastName: string;
+  gradeLevel: number;
+  branch: { name: string };
+  class: { name: string } | null;
+  grades: Array<{
+    score: number;
+    assessment: { date: Date; maxScore: number };
+  }>;
+  attendance: Array<{ status: AttendanceStatus }>;
+};
+
+function getStudentRiskInclude() {
   const gradeSince = daysAgo(GRADE_WINDOW_DAYS);
   const attendanceSince = daysAgo(ATTENDANCE_WINDOW_DAYS);
 
+  return {
+    branch: { select: { name: true } },
+    class: { select: { name: true } },
+    grades: {
+      where: { assessment: { date: { gte: gradeSince } } },
+      orderBy: [{ assessment: { date: "asc" as const } }, { createdAt: "asc" as const }],
+      take: 16,
+      include: {
+        assessment: {
+          select: {
+            date: true,
+            maxScore: true,
+          },
+        },
+      },
+    },
+    attendance: {
+      where: { date: { gte: attendanceSince } },
+      select: { status: true },
+      orderBy: { date: "asc" as const },
+      take: 80,
+    },
+  };
+}
+
+function computeStudentPerformanceRisk(student: StudentRiskSource): StudentPerformanceRisk {
+  const gradePercents = student.grades
+    .filter((grade) => grade.assessment.maxScore > 0)
+    .map((grade) => Math.round((grade.score / grade.assessment.maxScore) * 100));
+
+  const averagePercent = average(gradePercents);
+  const midpoint = Math.floor(gradePercents.length / 2);
+  const olderAverage = average(gradePercents.slice(0, midpoint));
+  const recentAverage = average(gradePercents.slice(midpoint));
+  const gradeTrend =
+    olderAverage != null && recentAverage != null ? recentAverage - olderAverage : null;
+
+  const presentCount = student.attendance.filter(
+    (record) =>
+      record.status === AttendanceStatus.PRESENT ||
+      record.status === AttendanceStatus.LATE ||
+      record.status === AttendanceStatus.EXCUSED
+  ).length;
+  const absences = student.attendance.filter(
+    (record) => record.status === AttendanceStatus.ABSENT
+  ).length;
+  const lateArrivals = student.attendance.filter(
+    (record) => record.status === AttendanceStatus.LATE
+  ).length;
+  const attendanceRate =
+    student.attendance.length > 0
+      ? Math.round((presentCount / student.attendance.length) * 100)
+      : null;
+
+  const dropoutWarning =
+    (attendanceRate != null && attendanceRate < 75 && absences >= 4) ||
+    (attendanceRate != null &&
+      attendanceRate < 85 &&
+      averagePercent != null &&
+      averagePercent < 60) ||
+    (gradeTrend != null && gradeTrend <= -15 && attendanceRate != null && attendanceRate < 85);
+
+  const riskScore = clamp(
+    scoreAcademicRisk(averagePercent, gradeTrend) +
+      scoreAttendanceRisk(attendanceRate, absences, lateArrivals) +
+      (dropoutWarning ? 16 : 0)
+  );
+
+  const riskFactors = buildRiskFactors(
+    averagePercent,
+    attendanceRate,
+    absences,
+    lateArrivals,
+    gradeTrend
+  );
+
+  return {
+    watchRank: 0,
+    studentId: student.id,
+    studentCode: student.studentId,
+    studentName: fullName(student.firstName, student.lastName),
+    branchName: student.branch.name,
+    className: student.class?.name ?? "Unassigned",
+    gradeLabel: formatGradeLevel(student.gradeLevel),
+    riskLevel: classifyRisk(riskScore),
+    riskScore,
+    averagePercent,
+    attendanceRate,
+    absences,
+    lateArrivals,
+    gradeTrend,
+    trendLabel: buildTrendLabel(gradeTrend),
+    attendanceCorrelation: buildCorrelationInsight(
+      averagePercent,
+      attendanceRate,
+      gradeTrend
+    ),
+    dropoutWarning,
+    riskFactors,
+    interventions: buildInterventions({
+      averagePercent,
+      attendanceRate,
+      absences,
+      gradeTrend,
+      dropoutWarning,
+    }),
+  };
+}
+
+export async function getStudentPerformanceRiskById(
+  studentId: string,
+  options?: { branchId?: string }
+): Promise<StudentPerformanceRisk | null> {
+  const student = await prisma.student.findFirst({
+    where: {
+      id: studentId,
+      isActive: true,
+      ...(options?.branchId ? { branchId: options.branchId } : {}),
+    },
+    include: getStudentRiskInclude(),
+  });
+
+  if (!student) return null;
+  return computeStudentPerformanceRisk(student as unknown as StudentRiskSource);
+}
+
+export async function getStudentPerformanceAnalytics(): Promise<StudentPerformanceAnalytics> {
   const students = await prisma.student.findMany({
     where: { isActive: true },
     take: REVIEW_LIMIT,
     orderBy: [{ branch: { name: "asc" } }, { gradeLevel: "asc" }, { lastName: "asc" }],
-    include: {
-      branch: { select: { name: true } },
-      class: { select: { name: true } },
-      grades: {
-        where: { assessment: { date: { gte: gradeSince } } },
-        orderBy: [{ assessment: { date: "asc" } }, { createdAt: "asc" }],
-        take: 16,
-        include: {
-          assessment: {
-            select: {
-              date: true,
-              maxScore: true,
-            },
-          },
-        },
-      },
-      attendance: {
-        where: { date: { gte: attendanceSince } },
-        select: { status: true },
-        orderBy: { date: "asc" },
-        take: 80,
-      },
-    },
+    include: getStudentRiskInclude(),
   });
 
-  const riskRows = students.map<StudentPerformanceRisk>((student) => {
-    const gradePercents = student.grades
-      .filter((grade) => grade.assessment.maxScore > 0)
-      .map((grade) => Math.round((grade.score / grade.assessment.maxScore) * 100));
-
-    const averagePercent = average(gradePercents);
-    const midpoint = Math.floor(gradePercents.length / 2);
-    const olderAverage = average(gradePercents.slice(0, midpoint));
-    const recentAverage = average(gradePercents.slice(midpoint));
-    const gradeTrend =
-      olderAverage != null && recentAverage != null ? recentAverage - olderAverage : null;
-
-    const presentCount = student.attendance.filter(
-      (record) =>
-        record.status === AttendanceStatus.PRESENT ||
-        record.status === AttendanceStatus.LATE ||
-        record.status === AttendanceStatus.EXCUSED
-    ).length;
-    const absences = student.attendance.filter(
-      (record) => record.status === AttendanceStatus.ABSENT
-    ).length;
-    const lateArrivals = student.attendance.filter(
-      (record) => record.status === AttendanceStatus.LATE
-    ).length;
-    const attendanceRate =
-      student.attendance.length > 0
-        ? Math.round((presentCount / student.attendance.length) * 100)
-        : null;
-
-    const dropoutWarning =
-      (attendanceRate != null && attendanceRate < 75 && absences >= 4) ||
-      (attendanceRate != null &&
-        attendanceRate < 85 &&
-        averagePercent != null &&
-        averagePercent < 60) ||
-      (gradeTrend != null && gradeTrend <= -15 && attendanceRate != null && attendanceRate < 85);
-
-    const riskScore = clamp(
-      scoreAcademicRisk(averagePercent, gradeTrend) +
-        scoreAttendanceRisk(attendanceRate, absences, lateArrivals) +
-        (dropoutWarning ? 16 : 0)
-    );
-
-    const riskFactors = buildRiskFactors(
-      averagePercent,
-      attendanceRate,
-      absences,
-      lateArrivals,
-      gradeTrend
-    );
-
-    return {
-      studentId: student.id,
-      studentCode: student.studentId,
-      studentName: fullName(student.firstName, student.lastName),
-      branchName: student.branch.name,
-      className: student.class?.name ?? "Unassigned",
-      gradeLabel: formatGradeLevel(student.gradeLevel),
-      riskLevel: classifyRisk(riskScore),
-      riskScore,
-      averagePercent,
-      attendanceRate,
-      absences,
-      lateArrivals,
-      gradeTrend,
-      trendLabel: buildTrendLabel(gradeTrend),
-      attendanceCorrelation: buildCorrelationInsight(
-        averagePercent,
-        attendanceRate,
-        gradeTrend
-      ),
-      dropoutWarning,
-      riskFactors,
-      interventions: buildInterventions({
-        averagePercent,
-        attendanceRate,
-        absences,
-        gradeTrend,
-        dropoutWarning,
-      }),
-    };
-  });
+  const riskRows = students.map((student) =>
+    computeStudentPerformanceRisk(student as unknown as StudentRiskSource)
+  );
 
   riskRows.sort((left, right) => right.riskScore - left.riskScore);
 
-  const atRiskRows = riskRows.filter((row) => row.riskLevel !== "stable");
+  const atRiskRows = riskRows
+    .filter((row) => row.riskLevel !== "stable")
+    .map((row, index) => ({ ...row, watchRank: index + 1 }));
   const dropoutWarningCount = riskRows.filter((row) => row.dropoutWarning).length;
   const averageRiskScore =
     riskRows.length > 0
@@ -321,6 +365,6 @@ export async function getStudentPerformanceAnalytics(): Promise<StudentPerforman
       lowAttendanceLowGradeCount > 0
         ? `${lowAttendanceLowGradeCount} student(s) show both attendance and academic risk.`
         : "No strong system-wide attendance/grade risk cluster found.",
-    students: riskRows.slice(0, 8),
+    students: atRiskRows,
   };
 }
