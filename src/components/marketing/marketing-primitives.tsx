@@ -7,6 +7,10 @@ import { cn } from "@/lib/utils";
 export const landingPageWrapClass =
   "mx-auto w-full max-w-7.5xl px-6 sm:px-8 lg:px-4";
 
+/** Header only — wider than main content */
+export const landingHeaderWrapClass =
+  "mx-auto w-full max-w-8xl px-10 sm:px-8 lg:px-24";
+
 export function MarketingEyebrow({
   children,
   className,

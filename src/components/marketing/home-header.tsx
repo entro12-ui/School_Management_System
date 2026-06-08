@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { GraduationCap, Menu, X } from "lucide-react";
 import { LandingContentLanguageSelect } from "@/components/marketing/landing-content-language-select";
-import { landingPageWrapClass } from "@/components/marketing/marketing-primitives";
+import { landingHeaderWrapClass } from "@/components/marketing/marketing-primitives";
 import { useLandingLanguage } from "@/lib/marketing/landing-language-context";
 import { cn } from "@/lib/utils";
 
@@ -64,7 +64,7 @@ export function HomeHeader({
       <div
         className={cn(
           "relative z-10 grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 lg:grid-cols-[1fr_auto_1fr] lg:gap-6",
-          landingPageWrapClass,
+          landingHeaderWrapClass,
           scrolled ? "py-2.5" : "py-3.5"
         )}
       >
@@ -149,7 +149,7 @@ export function HomeHeader({
         aria-label="Mobile navigation"
         aria-hidden={!open}
       >
-        <div className={cn(landingPageWrapClass, "py-4")}>
+        <div className={cn(landingHeaderWrapClass, "py-4")}>
           <div className="mb-4">
             <LandingContentLanguageSelect compact />
           </div>

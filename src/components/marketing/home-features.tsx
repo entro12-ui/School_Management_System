@@ -3,6 +3,7 @@
 import {
   BarChart3,
   BookOpen,
+  Bot,
   ClipboardList,
   FileText,
   Library,
@@ -23,6 +24,7 @@ const MODULE_ICONS: Record<string, typeof BookOpen> = {
   library: Library,
   analytics: BarChart3,
   communication: MessageSquare,
+  ai: Bot,
   "assistive-tools": Sparkles,
   registrar: FileText,
   hr: Users,
@@ -46,16 +48,22 @@ export function HomeFeatures() {
         {modules.items.map((mod, i) => {
           const Icon = MODULE_ICONS[mod.id] ?? UserCheck;
           const featured = i === 0;
+          const isAi = mod.id === "ai";
 
           return (
             <article
               key={mod.id}
-              className={`marketing-card !p-5 ${featured ? "sm:col-span-2 lg:col-span-3 sm:!p-7" : ""}`}
+              className={`marketing-card !p-5 ${featured ? "sm:col-span-2 lg:col-span-3 sm:!p-7" : ""} ${isAi ? "ring-1 ring-premium-accent/25" : ""}`}
             >
               <div className={featured ? "sm:flex sm:gap-10" : ""}>
                 <div className={featured ? "sm:flex-1" : ""}>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-premium-accent/10">
-                    <Icon className="h-5 w-5 text-premium-accent" strokeWidth={1.75} />
+                  <div
+                    className={`flex h-10 w-10 items-center justify-center rounded-xl ${isAi ? "bg-gradient-to-br from-premium-accent to-premium-accent-deep" : "bg-premium-accent/10"}`}
+                  >
+                    <Icon
+                      className={`h-5 w-5 ${isAi ? "text-white" : "text-premium-accent"}`}
+                      strokeWidth={1.75}
+                    />
                   </div>
                   <h3 className="mt-4 text-base font-semibold text-premium-ink">{mod.title}</h3>
                   <p className="mt-1 text-sm text-premium-ink/50">{mod.description}</p>

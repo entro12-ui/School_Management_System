@@ -7,7 +7,7 @@ import { HomeStatsBar } from "@/components/marketing/home-stats-bar";
 import { HomeTrustStrip } from "@/components/marketing/home-trust-strip";
 import { HomePortalDemos } from "@/components/marketing/home-portal-demos";
 import { HomePlatformShowcase } from "@/components/marketing/home-platform-showcase";
-import { HomeHelpfulTools } from "@/components/marketing/home-helpful-tools";
+import { HomeAiCapabilities } from "@/components/marketing/home-ai-capabilities";
 import { HomePlatformCoverage } from "@/components/marketing/home-platform-coverage";
 import { HomeHowItWorks } from "@/components/marketing/home-how-it-works";
 import { HomeWorkflowSteps } from "@/components/marketing/home-workflow-steps";
@@ -48,7 +48,7 @@ export function HomeLandingShell({
           <HomePortalDemos />
           <HomePlatformShowcase />
           <HomeWorkflowSteps />
-          <HomeHelpfulTools />
+          <HomeAiCapabilities />
           <HomePlatformCoverage />
           <HomeHowItWorks />
           <HomePortalsGrid />

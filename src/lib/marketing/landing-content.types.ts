@@ -95,6 +95,13 @@ export type LandingContent = {
     }[];
     outcomes: { title: string; description: string }[];
   };
+  ai: {
+    eyebrow: string;
+    title: string;
+    titleHighlight: string;
+    lead: string;
+    capabilities: { title: string; description: string }[];
+  };
   tools: {
     eyebrow: string;
     title: string;

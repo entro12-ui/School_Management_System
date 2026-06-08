@@ -7,7 +7,8 @@ export const EN_CONTENT: LandingContent = {
       { href: "#overview", label: "Overview" },
       { href: "#demos", label: "Demos" },
       { href: "#experience", label: "Experience" },
-      { href: "#tools", label: "Tools" },
+      { href: "#ai", label: "AI" },
+      { href: "#coverage", label: "Coverage" },
       { href: "#portals", label: "Portals" },
       { href: "#features", label: "Modules" },
       { href: "#pricing", label: "Pricing" },
@@ -299,6 +300,39 @@ export const EN_CONTENT: LandingContent = {
       },
     ],
   },
+  ai: {
+    eyebrow: "AI-powered school support",
+    title: "Practical AI where it helps",
+    titleHighlight: "teachers, students, and leaders",
+    lead: "AI in EduSync SMS is a support layer — not a replacement for educators. Teachers plan faster, students get guided study help, leaders generate executive monthly reports, and staff draft clear parent messages. Your team always reviews before anything goes out.",
+    capabilities: [
+      {
+        title: "AI Study Tutor",
+        description:
+          "Student-facing tutor for guided explanations, learning help, and context-aware study conversations.",
+      },
+      {
+        title: "AI Lesson Planner",
+        description:
+          "Draft objectives, activities, assessments, and differentiated support by grade and subject — edit before you teach.",
+      },
+      {
+        title: "Performance analytics",
+        description:
+          "Grades and attendance combined to flag at-risk students early for homeroom follow-up.",
+      },
+      {
+        title: "AI monthly report",
+        description:
+          "Executive summaries combining enrollment, academics, attendance, finance, and branch performance.",
+      },
+      {
+        title: "Smart parent messages",
+        description:
+          "Tone-aware draft updates for progress, attendance alerts, and fee reminders — English and Amharic.",
+      },
+    ],
+  },
   tools: {
     eyebrow: "Tools",
     title: "Time saved — people stay in charge",
@@ -439,7 +473,7 @@ export const EN_CONTENT: LandingContent = {
   modules: {
     eyebrow: "Modules",
     title: "One student record, every department",
-    lead: "Academic, attendance, finance, library, and HR teams work from the same data — not separate spreadsheets.",
+    lead: "Academic, attendance, finance, library, HR, and AI — one student record every department shares.",
     items: [
       {
         id: "academic",
@@ -478,15 +512,15 @@ export const EN_CONTENT: LandingContent = {
         items: ["Parent drafts", "English & Amharic content", "WhatsApp / Telegram"],
       },
       {
-        id: "assistive-tools",
-        title: "Helpful tools",
-        description: "Optional assistants for staff and students",
+        id: "ai",
+        title: "AI",
+        description: "Optional assistants for students, teachers, and leadership",
         items: [
-          "Study companion for students",
-          "Lesson planning drafts for teachers",
-          "Monthly school summaries for leadership",
-          "Parent message drafts (English & Amharic)",
-          "Early alerts from grades and attendance",
+          "AI Study Tutor",
+          "AI Lesson Planner",
+          "Performance analytics & at-risk flags",
+          "AI monthly executive reports",
+          "Smart parent message drafts (English & Amharic)",
         ],
       },
       {
@@ -512,7 +546,7 @@ export const EN_CONTENT: LandingContent = {
   pricing: {
     eyebrow: "Pricing",
     title: "Plans that fit your school",
-    lead: "Register online — Starter includes your first month free. After that, pay 30 ETB per student per month to keep your workspace active.",
+    lead: "Register online — Starter includes your first month free at 30 ETB per student. Upgrade to Growth for full AI support at 50 ETB per student per month.",
     recommended: "Recommended",
     plans: [
       {
@@ -527,21 +561,26 @@ export const EN_CONTENT: LandingContent = {
           "1 branch to start, add more anytime",
           "Academics, attendance & report cards",
           "Parent & student portals",
+          "Finance, library & HR modules",
+          "Leadership dashboards & audit logs",
+          "Core modules — AI not included",
           "Email support",
         ],
         cta: "Start free for 1 month",
       },
       {
         name: "Growth",
-        tagline: "Multi-branch schools",
-        price: "30 ETB",
-        priceNote: "per student · scales with enrollment",
+        tagline: "Multi-branch schools with AI",
+        price: "50 ETB",
+        priceNote: "per student / month · includes AI",
         highlighted: true,
         ctaHref: "/register/school",
         features: [
+          "Everything in Starter",
+          "Full AI support — tutor, lesson planner & reports",
+          "Smart parent message drafts (English & Amharic)",
           "Unlimited branches after activation",
           "Finance, library & HR modules",
-          "Study companion & message drafts (English & Amharic)",
           "Leadership dashboards & audit logs",
           "Priority onboarding & support",
         ],
@@ -592,7 +631,7 @@ export const EN_CONTENT: LandingContent = {
       {
         question: "How does pricing work?",
         answer:
-          "Starter includes your first month free after approval. Growth and Enterprise plans are 30 ETB per student per month after activation, scaling with branches and enrollment.",
+          "Starter is 30 ETB per student per month after your free first month — core modules without AI. Growth is 50 ETB per student per month and includes full AI support. Enterprise is custom pricing for large networks.",
       },
       {
         question: "Is our data secure?",
