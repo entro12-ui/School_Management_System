@@ -5,7 +5,6 @@ import {
   BellRing,
   CalendarCheck,
   Check,
-  ChevronRight,
   FileText,
   GraduationCap,
   LineChart,
@@ -14,7 +13,7 @@ import {
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { MarketingSectionHeader } from "@/components/marketing/marketing-primitives";
+import { MarketingEyebrow, MarketingSectionHeader } from "@/components/marketing/marketing-primitives";
 import { useLandingLanguage } from "@/lib/marketing/landing-language-context";
 import type { LandingExperienceId } from "@/lib/marketing/landing-content.types";
 
@@ -43,105 +42,94 @@ export function HomePlatformShowcase() {
         eyebrow={experience.eyebrow}
         title={experience.title}
         lead={experience.lead}
+        centered
       />
 
-      <div className="mt-12 grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-        <div className="space-y-2">
+      <div className="landing-panel landing-panel-accent mt-10">
+        <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {experience.experiences.map((item) => {
             const Icon = EXPERIENCE_ICONS[item.id];
-            const activeTab = item.id === active.id;
+            const selected = item.id === active.id;
             return (
               <button
                 key={item.id}
                 type="button"
+                aria-pressed={selected}
                 onClick={() => setActiveId(item.id)}
-                className={cn(
-                  "flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-all duration-200",
-                  activeTab
-                    ? "border-premium-accent/30 bg-white shadow-[var(--shadow-premium-sm)]"
-                    : "border-transparent bg-white/60 hover:border-premium-ink/10 hover:bg-white"
-                )}
+                className={cn("landing-demo-tab shrink-0", selected && "landing-demo-tab-active")}
               >
-                <span
-                  className={cn(
-                    "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors",
-                    activeTab ? "bg-premium-accent text-white" : "bg-premium-accent/10 text-premium-ink"
-                  )}
-                >
-                  <Icon className="h-5 w-5" strokeWidth={1.75} />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-semibold text-premium-ink">{item.label}</span>
-                  <span className="mt-0.5 block text-sm text-premium-ink/55">{item.title}</span>
-                </span>
-                <ChevronRight
-                  className={cn(
-                    "h-4 w-4 shrink-0 transition-colors",
-                    activeTab ? "text-premium-accent" : "text-premium-ink/25"
-                  )}
-                />
+                <Icon className="h-4 w-4" strokeWidth={1.75} />
+                {item.label}
               </button>
             );
           })}
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-premium-ink/8 bg-white shadow-[var(--shadow-premium-md)]">
-          <div className="border-b border-premium-accent/20 bg-premium-accent px-6 py-6 text-white sm:px-8">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-[0.14em] text-white/45">
+        <div className="mt-6 overflow-hidden rounded-xl border border-premium-ink/8 bg-white">
+          <div className="grid gap-4 border-b border-premium-ink/8 bg-gradient-to-r from-premium-accent to-premium-accent-deep p-5 text-white sm:grid-cols-[1fr_auto] sm:items-start sm:p-6">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/15">
+                  <ActiveIcon className="h-4 w-4" strokeWidth={1.75} />
+                </span>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/50">
                   {active.label}
                 </p>
-                <h3 className="mt-2 text-xl font-semibold leading-snug">{active.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/65">{active.description}</p>
               </div>
-              <div className="hidden rounded-xl bg-white/10 p-3 sm:block">
-                <ActiveIcon className="h-6 w-6" strokeWidth={1.75} />
-              </div>
+              <h3 className="mt-3 text-lg font-semibold leading-snug sm:text-xl">{active.title}</h3>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/70">{active.description}</p>
             </div>
-            <div className="mt-5 grid gap-2 sm:grid-cols-3">
+
+            <div className="flex flex-wrap gap-2 sm:max-w-[15rem] sm:justify-end">
               {active.metrics.map((metric) => (
                 <div
                   key={metric.label}
-                  className="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5"
+                  className="rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-center sm:min-w-[4.75rem]"
                 >
-                  <p className="text-[10px] uppercase tracking-wider text-white/40">{metric.label}</p>
-                  <p className="mt-0.5 text-sm font-medium">{metric.value}</p>
+                  <p className="text-[9px] font-medium uppercase tracking-wider text-white/45">
+                    {metric.label}
+                  </p>
+                  <p className="mt-0.5 text-xs font-semibold sm:text-sm">{metric.value}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="space-y-6 p-6 sm:p-8">
-            <div>
-              <p className="text-sm font-semibold text-premium-ink">{experience.inPractice}</p>
-              <ul className="mt-3 space-y-2.5">
-                {active.actions.map((action) => (
-                  <li key={action} className="flex gap-3 text-sm leading-relaxed text-premium-ink/70">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-premium-accent" strokeWidth={2.5} />
-                    {action}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="p-5 sm:p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-premium-ink/45">
+              {experience.inPractice}
+            </p>
+            <ul className="mt-3 grid gap-2 sm:grid-cols-3">
+              {active.actions.map((action) => (
+                <li
+                  key={action}
+                  className="flex gap-2.5 rounded-lg border border-premium-ink/6 bg-premium-canvas/50 px-3 py-2.5 text-sm leading-snug text-premium-ink/75"
+                >
+                  <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-premium-accent" strokeWidth={2.5} />
+                  {action}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              {experience.outcomes.map((outcome, index) => {
-                const Icon = OUTCOME_ICONS[index] ?? LineChart;
-                return (
-                  <article
-                    key={outcome.title}
-                    className="rounded-xl border border-premium-ink/8 bg-premium-canvas/40 p-4"
-                  >
-                    <Icon className="h-4 w-4 text-premium-accent" strokeWidth={1.75} />
-                    <h4 className="mt-2.5 text-sm font-semibold text-premium-ink">{outcome.title}</h4>
-                    <p className="mt-1 text-sm leading-relaxed text-premium-ink/55">
+        <div className="mt-6 border-t border-premium-ink/8 pt-6">
+          <MarketingEyebrow>{experience.outcomesEyebrow}</MarketingEyebrow>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+            {experience.outcomes.map((outcome, index) => {
+              const Icon = OUTCOME_ICONS[index] ?? LineChart;
+              return (
+                <article key={outcome.title} className="landing-outcome-chip">
+                  <Icon className="h-3.5 w-3.5 shrink-0 text-premium-accent" strokeWidth={1.75} />
+                  <div className="min-w-0">
+                    <h4 className="text-xs font-semibold text-premium-ink">{outcome.title}</h4>
+                    <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-premium-ink/55">
                       {outcome.description}
                     </p>
-                  </article>
-                );
-              })}
-            </div>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </div>

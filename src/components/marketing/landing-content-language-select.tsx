@@ -17,11 +17,11 @@ export function LandingContentLanguageSelect({ compact = false }: { compact?: bo
     <div
       className={cn(
         "flex items-center gap-2",
-        compact ? "flex-wrap" : "rounded-xl border border-premium-ink/10 bg-white px-2 py-1.5"
+        compact ? "flex-wrap" : "landing-lang-pill rounded-xl px-2 py-1.5"
       )}
     >
       {!compact ? (
-        <span className="hidden items-center gap-1.5 pl-1 text-[11px] font-medium text-premium-ink/55 xl:flex">
+        <span className="hidden items-center gap-1.5 pl-1 text-[11px] font-semibold tracking-wide text-premium-ink/60 uppercase xl:flex">
           <Languages className="h-3.5 w-3.5 text-premium-accent" aria-hidden />
           {content.header.contentLanguageLabel}
         </span>

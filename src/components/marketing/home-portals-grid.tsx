@@ -26,6 +26,7 @@ export function HomePortalsGrid() {
         eyebrow={portals.eyebrow}
         title={portals.title}
         lead={portals.lead}
+        centered
       />
 
       <div className="mt-10">

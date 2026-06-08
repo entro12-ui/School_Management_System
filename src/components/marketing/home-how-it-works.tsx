@@ -28,6 +28,7 @@ export function HomeHowItWorks() {
         eyebrow={structure.eyebrow}
         title={structure.title}
         lead={structure.lead}
+        centered
       />
 
       <div className="mt-12 space-y-4">

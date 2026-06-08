@@ -26,12 +26,19 @@ export function HomePricing() {
               "relative flex flex-col rounded-2xl border bg-white p-6 transition-shadow duration-200",
               plan.highlighted
                 ? "border-premium-accent/40 shadow-[var(--shadow-premium-md)] ring-1 ring-premium-accent/20"
-                : "border-premium-ink/8 shadow-[var(--shadow-premium-sm)] hover:shadow-[var(--shadow-premium-md)]"
+                : plan.promoBadge
+                  ? "border-premium-accent/25 shadow-[var(--shadow-premium-sm)] ring-1 ring-premium-accent/10"
+                  : "border-premium-ink/8 shadow-[var(--shadow-premium-sm)] hover:shadow-[var(--shadow-premium-md)]"
             )}
           >
             {plan.highlighted ? (
               <span className="absolute -top-3 left-6 rounded-md bg-premium-accent px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white">
                 {pricing.recommended}
+              </span>
+            ) : null}
+            {plan.promoBadge ? (
+              <span className="absolute -top-3 right-6 rounded-md border border-premium-accent/30 bg-premium-accent-soft px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-premium-accent">
+                {plan.promoBadge}
               </span>
             ) : null}
             <p className="text-lg font-semibold text-premium-ink">{plan.name}</p>
@@ -55,7 +62,9 @@ export function HomePricing() {
               href={plan.ctaHref ?? "#contact"}
               className={cn(
                 "mt-7 inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition",
-                plan.highlighted ? "marketing-btn-primary w-full" : "marketing-btn-ghost w-full"
+                plan.highlighted || plan.promoBadge
+                  ? "marketing-btn-primary w-full"
+                  : "marketing-btn-ghost w-full"
               )}
             >
               {plan.cta}

@@ -2,9 +2,10 @@ import type { LandingContent } from "@/lib/marketing/landing-content.types";
 export const EN_CONTENT: LandingContent = {
   header: {
     tagline: "Entro Ethiopia",
-    contentLanguageLabel: "Content language",
+    contentLanguageLabel: "Language",
     nav: [
       { href: "#overview", label: "Overview" },
+      { href: "#demos", label: "Demos" },
       { href: "#experience", label: "Experience" },
       { href: "#tools", label: "Tools" },
       { href: "#portals", label: "Portals" },
@@ -31,7 +32,7 @@ export const EN_CONTENT: LandingContent = {
     bullets: [
       "Dedicated portal for every role",
       "Multi-branch from a single central office",
-      "Parent message drafts in English and Amharic content language",
+      "Parent message drafts in English and Amharic",
     ],
     cardBranch: "Monday · Addis branch",
     cardView: "Staff morning view",
@@ -47,12 +48,181 @@ export const EN_CONTENT: LandingContent = {
       { title: "12 fee reminders ready to send", desc: "Finance can review first" },
       { title: "4 classes still need weekly marks", desc: "Visible on teacher dashboard" },
     ],
+    sceneCards: [
+      {
+        illustration: "attendance",
+        label: "Attendance",
+        alt: "Daily attendance register with present and absent markers",
+      },
+      {
+        illustration: "parents",
+        label: "Parent updates",
+        alt: "Parent notification drafts on mobile in English and Amharic",
+      },
+    ],
+    gallery: [
+      {
+        illustration: "classroom",
+        title: "Teacher portal",
+        alt: "Teacher at smartboard with student roster and mark entry",
+      },
+      {
+        illustration: "grades",
+        title: "Report cards",
+        alt: "Digital report card with subject grades and GPA",
+      },
+      {
+        illustration: "finance",
+        title: "Fees & finance",
+        alt: "Tuition invoice with payment status and reminders",
+      },
+      {
+        illustration: "attendance",
+        title: "Attendance",
+        alt: "Class attendance tracking dashboard",
+      },
+    ],
+  },
+  stats: {
+    items: [
+      { value: "10+", label: "Integrated modules" },
+      { value: "KG–12", label: "Grade coverage" },
+      { value: "2", label: "Languages" },
+      { value: "∞", label: "Branches supported" },
+    ],
+  },
+  trust: {
+    label: "Built for schools across Ethiopia",
+    items: [
+      "Private & international schools",
+      "Multi-branch networks",
+      "Central office oversight",
+      "Ministry-ready exports",
+    ],
+  },
+  portalDemos: {
+    eyebrow: "Live demos",
+    title: "One platform, five dedicated portals",
+    lead: "Each role gets its own dashboard — switch tabs to preview what admins, teachers, and families see after sign-in.",
+    demos: [
+      {
+        id: "school",
+        label: "School admin",
+        title: "Central office command center",
+        description:
+          "Cross-branch enrollment, collections, and settings — the view super admins use to run the whole network.",
+        stats: [
+          { label: "Branches", value: "All live" },
+          { label: "Enrollment", value: "2,840" },
+          { label: "Collections", value: "94%" },
+        ],
+        highlights: [
+          "Multi-branch KPI dashboard",
+          "Global policies & audit logs",
+          "PDF / Excel exports for leadership",
+        ],
+      },
+      {
+        id: "registrar",
+        label: "Registrar",
+        title: "Enrollment & records desk",
+        description:
+          "Register students, issue ID cards, and keep transcripts ready — without duplicate spreadsheets.",
+        stats: [
+          { label: "Pending", value: "18 apps" },
+          { label: "This term", value: "412 enrolled" },
+          { label: "ID cards", value: "Ready" },
+        ],
+        highlights: [
+          "Student & staff onboarding",
+          "Transcript export",
+          "Parent account linking",
+        ],
+      },
+      {
+        id: "teacher",
+        label: "Teacher",
+        title: "Classroom workspace",
+        description:
+          "Attendance, weekly marks, and rosters in one place — grades flow to report cards automatically.",
+        stats: [
+          { label: "Classes", value: "5 sections" },
+          { label: "Today", value: "3 sessions" },
+          { label: "Marks due", value: "1 class" },
+        ],
+        highlights: [
+          "Daily & weekly attendance",
+          "Weighted grading",
+          "Parent message drafts",
+        ],
+      },
+      {
+        id: "parent",
+        label: "Parent",
+        title: "Family updates hub",
+        description:
+          "Fees, results, and attendance for every linked child — on phone, without calling the office.",
+        stats: [
+          { label: "Children", value: "2 linked" },
+          { label: "Fees due", value: "4,200 ETB" },
+          { label: "Alerts", value: "3 new" },
+        ],
+        highlights: [
+          "Fee balance & payment history",
+          "Report cards & attendance",
+          "English & Amharic message drafts",
+        ],
+      },
+      {
+        id: "student",
+        label: "Student",
+        title: "Personal academic portal",
+        description:
+          "Timetable, grades, announcements, and study tools — students stay on track between terms.",
+        stats: [
+          { label: "GPA", value: "3.72" },
+          { label: "Classes", value: "8 today" },
+          { label: "Library", value: "2 books" },
+        ],
+        highlights: [
+          "Personal timetable",
+          "Grades & transcripts",
+          "Study companion",
+        ],
+      },
+    ],
+  },
+  workflow: {
+    eyebrow: "Get started",
+    title: "Live in three clear steps",
+    lead: "From registration to your first branch going live — the same onboarding flow schools use on EduSync today.",
+    steps: [
+      {
+        step: "01",
+        title: "Register your school",
+        description:
+          "Submit your school profile online. Our team reviews and activates your workspace — usually within one business day.",
+      },
+      {
+        step: "02",
+        title: "Configure branches & roles",
+        description:
+          "Add branches, grade bands, and staff accounts. Registrars enroll students; each role lands in the right portal.",
+      },
+      {
+        step: "03",
+        title: "Staff & families sign in",
+        description:
+          "Teachers mark attendance, finance tracks fees, and parents see updates — all from the same student records.",
+      },
+    ],
   },
   experience: {
     eyebrow: "Experience",
     title: "Designed for how schools actually run",
     lead: "Administrators, teachers, finance, HR, library staff, and families each get a workspace that fits their job — all tied to the same student records.",
     inPractice: "In practice",
+    outcomesEyebrow: "What you gain",
     experiences: [
       {
         id: "leadership",
@@ -159,6 +329,7 @@ export const EN_CONTENT: LandingContent = {
           "Clear parent updates for fees, attendance, or progress — in English and Amharic content language.",
       },
     ],
+    coverageEyebrow: "Coverage",
     coverageTitle: "Full platform coverage",
     coverageLead: "Registrar, finance, library, HR, and family portals — not just assistants.",
     coverageItems: [
@@ -341,22 +512,24 @@ export const EN_CONTENT: LandingContent = {
   pricing: {
     eyebrow: "Pricing",
     title: "Plans that fit your school",
-    lead: "Register online — pay 30 ETB per student after approval to activate your workspace and branches.",
+    lead: "Register online — Starter includes your first month free. After that, pay 30 ETB per student per month to keep your workspace active.",
     recommended: "Recommended",
     plans: [
       {
         name: "Starter",
         tagline: "Single school getting organized",
+        promoBadge: "1 month free",
         price: "30 ETB",
-        priceNote: "per student / month after approval",
+        priceNote: "1st month free · then per student / month",
         ctaHref: "/register/school",
         features: [
+          "First month free after approval",
           "1 branch to start, add more anytime",
           "Academics, attendance & report cards",
           "Parent & student portals",
           "Email support",
         ],
-        cta: "Register your school",
+        cta: "Start free for 1 month",
       },
       {
         name: "Growth",
@@ -396,6 +569,37 @@ export const EN_CONTENT: LandingContent = {
     lead: "We'll walk you through the portals, answer setup questions, and share pricing for your branch count and student size.",
     signIn: "Sign in",
     contactUs: "Contact us",
+  },
+  faq: {
+    eyebrow: "FAQ",
+    title: "Common questions from school leaders",
+    items: [
+      {
+        question: "Does EduSync work for multi-branch schools?",
+        answer:
+          "Yes. Central office sees every branch from one dashboard. Each branch runs day-to-day work through its own staff portals while sharing the same student database.",
+      },
+      {
+        question: "Which grade levels are supported?",
+        answer:
+          "KG through Grade 12 — kindergarten routines, primary grading, junior high follow-up, and senior transcripts with GPA and graduation reporting.",
+      },
+      {
+        question: "Can parents receive updates in Amharic?",
+        answer:
+          "Parent message drafts are available in English and Amharic content language. Your staff reviews every message before it goes out.",
+      },
+      {
+        question: "How does pricing work?",
+        answer:
+          "Starter includes your first month free after approval. Growth and Enterprise plans are 30 ETB per student per month after activation, scaling with branches and enrollment.",
+      },
+      {
+        question: "Is our data secure?",
+        answer:
+          "Role-based access, audit logs, and secure sign-in protect every portal. Each user only sees the data their job requires.",
+      },
+    ],
   },
   footer: {
     tagline: "Entro Ethiopia",

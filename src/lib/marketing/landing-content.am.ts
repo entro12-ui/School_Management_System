@@ -3,9 +3,10 @@ import type { LandingContent } from "@/lib/marketing/landing-content.types";
 export const AM_CONTENT: LandingContent = {
   header: {
     tagline: "Entro Ethiopia",
-    contentLanguageLabel: "የይዘት ቋንቋ",
+    contentLanguageLabel: "ቋንቋ",
     nav: [
       { href: "#overview", label: "አጠቃላይ እይታ" },
+      { href: "#demos", label: "ማሳያ" },
       { href: "#experience", label: "ተሞክሮ" },
       { href: "#tools", label: "መሳሪያዎች" },
       { href: "#portals", label: "መግቢያዎች" },
@@ -32,7 +33,7 @@ export const AM_CONTENT: LandingContent = {
     bullets: [
       "ለእያንዳንዱ ሚና ልዩ መግቢያ",
       "ከአንድ ማዕከላዊ ቢሮ ብዙ ቅርንጫፎች",
-      "የወላጅ መልዕክት ረቂቆች በእንግሊዝኛ እና በአማርኛ የይዘት ቋንቋ",
+      "የወላጅ መልዕክት ረቂቆች በእንግሊዝኛ እና በአማርኛ",
     ],
     cardBranch: "ሰኞ · የአዲስ ቅርንጫፍ",
     cardView: "የሰራተኞች የጠዋት እይታ",
@@ -48,12 +49,181 @@ export const AM_CONTENT: LandingContent = {
       { title: "12 የክፍያ ማስታወሻዎች ለመላክ ዝግጁ", desc: "ፋይናንስ መጀመሪያ ማረጋገጥ ይችላል" },
       { title: "4 ክፍሎች አሁንም ሳምንታዊ ውጤት ይፈልጋሉ", desc: "በመምህር ዳሽቦርድ ላይ ይታያል" },
     ],
+    sceneCards: [
+      {
+        illustration: "attendance",
+        label: "ቅጥያ",
+        alt: "ዕለታዊ ቅጥያ መዝገብ — ተገኝ እና ጠፍቷል ምልክቶች",
+      },
+      {
+        illustration: "parents",
+        label: "የወላጅ ማሳወቂያ",
+        alt: "በእንግሊዝኛ እና በአማርኛ የወላጅ ማሳወቂያ ረቂቆች",
+      },
+    ],
+    gallery: [
+      {
+        illustration: "classroom",
+        title: "የመምህር መግቢያ",
+        alt: "መምህር በክፍል ዳሽቦርድ እና ውጤት መግቢያ",
+      },
+      {
+        illustration: "grades",
+        title: "የውጤት ካርድ",
+        alt: "ዲጂታል የውጤት ካርድ እና GPA",
+      },
+      {
+        illustration: "finance",
+        title: "ክፍያ እና ፋይናንስ",
+        alt: "የትምህርት ክፍያ መጠየቂያ ከክፍያ ሁኔታ",
+      },
+      {
+        illustration: "attendance",
+        title: "ቅጥያ",
+        alt: "የክፍል ቅጥያ መከታተያ ዳሽቦርድ",
+      },
+    ],
+  },
+  stats: {
+    items: [
+      { value: "10+", label: "የተዋሃዱ ሞጁሎች" },
+      { value: "KG–12", label: "የክፍል ሽፋን" },
+      { value: "2", label: "ቋንቋዎች" },
+      { value: "∞", label: "የሚደገፉ ቅርንጫፎች" },
+    ],
+  },
+  trust: {
+    label: "በኢትዮጵያ ውስጥ ለትምህርት ቤቶች የተሰራ",
+    items: [
+      "ግል እና ዓለም አቀፍ ትምህርት ቤቶች",
+      "ብዙ ቅርንጫፍ ያላቸው አውታሮች",
+      "የማዕከላዊ ቢሮ ቁጥጥር",
+      "ለሚኒስትሪ ዝግጁ ማውጣቶች",
+    ],
+  },
+  portalDemos: {
+    eyebrow: "ቀጥታ ማሳያ",
+    title: "አንድ መድረክ፣ አምስት ልዩ መግቢያዎች",
+    lead: "እያንዳንዱ ሚና የራሱን ዳሽቦርድ ያገኛል — አስተዳዳሪዎች፣ መምህራን እና ቤተሰቦች ከመግባት በኋላ የሚያዩትን ለመመልከት ትሩዎችን ይቀይሩ።",
+    demos: [
+      {
+        id: "school",
+        label: "የትምህርት ቤት አስተዳዳሪ",
+        title: "የማዕከላዊ ቢሮ ትዕዛዝ ማዕከል",
+        description:
+          "በሁሉም ቅርንጫፎች ላይ ምዝገባ፣ ገቢ እና ቅንብሮች — ከፍተኛ አስተዳዳሪዎች አውታሮን የሚנהሉበት እይታ።",
+        stats: [
+          { label: "ቅርንጫፎች", value: "ሁሉ ቀጥታ" },
+          { label: "ምዝገባ", value: "2,840" },
+          { label: "ገቢ", value: "94%" },
+        ],
+        highlights: [
+          "ብዙ ቅርንጫፍ KPI ዳሽቦርድ",
+          "አጠቃላይ ፖሊሲዎች እና ኦዲት",
+          "ለአመራር PDF / Excel ማውጣት",
+        ],
+      },
+      {
+        id: "registrar",
+        label: "Registrar",
+        title: "ምዝገባ እና መዝገቦች",
+        description:
+          "ተማሪዎችን ይመዝግቡ፣ ID ካርድ ይስጡ እና ትራንስክሪፕት ዝግጁ ይያዙ — ያለተጨማቀ ስፕሬድሺት።",
+        stats: [
+          { label: "በመጠባበቅ", value: "18 ጥያቄ" },
+          { label: "በዚህ ቀጠሮ", value: "412 ተመዝግበዋል" },
+          { label: "ID ካርዶች", value: "ዝግጁ" },
+        ],
+        highlights: [
+          "የተማሪ እና ሰራተኛ ምዝገባ",
+          "ትራንስክሪፕት ማውጣት",
+          "የወላጅ መለያ ማገናኘት",
+        ],
+      },
+      {
+        id: "teacher",
+        label: "መምህር",
+        title: "የክፍል ቤት የስራ ቦታ",
+        description:
+          "ቅጥያ፣ ሳምንታዊ ውጤት እና ዝርዝሮች በአንድ ቦታ — ውጤቶች ወደ የውጤት ካርድ በራስ-ሰር ይሄዳሉ።",
+        stats: [
+          { label: "ክፍሎች", value: "5 ክፍሎች" },
+          { label: "ዛሬ", value: "3 ትምህርቶች" },
+          { label: "ውጤት ይፈልጋል", value: "1 ክፍል" },
+        ],
+        highlights: [
+          "ዕለታዊ እና ሳምንታዊ ቅጥያ",
+          "ክብደት ያለው ውጤት",
+          "የወላጅ መልዕክት ረቂቆች",
+        ],
+      },
+      {
+        id: "parent",
+        label: "ወላጅ",
+        title: "የቤተሰብ ማሳወቂያ ማዕከል",
+        description:
+          "ክፍያ፣ ውጤት እና ቅጥያ ለሁሉም የተገናኙ ልጆች — በስልክ ላይ፣ ቢሮ ሳይደውሉ።",
+        stats: [
+          { label: "ልጆች", value: "2 ተገናኝተዋል" },
+          { label: "የሚከፈል", value: "4,200 ብር" },
+          { label: "ማስጠንቀቂያ", value: "3 አዲስ" },
+        ],
+        highlights: [
+          "የክፍያ ቀሪ እና ታሪክ",
+          "የውጤት ካርድ እና ቅጥያ",
+          "በእንግሊዝኛ እና አማርኛ ረቂቆች",
+        ],
+      },
+      {
+        id: "student",
+        label: "ተማሪ",
+        title: "የግል ትምህርታዊ መግቢያ",
+        description:
+          "የጊዜ ሰሌዳ፣ ውጤቶች፣ ማስታወቂያዎች እና የመማሪያ መሳሪያ — ተማሪዎች በ አጸረይ መካከል በ ይቆያሉ።",
+        stats: [
+          { label: "GPA", value: "3.72" },
+          { label: "ክፍሎች", value: "8 ዛሬ" },
+          { label: "ቤተ-መጽሐፍት", value: "2 መጽሐፍት" },
+        ],
+        highlights: [
+          "የግል የጊዜ ሰሌዳ",
+          "ውጤቶች እና ትራንስክሪፕት",
+          "የመማሪያ ተጋራ",
+        ],
+      },
+    ],
+  },
+  workflow: {
+    eyebrow: "መጀመር",
+    title: "በሦስት ግልጽ እርምጃዎች ይጀምሩ",
+    lead: "ከምዝገባ እስከ የመጀመሪያ ቅርንጫፍዎ መስራት — ትምህርት ቤቶች ዛሬ በ EduSync የሚጠቀሙበት ሂደት።",
+    steps: [
+      {
+        step: "01",
+        title: "ትምህርት ቤትዎን ይመዝገቡ",
+        description:
+          "የትምህርት ቤት መገለጫዎን በመስመር ያስገቡ። ቡድናችን ይገመግማል እና የስራ ቦታዎን ያግብራል — ብዙውን ጊዜ በአንድ የስራ ቀን ውስጥ።",
+      },
+      {
+        step: "02",
+        title: "ቅርንጫፎች እና ሚናዎችን ያዋቅሩ",
+        description:
+          "ቅርንጫፎች፣ የክፍል ቡድኖች እና የሰራተኛ መለያዎችን ይጨምሩ። Registrar ተማሪዎችን ይመዝግባል፤ እያንዳንዱ ሚና በትክክለኛ መግቢያ ይገባል።",
+      },
+      {
+        step: "03",
+        title: "ሰራተኞች እና ቤተሰቦች ይግቡ",
+        description:
+          "መምህራን ቅጥያ ይመዝግባሉ፣ ፋይናንስ ክፍያ ይከታተላል፣ ወላጆች ማሳወቂያ ያያሉ — ሁሉም ከተመሳሳይ የተማሪ መዝገቦች።",
+      },
+    ],
   },
   experience: {
     eyebrow: "ተሞክሮ",
     title: "ትምህርት ቤቶች እንዴት እንደሚሰሩ ተዘጋጅቷል",
     lead: "አስተዳዳሪዎች፣ መምህራን፣ ፋይናንስ፣ HR፣ የቤተ-መጽሐፍት ሰራተኞች እና ቤተሰቦች ለስራቸው የሚስማማ የስራ ቦታ ያገኛሉ — ሁሉም በተመሳሳይ የተማሪ መዝገቦች ላይ የተገናኙ።",
     inPractice: "በተግባር",
+    outcomesEyebrow: "የሚያገኙት",
     experiences: [
       {
         id: "leadership",
@@ -160,6 +330,7 @@ export const AM_CONTENT: LandingContent = {
           "ለክፍያ፣ ቅጥያ ወይም እድገት ግልጽ የወላጅ ማሳወቂያ — በእንግሊዝኛ እና በአማርኛ የይዘት ቋንቋ።",
       },
     ],
+    coverageEyebrow: "ሽፋን",
     coverageTitle: "ሙሉ የመድረክ ሽፋን",
     coverageLead: "ምዝገባ፣ ፋይናንስ፣ ቤተ-መጽሐፍት፣ HR እና የቤተሰብ መግቢያዎች — ረዳቶች ብቻ አይደሉም።",
     coverageItems: [
@@ -342,22 +513,24 @@ export const AM_CONTENT: LandingContent = {
   pricing: {
     eyebrow: "ዋጋ",
     title: "ለትምህርት ቤትዎ የሚስማሙ እቅዶች",
-    lead: "የቅርንጫፍ ብዛት እና የተማሪ ቁጥር ያጋሩ — ተጨማሪ ግዴታ ሳይኖር የተስማማ ዋጋ እንልክልዎታለን።",
+    lead: "በመስመር ይመዝገቡ — Starter የመጀመሪያውን አንድ ወር ነፃ ይሰጣል። ከዚያ በኋላ የስራ ቦታዎን ለመጠበቅ በተማሪ 30 ብር/ወር ይከፍሉ።",
     recommended: "የሚመከር",
     plans: [
       {
         name: "Starter",
         tagline: "አንድ ትምህርት ቤት ማደራጀት",
+        promoBadge: "1 ወር ነፃ",
         price: "30 ብር",
-        priceNote: "በተማሪ / ከፍታ በኋላ",
+        priceNote: "1ኛ ወር ነፃ · ከዚያ በተማሪ / ወር",
         ctaHref: "/register/school",
         features: [
+          "ከፈቀዱ በኋላ የመጀመሪያው አንድ ወር ነፃ",
           "1 ቅርንጫፍ ለመጀመር፣ ተጨማሪ በማንኛውም ጊዜ",
           "ትምህርት፣ ቅጥያ እና የውጤት ካርድ",
           "የወላጅ እና የተማሪ መግቢያ",
           "የኢሜይል ድጋፍ",
         ],
-        cta: "ትምህርት ቤትዎን ይመዝገቡ",
+        cta: "1 ወር ነፃ ይጀምሩ",
       },
       {
         name: "Growth",
@@ -388,6 +561,33 @@ export const AM_CONTENT: LandingContent = {
           "የመለያ አስተዳዳሪ",
         ],
         cta: "ያግኙን",
+      },
+    ],
+  },
+  faq: {
+    eyebrow: "ተደጋጋሚ ጥያቄዎች",
+    title: "ከትምህርት ቤት አመራሮች የሚነሱ ጥያቄዎች",
+    items: [
+      {
+        question: "EduSync ለብዙ ቅርንጫፍ ትምህርት ቤቶች ይሰራል?",
+        answer:
+          "አዎ። ማዕከላዊ ቢሮ ሁሉንም ቅርንጫፎች ከአንድ ዳሽቦርድ ያያል። እያንዳንዱ ቅርንጫፍ በ እንደያን የሰራተኞች መግቢያዎች ዕለታዊ ስራውን ያከናውናል።",
+      },
+      {
+        question: "KG–12 ክፍሎች ይደገፋሉ?",
+        answer: "KG እስከ 12 ድረስ — ከ KG ስኬል እስከ ሲኒየር ትራንስክሪፕት እና GPA።",
+      },
+      {
+        question: "ወላጆች በአማርኛ ማሳወቂያ ሊያገኙ ይችላሉ?",
+        answer: "የወላጅ መልዕክት ረቂቆች በእንግሊዝኛ እና በአማርኛ ይገኛሉ። ሰራተኞችዎ ከመላክ በፊት ይገመግማሉ።",
+      },
+      {
+        question: "ዋጋ እንዴት ይሰራ?",
+        answer: "Starter ከፈቀዱ በኋላ የመጀመሪያውን አንድ ወር ነፃ ይሰጣል። Growth እና Enterprise እቅዶች ከفعላት በኋላ በተማሪ 30 ብር/ወር ከቅርንጫፍ እና ምዝገባ ጋር ይሰፋሉ።",
+      },
+      {
+        question: "ውሂባችን ደህንነቱ የተጠበቀ ነው?",
+        answer: "በሚና የተመሠረተ መዳረሻ፣ ኦዲት መዝገቦች እና ደህንነቱ የተጠበቀ መግቢያ ሁሉንም መግቢያዎች ይጠብቃል።",
       },
     ],
   },

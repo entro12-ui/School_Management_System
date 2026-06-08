@@ -1,3 +1,10 @@
+export type HeroIllustrationId =
+  | "attendance"
+  | "parents"
+  | "classroom"
+  | "grades"
+  | "finance";
+
 export type LandingContentLanguage = "en" | "am";
 
 export const LANDING_CONTENT_LANGUAGES: LandingContentLanguage[] = ["en", "am"];
@@ -8,6 +15,13 @@ export const LANDING_CONTENT_LANGUAGE_LABELS: Record<LandingContentLanguage, str
 };
 
 export type LandingExperienceId = "leadership" | "teachers" | "families";
+
+export type LandingPortalDemoId =
+  | "school"
+  | "teacher"
+  | "student"
+  | "parent"
+  | "registrar";
 
 export type LandingContent = {
   header: {
@@ -36,12 +50,41 @@ export type LandingContent = {
     todayLabel: string;
     highlights: { title: string; desc: string }[];
     todayItems: { title: string; desc: string }[];
+    sceneCards: { illustration: HeroIllustrationId; label: string; alt: string }[];
+    gallery: { illustration: HeroIllustrationId; title: string; alt: string }[];
+  };
+  stats: {
+    items: { value: string; label: string }[];
+  };
+  trust: {
+    label: string;
+    items: string[];
+  };
+  portalDemos: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    demos: {
+      id: LandingPortalDemoId;
+      label: string;
+      title: string;
+      description: string;
+      stats: { label: string; value: string }[];
+      highlights: string[];
+    }[];
+  };
+  workflow: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    steps: { step: string; title: string; description: string }[];
   };
   experience: {
     eyebrow: string;
     title: string;
     lead: string;
     inPractice: string;
+    outcomesEyebrow: string;
     experiences: {
       id: LandingExperienceId;
       label: string;
@@ -57,6 +100,7 @@ export type LandingContent = {
     title: string;
     lead: string;
     helpfulTools: { title: string; description: string }[];
+    coverageEyebrow: string;
     coverageTitle: string;
     coverageLead: string;
     coverageItems: string[];
@@ -115,6 +159,7 @@ export type LandingContent = {
       tagline: string;
       price: string;
       priceNote: string;
+      promoBadge?: string;
       highlighted?: boolean;
       features: string[];
       cta: string;
@@ -127,6 +172,11 @@ export type LandingContent = {
     lead: string;
     signIn: string;
     contactUs: string;
+  };
+  faq: {
+    eyebrow: string;
+    title: string;
+    items: { question: string; answer: string }[];
   };
   footer: {
     tagline: string;

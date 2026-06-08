@@ -9,7 +9,9 @@ import {
   MapPin,
   Phone,
 } from "lucide-react";
+import { landingPageWrapClass } from "@/components/marketing/marketing-primitives";
 import { useLandingLanguage } from "@/lib/marketing/landing-language-context";
+import { cn } from "@/lib/utils";
 
 const CONTACT_VALUES = [
   {
@@ -37,12 +39,12 @@ export function HomeCta({ dashboardHref }: { dashboardHref: string }) {
   const { cta } = content;
 
   return (
-    <section className="mt-24 overflow-hidden rounded-2xl border border-premium-accent/20 bg-premium-accent sm:mt-28">
+    <section className="relative mt-24 overflow-hidden rounded-2xl border border-premium-accent/25 bg-gradient-to-br from-premium-accent via-[#0a5c54] to-[#084840] sm:mt-28">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgb(255_255_255/0.12),transparent_50%)]"
+        aria-hidden
+      />
       <div className="relative flex flex-col gap-8 p-8 sm:p-12 md:flex-row md:items-center md:justify-between">
-        <div
-          className="pointer-events-none absolute -right-16 top-0 h-48 w-48 rounded-full bg-premium-accent/15 blur-3xl"
-          aria-hidden
-        />
         <div className="relative max-w-lg">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/40">
             {cta.eyebrow}
@@ -75,102 +77,98 @@ export function HomeFooter() {
   const { footer } = content;
 
   return (
-    <footer id="contact" className="mt-20 border-t border-premium-ink/10 pt-14 pb-10">
-      <div className="grid gap-12 lg:grid-cols-[1.25fr_0.75fr]">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-premium-accent text-white">
-              <GraduationCap className="h-5 w-5" strokeWidth={1.75} />
-            </div>
-            <div>
-              <p className="font-semibold text-premium-ink">EduSync SMS</p>
-              <p className="text-xs text-premium-ink/45">{footer.tagline}</p>
-            </div>
-          </div>
-
-          <p className="mt-5 max-w-md text-sm leading-relaxed text-premium-ink/60">
-            {footer.description}
-          </p>
-
-          <p className="mt-5 inline-flex items-center gap-1.5 text-xs text-premium-ink/45">
-            <MapPin className="h-3.5 w-3.5" strokeWidth={1.75} />
-            {footer.location}
-          </p>
-        </div>
-
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-1">
+    <footer id="contact" className="landing-footer mt-0">
+      <div className={cn("landing-footer-inner py-8 sm:py-10", landingPageWrapClass)}>
+        <div className="grid gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:gap-10">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-premium-ink/45">
-              {footer.linksHeading}
-            </h3>
-            <div className="mt-4 flex flex-col gap-2.5 text-sm">
-              <Link href="/login" className="text-premium-ink/65 transition hover:text-premium-accent">
-                {footer.signIn}
-              </Link>
-              <Link href="/register" className="text-premium-ink/65 transition hover:text-premium-accent">
-                {footer.staffRegistration}
-              </Link>
-              <a href="#pricing" className="text-premium-ink/65 transition hover:text-premium-accent">
-                {footer.pricing}
-              </a>
-              <a href="#features" className="text-premium-ink/65 transition hover:text-premium-accent">
-                {footer.modules}
-              </a>
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/20 text-white ring-1 ring-white/40">
+                <GraduationCap className="h-4 w-4 text-white" strokeWidth={2.5} />
+              </div>
+              <div>
+                <p className="landing-footer-brand text-lg">EduSync SMS</p>
+                <p className="landing-footer-meta text-xs">{footer.tagline}</p>
+              </div>
+            </div>
+
+            <p className="landing-footer-body mt-3 max-w-md">{footer.description}</p>
+
+            <p className="landing-footer-meta mt-3 inline-flex items-center gap-2">
+              <MapPin className="h-4 w-4 shrink-0 text-[#a8d4cc]" strokeWidth={2.5} />
+              {footer.location}
+            </p>
+          </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
+              <div>
+                <h3 className="landing-footer-heading">{footer.linksHeading}</h3>
+                <div className="mt-2.5 flex flex-col gap-2">
+                  <Link href="/login" className="landing-footer-link">
+                    {footer.signIn}
+                  </Link>
+                  <Link href="/register" className="landing-footer-link">
+                    {footer.staffRegistration}
+                  </Link>
+                  <a href="#pricing" className="landing-footer-link">
+                    {footer.pricing}
+                  </a>
+                  <a href="#features" className="landing-footer-link">
+                    {footer.modules}
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="landing-footer-heading">{footer.contactHeading}</h3>
+                <ul className="mt-2.5 space-y-2.5">
+                  {CONTACT_VALUES.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <li key={item.key}>
+                        <a
+                          href={item.href}
+                          target={item.href.startsWith("http") ? "_blank" : undefined}
+                          rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+                          className="group flex items-center gap-3"
+                        >
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/40 bg-white/15 text-white transition group-hover:border-white/55 group-hover:bg-white/22">
+                            <Icon className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
+                          </span>
+                          <span>
+                            <span className="landing-footer-label block">
+                              {footer.contactLabels[item.key]}
+                            </span>
+                            <span className="landing-footer-value group-hover:text-white">
+                              {item.value}
+                            </span>
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
           </div>
 
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-premium-ink/45">
-              {footer.contactHeading}
-            </h3>
-            <ul className="mt-4 space-y-4">
-              {CONTACT_VALUES.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <li key={item.key}>
-                    <a
-                      href={item.href}
-                      target={item.href.startsWith("http") ? "_blank" : undefined}
-                      rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-                      className="group flex items-center gap-3 text-sm"
-                    >
-                      <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-premium-ink/8 bg-white text-premium-ink/40 transition group-hover:border-premium-accent/30 group-hover:text-premium-accent">
-                        <Icon className="h-4 w-4" strokeWidth={1.75} />
-                      </span>
-                      <span>
-                        <span className="block text-[10px] uppercase tracking-wider text-premium-ink/40">
-                          {footer.contactLabels[item.key]}
-                        </span>
-                        <span className="font-medium text-premium-ink/75 group-hover:text-premium-accent">
-                          {item.value}
-                        </span>
-                      </span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
+        <div className="landing-footer-meta mt-8 flex flex-col gap-3 border-t border-white/30 pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} {footer.copyright}</p>
+          <div className="flex flex-wrap items-center gap-5">
+            <Link href="/terms" className="landing-footer-link text-sm">
+              {footer.terms}
+            </Link>
+            <Link href="/privacy" className="landing-footer-link text-sm">
+              {footer.privacy}
+            </Link>
+            <a
+              href="https://www.entroethiopia.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="landing-footer-link text-sm !text-[#c8e4de] hover:!text-white"
+            >
+              entroethiopia.com
+            </a>
           </div>
-        </div>
-      </div>
-
-      <div className="mt-14 flex flex-col gap-4 border-t border-premium-ink/8 pt-8 text-xs text-premium-ink/40 sm:flex-row sm:items-center sm:justify-between">
-        <p>© {new Date().getFullYear()} {footer.copyright}</p>
-        <div className="flex items-center gap-5">
-          <Link href="/terms" className="transition hover:text-premium-accent">
-            {footer.terms}
-          </Link>
-          <Link href="/privacy" className="transition hover:text-premium-accent">
-            {footer.privacy}
-          </Link>
-          <a
-            href="https://www.entroethiopia.com/"
-            target="_blank"
-            rel="noreferrer"
-            className="font-medium text-premium-accent hover:underline"
-          >
-            entroethiopia.com
-          </a>
         </div>
       </div>
     </footer>

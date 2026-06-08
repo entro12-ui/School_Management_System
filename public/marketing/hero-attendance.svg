@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" fill="none" role="img" aria-label="Attendance tracking">
+  <rect width="320" height="240" rx="16" fill="#f7f5f0"/>
+  <rect x="16" y="16" width="288" height="208" rx="12" fill="#fff" stroke="#0c1222" stroke-opacity="0.08"/>
+  <rect x="28" y="28" width="120" height="10" rx="5" fill="#0e7268" fill-opacity="0.15"/>
+  <rect x="28" y="46" width="80" height="8" rx="4" fill="#0c1222" fill-opacity="0.12"/>
+  <rect x="28" y="72" width="264" height="1" fill="#0c1222" fill-opacity="0.06"/>
+  <g fill="#0c1222" fill-opacity="0.55" font-family="system-ui,sans-serif" font-size="11">
+    <text x="28" y="96">Grade 8B · Homeroom</text>
+  </g>
+  <g>
+    <rect x="28" y="108" width="264" height="28" rx="8" fill="#e8f3f1"/>
+    <circle cx="44" cy="122" r="6" fill="#0e7268"/>
+    <path d="M41 122l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="58" y="116" width="100" height="6" rx="3" fill="#0c1222" fill-opacity="0.2"/>
+    <rect x="58" y="126" width="60" height="5" rx="2.5" fill="#0c1222" fill-opacity="0.1"/>
+    <text x="240" y="126" fill="#0e7268" font-family="system-ui,sans-serif" font-size="11" font-weight="600">Present</text>
+  </g>
+  <g>
+    <rect x="28" y="144" width="264" height="28" rx="8" fill="#fff" stroke="#0c1222" stroke-opacity="0.06"/>
+    <circle cx="44" cy="158" r="6" fill="#0e7268"/>
+    <path d="M41 158l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="58" y="152" width="90" height="6" rx="3" fill="#0c1222" fill-opacity="0.2"/>
+    <rect x="58" y="162" width="50" height="5" rx="2.5" fill="#0c1222" fill-opacity="0.1"/>
+    <text x="240" y="162" fill="#0e7268" font-family="system-ui,sans-serif" font-size="11" font-weight="600">Present</text>
+  </g>
+  <g>
+    <rect x="28" y="180" width="264" height="28" rx="8" fill="#fff" stroke="#f59e0b" stroke-opacity="0.35"/>
+    <circle cx="44" cy="194" r="6" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-width="1.5"/>
+    <rect x="58" y="188" width="110" height="6" rx="3" fill="#0c1222" fill-opacity="0.2"/>
+    <rect x="58" y="198" width="70" height="5" rx="2.5" fill="#0c1222" fill-opacity="0.1"/>
+    <text x="232" y="198" fill="#d97706" font-family="system-ui,sans-serif" font-size="11" font-weight="600">Absent</text>
+  </g>
+</svg>

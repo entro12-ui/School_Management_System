@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" fill="none" role="img" aria-label="School fees and finance">
+  <rect width="320" height="240" rx="16" fill="#f7f5f0"/>
+  <rect x="24" y="32" width="272" height="176" rx="14" fill="#fff" stroke="#0c1222" stroke-opacity="0.08"/>
+  <rect x="40" y="48" width="100" height="12" rx="6" fill="#0e7268" fill-opacity="0.2"/>
+  <rect x="40" y="68" width="140" height="8" rx="4" fill="#0c1222" fill-opacity="0.1"/>
+  <rect x="200" y="48" width="80" height="28" rx="8" fill="#e8f3f1"/>
+  <text x="214" y="66" fill="#0e7268" font-family="system-ui,sans-serif" font-size="11" font-weight="700">Paid</text>
+  <rect x="40" y="96" width="240" height="56" rx="10" fill="#f3efe6"/>
+  <text x="56" y="118" fill="#0c1222" fill-opacity="0.5" font-family="system-ui,sans-serif" font-size="10">Semester tuition</text>
+  <text x="56" y="140" fill="#0c1222" font-family="system-ui,sans-serif" font-size="18" font-weight="700">12,450 ETB</text>
+  <rect x="40" y="168" width="112" height="28" rx="8" fill="#0e7268"/>
+  <text x="58" y="186" fill="#fff" font-family="system-ui,sans-serif" font-size="11" font-weight="600">Receipt #2841</text>
+  <rect x="168" y="168" width="112" height="28" rx="8" fill="#fff" stroke="#0e7268" stroke-opacity="0.3"/>
+  <text x="186" y="186" fill="#0e7268" font-family="system-ui,sans-serif" font-size="11" font-weight="600">Send reminder</text>
+  <circle cx="268" cy="56" r="14" fill="#0e7268"/>
+  <text x="261" y="61" fill="#fff" font-family="system-ui,sans-serif" font-size="14" font-weight="700">¿</text>
+</svg>
