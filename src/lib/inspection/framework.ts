@@ -1,4 +1,13 @@
-import type { InspectionFramework } from "./types";
+import type { InspectionCriterion, InspectionFramework } from "./types";
+
+/** Display text for a criterion (handles legacy bad JSON where keys were stored as values). */
+export function getCriterionDisplayTitle(criterion: InspectionCriterion): string {
+  const en = criterion.titleEn?.trim();
+  const am = criterion.titleAm?.trim();
+  if (en && en !== "titleEn") return en;
+  if (am && am !== "titleAm") return am;
+  return `Criterion ${criterion.number}`;
+}
 
 export function getFrameworkCounts(framework: InspectionFramework) {
   return {

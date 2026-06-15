@@ -14,7 +14,7 @@ def ind(code, mp, tam, ten, sources, *criteria):
         "titleAm": tam,
         "titleEn": ten,
         "dataSources": list(sources),
-        "criteria": [crit(am, en) for am, en in criteria],
+        "criteria": list(criteria),
     }
 
 

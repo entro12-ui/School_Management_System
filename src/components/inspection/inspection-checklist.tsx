@@ -9,6 +9,7 @@ import {
 import {
   groupCriteriaByIndicator,
   groupIndicatorsByStandard,
+  getCriterionDisplayTitle,
 } from "@/lib/inspection/framework";
 import type {
   InspectionFramework,
@@ -189,7 +190,9 @@ export function InspectionChecklist({
                                         ({criterion.maxPoints} pts max)
                                       </span>
                                     </p>
-                                    <p className="text-sm text-slate-800">{criterion.titleEn}</p>
+                                    <p className="text-sm text-slate-800">
+                                      {getCriterionDisplayTitle(criterion)}
+                                    </p>
                                   </div>
 
                                   {canEdit ? (

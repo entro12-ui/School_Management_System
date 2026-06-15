@@ -33,7 +33,8 @@
     "db:migrate-photo": "tsx prisma/migrate-photo-url.ts",
     "db:setup": "prisma db push && tsx prisma/seed.ts && tsx prisma/ensure-demo-login.ts",
     "db:payment-proofs": "prisma db push && prisma generate",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "generate:framework": "python3 scripts/generate_framework_json.py"
   },
   "dependencies": {
     "@prisma/client": "^6.9.0",

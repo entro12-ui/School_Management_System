@@ -16,15 +16,15 @@ export async function ensureInspectionFrameworkVersion() {
   const fileFramework = loadFrameworkFromFile();
   const code = fileFramework.version.code;
 
-  const existing = await prisma.inspectionFrameworkVersion.findUnique({
+  return prisma.inspectionFrameworkVersion.upsert({
     where: { code },
-  });
-
-  if (existing) return existing;
-
-  return prisma.inspectionFrameworkVersion.create({
-    data: {
+    create: {
       code,
+      titleEn: fileFramework.version.titleEn,
+      titleAm: fileFramework.version.titleAm,
+      framework: fileFramework as unknown as Prisma.InputJsonValue,
+    },
+    update: {
       titleEn: fileFramework.version.titleEn,
       titleAm: fileFramework.version.titleAm,
       framework: fileFramework as unknown as Prisma.InputJsonValue,
@@ -128,7 +128,8 @@ export async function getInspectionRunDetail(runId: string) {
 
   if (!run) return null;
 
-  const framework = parseFrameworkJson(run.frameworkVersion.framework);
+  // Always use the canonical file framework (DB snapshot may be stale after updates).
+  const framework = loadFrameworkFromFile();
   const scoreInputs: CriterionScoreInput[] = run.criterionScores.map((s) => ({
     criterionKey: s.criterionKey,
     indicatorCode: s.indicatorCode,
