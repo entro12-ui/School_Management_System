@@ -39,12 +39,15 @@ export default async function BranchInspectionRunPage({
     <PortalShell title="Branch Admin" subtitle={branchName} nav={BRANCH_NAV}>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Inspection checklist</h1>
-          <p className="text-slate-500">
+          <p className="text-xs font-semibold uppercase tracking-wide text-premium-accent">
+            MOE internal inspection · {framework.version.ethiopianCalendarYear} E.C.
+          </p>
+          <h1 className="mt-1 text-2xl font-bold text-slate-900">Inspection checklist</h1>
+          <p className="mt-1 text-slate-500">
             {new Date(run.inspectionDate).toLocaleDateString("en-ET", {
               dateStyle: "long",
             })}
-            · {run.status.replace("_", " ")}
+            · Status: {run.status.replace("_", " ")}
           </p>
         </div>
         <div className="flex gap-2">
