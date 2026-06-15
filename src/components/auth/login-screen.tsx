@@ -38,45 +38,49 @@ export function LoginScreen() {
     setLoading(false);
 
     if (result?.error) {
-      const statusRes = await fetch(
-        `/api/register/status?email=${encodeURIComponent(email)}`
-      );
-      if (statusRes.ok) {
-        const status = await statusRes.json();
-        if (status.status === "pending") {
-          if (status.role === "SCHOOL_SUPER_ADMIN") {
+      try {
+        const statusRes = await fetch(
+          `/api/register/status?email=${encodeURIComponent(email)}`
+        );
+        if (statusRes.ok) {
+          const status = await statusRes.json();
+          if (status.status === "pending") {
+            if (status.role === "SCHOOL_SUPER_ADMIN") {
+              setError(
+                `Your school application for ${status.schoolName} is awaiting platform admin approval.`
+              );
+              return;
+            }
             setError(
-              `Your school application for ${status.schoolName} is awaiting platform admin approval.`
+              status.role === "HR_MANAGER"
+                ? `Your HR Manager application at ${status.branchName} is awaiting admin approval.`
+                : `Your registrar office application at ${status.branchName} is awaiting admin approval.`
             );
             return;
           }
-          setError(
-            status.role === "HR_MANAGER"
-              ? `Your HR Manager application at ${status.branchName} is awaiting admin approval.`
-              : `Your registrar office application at ${status.branchName} is awaiting admin approval.`
-          );
-          return;
+          if (status.status === "pending_payment") {
+            setError(
+              `Your school application for ${status.schoolName} was approved. Complete payment: ${window.location.origin}${status.paymentUrl}`
+            );
+            return;
+          }
+          if (status.status === "pending_account") {
+            setError(
+              `Payment received for ${status.schoolName}. Create your super admin account: ${window.location.origin}${status.accountUrl}`
+            );
+            return;
+          }
+          if (status.status === "rejected") {
+            setError(
+              status.role === "SCHOOL_SUPER_ADMIN"
+                ? `Your school application was rejected${status.reason ? `: ${status.reason}` : ""}. You may register again.`
+                : `Your registration was rejected${status.reason ? `: ${status.reason}` : ""}. You may register again.`
+            );
+            return;
+          }
         }
-        if (status.status === "pending_payment") {
-          setError(
-            `Your school application for ${status.schoolName} was approved. Complete payment: ${window.location.origin}${status.paymentUrl}`
-          );
-          return;
-        }
-        if (status.status === "pending_account") {
-          setError(
-            `Payment received for ${status.schoolName}. Create your super admin account: ${window.location.origin}${status.accountUrl}`
-          );
-          return;
-        }
-        if (status.status === "rejected") {
-          setError(
-            status.role === "SCHOOL_SUPER_ADMIN"
-              ? `Your school application was rejected${status.reason ? `: ${status.reason}` : ""}. You may register again.`
-              : `Your registration was rejected${status.reason ? `: ${status.reason}` : ""}. You may register again.`
-          );
-          return;
-        }
+      } catch {
+        // Status lookup is optional — don't surface as a console NetworkError
       }
       setError("Invalid email or password. Please check your credentials and try again.");
       return;

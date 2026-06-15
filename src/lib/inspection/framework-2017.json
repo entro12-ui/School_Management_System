@@ -1,0 +1,3980 @@
+{
+  "version": {
+    "code": "MOE_NG_PRIMARY_MIDDLE_2017",
+    "titleEn": "Internal Inspection Checklist for Primary and Middle Level Non-Government Schools",
+    "titleAm": "የአንደኛ እና መካከለኛ ደረጃ መንግስታዊ ያልሆኑ ትምህርት ቤት ውስጣዊ ኢንስፔክሽን ቼክ-ሊስት",
+    "ethiopianCalendarYear": 2017,
+    "gregorianYear": 2025,
+    "monthEn": "February",
+    "monthAm": "ካቲት",
+    "publisherEn": "Ministry of Education, Ethiopia",
+    "publisherAm": "ትምህርት ሚኒስቴር",
+    "scoringScale": {
+      "min": 0,
+      "max": 3,
+      "descriptionEn": "Performance rating per criterion: 0–3"
+    }
+  },
+  "introduction": {
+    "contentAm": "ለአንደኛ እና መካከለኛ ደረጃ ት/ቤቶች በግብአት፣ ሂደት እና ውጤትን መሰረት በማድረግ ከተዘጋጁት 28 ስታንዲርድች፣ በስራቸው ከሚገኙ 100 አመሌካቾች እና 304 መስፈርቶችን በመጠቀም መዝኖ ያለባቸውን ክፍተቶች በመለየት ተገቢውን ድጋፍ ለማድረግ እና ጠንካራ አፈፃፀማቸውን ይበልጥ አጠናክረው እንዲቀጥለ ለማስቻል ከትምህርት ተቋማቱ ወቅታዊ እና ተአማኒነት ያለው መረጃ ማሰባሰብ ተገቢ ይሆናል። በዚሁ መሰረት ሁለም መንግስታዊ ያልሆኑ አንደኛ እና መካከለኛ ደረጃ ትምህርት ቤቶች ከሶስቱ መለኪያዎች አንፃር የአፈጻጸም ብቃታቸውን በመገምገም ደረጃ ለመስጠትና ከዚሁ ጎን ለጎን ጠንካራ አፈጻጸማቸውን እና መሻሻል የሚገባቸውን ጉዳዮች በመለየት ለትምህርት ተቋማቱና ለሚመለከታቸው ባለድርሻ አካሊት ግብረ-መልስ ለመስጠት ያስችላል።",
+    "contentEn": "For primary and middle level schools, collecting timely and reliable information from the institution using 28 standards, 100 indicators, and 304 criteria—organized under Input, Process, and Output—is essential to identify gaps, provide appropriate support, strengthen existing good practices, and sustain improvement. On this basis, non-government primary and middle schools can be rated against the three domains, recognize strengths alongside areas for improvement, and provide feedback to the institution and relevant stakeholders."
+  },
+  "domains": [
+    {
+      "code": "INPUT",
+      "titleEn": "Input",
+      "titleAm": "ግብዓት",
+      "weightPercent": 20
+    },
+    {
+      "code": "PROCESS",
+      "titleEn": "Process",
+      "titleAm": "ሂደት",
+      "weightPercent": 60
+    },
+    {
+      "code": "OUTPUT",
+      "titleEn": "Output",
+      "titleAm": "ውጤት",
+      "weightPercent": 20
+    }
+  ],
+  "sections": [
+    {
+      "code": "INPUT_FACILITIES",
+      "domainCode": "INPUT",
+      "titleEn": "Facilities and Infrastructure",
+      "titleAm": "ፊሲሊቲ እና መሰረተ ልማት",
+      "weightPercent": 8,
+      "standardNumbers": [
+        1,
+        2
+      ]
+    },
+    {
+      "code": "INPUT_ENVIRONMENT",
+      "domainCode": "INPUT",
+      "titleEn": "Comfortable Environment",
+      "titleAm": "ምቹ አካባቢ",
+      "weightPercent": 4,
+      "standardNumbers": [
+        3,
+        4
+      ]
+    },
+    {
+      "code": "INPUT_FINANCE_HR",
+      "domainCode": "INPUT",
+      "titleEn": "Finance and Human Resources",
+      "titleAm": "ፊይናንስና የሰው ሃይል",
+      "weightPercent": 8,
+      "standardNumbers": [
+        5,
+        6
+      ]
+    },
+    {
+      "code": "PROCESS_LEADERSHIP",
+      "domainCode": "PROCESS",
+      "titleEn": "School Leadership and Administration — Leadership Capacity",
+      "titleAm": "የትምህርትቤት አመራርና አስተዳደር — የመምራት ብቃት",
+      "weightPercent": 10,
+      "standardNumbers": [
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "code": "PROCESS_TEACHING_MOTIVATION",
+      "domainCode": "PROCESS",
+      "titleEn": "Teaching Process and Motivation",
+      "titleAm": "የማስተማር ሂደት እና ተነሳሽነት",
+      "weightPercent": 8,
+      "standardNumbers": [
+        11,
+        12
+      ]
+    },
+    {
+      "code": "PROCESS_ADMINISTRATION",
+      "domainCode": "PROCESS",
+      "titleEn": "School Administration",
+      "titleAm": "የት/ቤት አስተዳደር",
+      "weightPercent": 5,
+      "standardNumbers": [
+        13,
+        14
+      ]
+    },
+    {
+      "code": "PROCESS_LEARNING",
+      "domainCode": "PROCESS",
+      "titleEn": "Teaching and Learning — Learning",
+      "titleAm": "መማር ማስተማር — መማር",
+      "weightPercent": 5,
+      "standardNumbers": [
+        15
+      ]
+    },
+    {
+      "code": "PROCESS_TEACHING",
+      "domainCode": "PROCESS",
+      "titleEn": "Teaching",
+      "titleAm": "ማስተማር",
+      "weightPercent": 11,
+      "standardNumbers": [
+        16,
+        17,
+        18
+      ]
+    },
+    {
+      "code": "PROCESS_COLLABORATION",
+      "domainCode": "PROCESS",
+      "titleEn": "Collaborative Work",
+      "titleAm": "በትብብር መስራት",
+      "weightPercent": 6,
+      "standardNumbers": [
+        19,
+        20
+      ]
+    },
+    {
+      "code": "PROCESS_COMMUNITY",
+      "domainCode": "PROCESS",
+      "titleEn": "School, Parent and Community Relations and Partnership",
+      "titleAm": "የት/ቤት፣ የወላጅ እና ማህ/ሰብ ግንኙነትና አጋርነት",
+      "weightPercent": 10,
+      "standardNumbers": [
+        21,
+        22,
+        23,
+        24
+      ]
+    },
+    {
+      "code": "OUTPUT_PARTICIPATION",
+      "domainCode": "OUTPUT",
+      "titleEn": "Quality Education Participation",
+      "titleAm": "ያደገ የትምህርት ተሳትፎ",
+      "weightPercent": 13,
+      "standardNumbers": [
+        25,
+        26
+      ]
+    },
+    {
+      "code": "OUTPUT_CULTURE",
+      "domainCode": "OUTPUT",
+      "titleEn": "Improved School Culture",
+      "titleAm": "የተሸሻለ የት/ቤት ባህል",
+      "weightPercent": 7,
+      "standardNumbers": [
+        27,
+        28
+      ]
+    }
+  ],
+  "standards": [
+    {
+      "number": 1,
+      "sectionCode": "INPUT_FACILITIES",
+      "titleAm": "ትምህርት ቤቱ በስታንዲርድ መሰረት የቦታ ስፊት፣ የመማሪያና አገልግልት መስጫ ክፍሎች እና ቦታዎችን መኖሩ ተረጋግጧል",
+      "titleEn": "The school has verified required site area, teaching/service rooms and spaces per standard",
+      "maxPoints": 5
+    },
+    {
+      "number": 2,
+      "sectionCode": "INPUT_FACILITIES",
+      "titleAm": "ትምህርት ቤቱ በስታንዲርድ መሰረት ለመማሪያ፣ አገልግልት መስጫ ክፍሎችና ቦታዎች የሚያገለግሉ ቁሳቁሶች/ግብዓቶች ተሟልተዋል",
+      "titleEn": "The school has verified adequate resources for teaching, service rooms and spaces per standard",
+      "maxPoints": 3
+    },
+    {
+      "number": 3,
+      "sectionCode": "INPUT_ENVIRONMENT",
+      "titleAm": "የትምህርት ቤቱ እና አካባቢው ለትምህርት ቤቱ ማህበረሰብ ምቹ፣ ጸጥተኛና ደህንነቱ የተረጋገጠ ነው",
+      "titleEn": "The school and its surroundings are comfortable, safe and secure for the school community",
+      "maxPoints": 2
+    },
+    {
+      "number": 4,
+      "sectionCode": "INPUT_ENVIRONMENT",
+      "titleAm": "ት/ቤቱ ልዩ የመማር ፍላጎት ላላቸው እና ሴት ተማሪዎች ምቹ መሆኑ ተረጋግጧል",
+      "titleEn": "Convenient conditions exist for learners with special needs and for female students",
+      "maxPoints": 2
+    },
+    {
+      "number": 5,
+      "sectionCode": "INPUT_FINANCE_HR",
+      "titleAm": "ትምህርት ቤቱ የመማር-ማስተማር ሂደት ለማሻሻል የታቀዱ ተግባራት የፋይናንስ ሀብት አሰባስቧል",
+      "titleEn": "The school has mobilized financial resources for planned teaching-learning improvement activities",
+      "maxPoints": 3
+    },
+    {
+      "number": 6,
+      "sectionCode": "INPUT_FINANCE_HR",
+      "titleAm": "በትምህርት ቤቱ የትምህርት ቤት አመራር፣ መምህራን እና አስተዳደር ሰራተኞች በስታንዲርድ ተሟልተዋል",
+      "titleEn": "School leadership, teachers and administrative staff meet the required standard",
+      "maxPoints": 4
+    },
+    {
+      "number": 7,
+      "sectionCode": "PROCESS_LEADERSHIP",
+      "titleAm": "አመራሩ አሳታፋዊ የትምህርት ቤት መሻሻያ እቅድ አዘጋጅቷል",
+      "titleEn": "The leader has prepared a participatory school improvement plan",
+      "maxPoints": 1
+    },
+    {
+      "number": 8,
+      "sectionCode": "PROCESS_LEADERSHIP",
+      "titleAm": "አመራሩ ምርጥ ተሞክሮዎችን መቀመር፣ ለውጥና የህዝብ ግንኙነት ሥራ በአግባቡ የመምራት ችሎታ አ Demonstrate አድርጓል",
+      "titleEn": "The leader demonstrates capacity to lead adoption of best practices, innovation and public relations",
+      "maxPoints": 4
+    },
+    {
+      "number": 9,
+      "sectionCode": "PROCESS_LEADERSHIP",
+      "titleAm": "የትምህርት ቤቱ አመራር የራሱን፣ መምህራንንና አስተዳደር ሰራተኞችን ሙያዊ ችሎታ ለማዳበር የአቅም ግንባታ ስልጠና አዘጋጅቶ ተግባራዊ አድርጓል",
+      "titleEn": "Leadership has prepared and implemented capacity-building training for professional competence",
+      "maxPoints": 3
+    },
+    {
+      "number": 10,
+      "sectionCode": "PROCESS_LEADERSHIP",
+      "titleAm": "የትምህርት ቤቱ አመራር ለተለያዩ አደረጃጀቶች ተግባርና ኃላፊነት መተግበራቸውን አረጋግጧል",
+      "titleEn": "School leadership has verified committees execute assigned responsibilities",
+      "maxPoints": 3
+    },
+    {
+      "number": 11,
+      "sectionCode": "PROCESS_TEACHING_MOTIVATION",
+      "titleAm": "በትምህርት ቤቱ ውጤታማ የመማር-ማስተማር ሂደት ተፈጥሯል",
+      "titleEn": "An effective teaching-learning process exists in the school",
+      "maxPoints": 4
+    },
+    {
+      "number": 12,
+      "sectionCode": "PROCESS_TEACHING_MOTIVATION",
+      "titleAm": "በትምህርት ቤቱ አመራር የመምህራን የማስተማር ተነሳሽነትና ቁርጠኝነት መፈጠሩ ተረጋግጧል",
+      "titleEn": "School leadership has fostered teachers' teaching motivation and commitment",
+      "maxPoints": 4
+    },
+    {
+      "number": 13,
+      "sectionCode": "PROCESS_ADMINISTRATION",
+      "titleAm": "የትምህርት ቤቱ አመራር መምህራንና አስተዳደር ሰራተኞችን በመመደብ ተግባርና ኃላፊነት መከታተል የሚያስችል ስርዓት አለ",
+      "titleEn": "An operational system monitors staff assignments and accountability",
+      "maxPoints": 3
+    },
+    {
+      "number": 14,
+      "sectionCode": "PROCESS_ADMINISTRATION",
+      "titleAm": "ትምህርት ቤቱ ያለውን ሀብት በአግባቡ ማስተዳደር ተረጋግጧል",
+      "titleEn": "The school manages its resources appropriately",
+      "maxPoints": 2
+    },
+    {
+      "number": 15,
+      "sectionCode": "PROCESS_LEARNING",
+      "titleAm": "የተማሪዎች የመማር ዝግጁነትና ተሳትፎ ጎልብቷል",
+      "titleEn": "Students' learning readiness and participation have improved",
+      "maxPoints": 5
+    },
+    {
+      "number": 16,
+      "sectionCode": "PROCESS_TEACHING",
+      "titleAm": "መምህራን የሚያስተምሩት ትምህርት በአግባቡ መቀድበዋል",
+      "titleEn": "Teachers adequately plan the lessons they teach",
+      "maxPoints": 2
+    },
+    {
+      "number": 17,
+      "sectionCode": "PROCESS_TEACHING",
+      "titleAm": "መምህራን ተስማሚና አሳታፋዊ የማስተማር ስነ-ዘዴዎችን ይጠቀማሉ",
+      "titleEn": "Teachers use appropriate and participatory teaching methodologies",
+      "maxPoints": 5
+    },
+    {
+      "number": 18,
+      "sectionCode": "PROCESS_TEACHING",
+      "titleAm": "መምህራን ተማሪዎችን በትክክል ይመዝናሉ፣ ግብረ-መልስ ይሰጣሉ እና ድጋፍ ያደርጋሉ",
+      "titleEn": "Teachers assess students correctly, provide feedback and support",
+      "maxPoints": 4
+    },
+    {
+      "number": 19,
+      "sectionCode": "PROCESS_COLLABORATION",
+      "titleAm": "መምህራን በጋራ የመቀድስ፣ መተግበርና የሥርዓተ-ትምህርት ቁሳቁሶችን መገምገምና ግብረ-መልስ ይሰጣሉ",
+      "titleEn": "Teachers collaboratively plan, implement and review curriculum materials",
+      "maxPoints": 3
+    },
+    {
+      "number": 20,
+      "sectionCode": "PROCESS_COLLABORATION",
+      "titleAm": "የትምህርት ቤት አመራሮችና መምህራን የሙያ ማሻሻያ መርሃ-ግብር (CPD) በአግባቡ ተግብረዋል",
+      "titleEn": "School leaders and teachers appropriately implement CPD programs",
+      "maxPoints": 3
+    },
+    {
+      "number": 21,
+      "sectionCode": "PROCESS_COMMUNITY",
+      "titleAm": "የትምህርት ቤት፣ ወላጅ እና ማህበረሰብ ግንኙነት ጠንካራ ነው",
+      "titleEn": "School-parent-community relations are strengthened",
+      "maxPoints": 4
+    },
+    {
+      "number": 22,
+      "sectionCode": "PROCESS_COMMUNITY",
+      "titleAm": "ወላጆችና ማህበረሰቡ ለትምህርት ቤቱ አስተዋጽኦ አድርገዋል",
+      "titleEn": "Parents and the community contribute to the school",
+      "maxPoints": 6
+    },
+    {
+      "number": 23,
+      "sectionCode": "PROCESS_COMMUNITY",
+      "titleAm": "ትምህርት ቤቱ ለአካባቢው ማህበረሰብ የተለያዩ ማህበራዊ አገልግሎቶችን ይሰጣል",
+      "titleEn": "The school provides various social services to the community",
+      "maxPoints": 2
+    },
+    {
+      "number": 24,
+      "sectionCode": "PROCESS_COMMUNITY",
+      "titleAm": "በትምህርት ቤቱ የተማሪ ወላጆች በልጆቻቸው መማር ላይ ተሳትፈዋል/ሚና/ መደበዋል",
+      "titleEn": "Parents are involved and assigned roles in their children's learning",
+      "maxPoints": 3
+    },
+    {
+      "number": 25,
+      "sectionCode": "OUTPUT_PARTICIPATION",
+      "titleAm": "ትምህርት ቤቱ ያቀዳውን የትምህርትና ስልጠና ተሳትፎና ውስጣዊ ብቃት አሳክቷል",
+      "titleEn": "The school achieved planned enrollment, training participation and internal efficiency",
+      "maxPoints": 4.5
+    },
+    {
+      "number": 26,
+      "sectionCode": "OUTPUT_PARTICIPATION",
+      "titleAm": "ት/ቤቱ የተቀመጠውን የተማሪዎች ውጤት ግብ አሳክቷል",
+      "titleEn": "The school achieved student performance targets",
+      "maxPoints": 8.5
+    },
+    {
+      "number": 27,
+      "sectionCode": "OUTPUT_CULTURE",
+      "titleAm": "የተማሪዎች በራስ ጥረት የመስራት ባህል መዲበሩ ተረጋግጧል",
+      "titleEn": "Students' culture of self-reliance and independent work is developed",
+      "maxPoints": 4
+    },
+    {
+      "number": 28,
+      "sectionCode": "OUTPUT_CULTURE",
+      "titleAm": "በትምህርት ቤቱ ማህበረሰብ ተቀባይነት ያላቸው እሴቶች መጎልበታቸው ተረጋግጧል",
+      "titleEn": "Accepted community values are embraced in the school",
+      "maxPoints": 3
+    }
+  ],
+  "indicators": [
+    {
+      "code": "1.1",
+      "standardNumber": 1,
+      "titleAm": "ትምህርት ቤቱ ተፈላጊውን የቦታ ስፊትና የይዞታ ሰነድ ምልከታ እና ቃል ማረጋገጫ ስላሟላ",
+      "titleEn": "The school has completed verification of appropriate land area and ownership documents",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "1.2",
+      "standardNumber": 1,
+      "titleAm": "ትምህርት ቤቱና የአካባቢው ማህበረሰብ የሚገለግለበት መሰረተ ልማቶች በስታንዲርድ መሰረት የተነቁ",
+      "titleEn": "Community-shared infrastructure facilities are built per standard",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "1.3",
+      "standardNumber": 1,
+      "titleAm": "የመማር ማስተማር ተግባር የሚካሄድባቸው መሰረተ ልማቶች በስታንዲርድ መሰረት የተነቁ",
+      "titleEn": "Teaching-learning infrastructure facilities are built per standard",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "OBSERVATION"
+      ]
+    },
+    {
+      "code": "1.4",
+      "standardNumber": 1,
+      "titleAm": "በቂ፣ ደረጃቸውን የጠበቁ፣ በየጊዜው የሚፀድና በፆታ የተለዩ የተማሪ፣ መምህርና ሰራተኞች መፀዳጃ ቤቶች ከውሃ ጋር",
+      "titleEn": "Adequate, standard-compliant, maintained and gender-separated toilets with water supply exist",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "1.5",
+      "standardNumber": 1,
+      "titleAm": "ትምህርት ቤቱ በቂ ለመጠጥ የሚያገለግል የውሃ አቅርቦት",
+      "titleEn": "The school has adequate drinking water supply",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "1.6",
+      "standardNumber": 1,
+      "titleAm": "ትምህርት ቤቱ ለህብረተሰቡ ስራ ማሳያ የሚያገለግሉ መሰረተ ልማቶች የተነቁ",
+      "titleEn": "Community demonstration infrastructure is built per standard",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "2.1",
+      "standardNumber": 2,
+      "titleAm": "ትምህርት ቤቱና የአካባቢው ማህበረሰብ የሚገለግለበት (ቤተ-መጽሃፍት፣ ሁሉንም ገብ አዳራሽ፣ የስፖርት ቦታዎች) ቁሳቁሶች በስታንዲርድ መሰረት ተሟሉ",
+      "titleEn": "Materials for community-shared facilities meet the standard",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "2.2",
+      "standardNumber": 2,
+      "titleAm": "ት/ቤቱ የመማሪያ፣ የቤተ-ሙከራዎች፣ የመምህራን ማረፊያ፣ መመገቢያ አዳራሽ እና አስተዳደር ክፍሎችን አስፈላጊ ቁሳቁሶችን አሟላ",
+      "titleEn": "Teaching, lab, staff lounge, assembly and admin rooms have adequate materials",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW",
+        "DOCUMENT_REVIEW"
+      ]
+    },
+    {
+      "code": "2.3",
+      "standardNumber": 2,
+      "titleAm": "ትምህርት ቤቱ ለህብረተሰቡ ለስራ ማሳያ የሚያገለግሉ ቁሳቁሶችን አሟላ",
+      "titleEn": "Community demonstration materials are complete",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "3.1",
+      "standardNumber": 3,
+      "titleAm": "በት/ቤቱ የሚገኙ የውስጥ-ለውስጥ መንገዶች ለሁለም ተማሪዎች ምቹ ናቸው",
+      "titleEn": "Internal pathways are convenient for all students",
+      "maxPoints": 1,
+      "dataSources": [
+        "O",
+        "B",
+        "S",
+        "E",
+        "R",
+        "V",
+        "A",
+        "T",
+        "I",
+        "O",
+        "N"
+      ]
+    },
+    {
+      "code": "3.2",
+      "standardNumber": 3,
+      "titleAm": "የትምህርት ቤቱ አካባቢ ከአደጋ ጉዳiyot ነፃ ነው",
+      "titleEn": "The school environment is free from hazards",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "4.1",
+      "standardNumber": 4,
+      "titleAm": "ትምህርት ቤቱ ልዩ የመማር ፍላጎት ላላቸው ተማሪዎች ምቹ ሁኔታ ፈጥሯል",
+      "titleEn": "Convenient conditions exist for learners with special needs",
+      "maxPoints": 1,
+      "dataSources": [
+        "INTERVIEW",
+        "OBSERVATION"
+      ]
+    },
+    {
+      "code": "4.2",
+      "standardNumber": 4,
+      "titleAm": "ትምህርት ቤቱ ለሴት ተማሪዎች ምቹ ሁኔታ ፈጥሯል",
+      "titleEn": "Convenient conditions exist for female students",
+      "maxPoints": 1,
+      "dataSources": [
+        "INTERVIEW",
+        "OBSERVATION"
+      ]
+    },
+    {
+      "code": "5.1",
+      "standardNumber": 5,
+      "titleAm": "ትምህርት ቤቱ የእውቀት ሀብት የሚያሰባስብበት እቅድ አዘጋጅቷል",
+      "titleEn": "The school has prepared a plan to mobilize financial resources",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "5.2",
+      "standardNumber": 5,
+      "titleAm": "በትምህርት ቤቱ ቅድሚያ ትኩረት የሚሹ ጉዳዮች በበጀት ተደገፈዋል",
+      "titleEn": "Priority issues are supported in the budget",
+      "maxPoints": 2,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "6.1",
+      "standardNumber": 6,
+      "titleAm": "ትምህርት ቤቱ ለደረጃው የሚመጥን የትምህርት ዝግጅት ያላቸው መምህራን አሟላ",
+      "titleEn": "Teachers with appropriate qualifications are in place",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "6.2",
+      "standardNumber": 6,
+      "titleAm": "ትምህርት ቤቱ ለደረጃው የሚመጥን የትምህርት ዝግጅት ያላቸው አመራሮች አሟላ",
+      "titleEn": "School leaders with appropriate qualifications are in place",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "6.3",
+      "standardNumber": 6,
+      "titleAm": "ትምህርት ቤቱ ለደረጃው የሚመጥን የአስተዳደር ሰራተኞችን አሟላ",
+      "titleEn": "Administrative staff with appropriate qualifications are in place",
+      "maxPoints": 1,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "6.4",
+      "standardNumber": 6,
+      "titleAm": "ትምህርት ቤቱ ተማሪዎችን በደረጃ መደበለ",
+      "titleEn": "Students are assigned per grade standard",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "7.1",
+      "standardNumber": 7,
+      "titleAm": "አመራሩ የትምህርት ቤት ግምገማ አካሂዷል እና የሦስት ዓመት ስትራቴጂክ እና አመታዊ የመሻሻያ እቅድ አዘጋጅቷል",
+      "titleEn": "Leader conducted self-assessment and prepared strategic and annual improvement plans",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "8.1",
+      "standardNumber": 8,
+      "titleAm": "ከትምህርት ቤት መሻሻያ ጋር ተያይዘው የሚመጡ የለውጥ ስራዎችን በአግባቡ አመራሩ ይመራል",
+      "titleEn": "Leader appropriately manages innovation aligned with school improvement",
+      "maxPoints": 1,
+      "dataSources": [
+        "I",
+        "N",
+        "T",
+        "E",
+        "R",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "8.2",
+      "standardNumber": 8,
+      "titleAm": "አመራሩ በትምህርት ቤቱ ዋና ተግባራትን በወቅቱ ይcommunicateዳል",
+      "titleEn": "Leader communicates major school activities on time",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "8.3",
+      "standardNumber": 8,
+      "titleAm": "የትምህርት ቤቱ አመራር መልካም ልምዶችን ቀምሮ ተግባራዊ አድርጓል",
+      "titleEn": "Leadership adopted and implemented good practices",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "8.4",
+      "standardNumber": 8,
+      "titleAm": "አመራሩ እና ማህበረሰቡ ICT የተደገፈ የአሰራር ስርዓት ፈጥረዋል",
+      "titleEn": "Leader and community created ICT-supported communication system",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "9.1",
+      "standardNumber": 9,
+      "titleAm": "አመራሩ የአቅም ግንባታ መርሃ-ግብር አውጥቶ ተግባራዊ አድርጓል",
+      "titleEn": "Leader developed and implemented capacity-building program",
+      "maxPoints": 1,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "9.2",
+      "standardNumber": 9,
+      "titleAm": "የአስተዳደር ሰራተኞችን ሙያዊ ማሻሻያ ተግባራት ተከናውኗል",
+      "titleEn": "Professional development for admin staff implemented",
+      "maxPoints": 1,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "9.3",
+      "standardNumber": 9,
+      "titleAm": "አመራሩ ከዩኒቨርሲቲ፣ ኮልጅ እና ኢንዱስትሪ ጋር ትስስር ፈጥሮ ድጋፍ አግኝቷል",
+      "titleEn": "Leadership linked with universities, colleges and industry for support",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "10.1",
+      "standardNumber": 10,
+      "titleAm": "የት/ቤቱ አመራር ኮሚቴዎችን በማደራጀት ተግባርና ኃላፊነት አውረደ",
+      "titleEn": "Leadership organized committees and delegated responsibilities",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "10.2",
+      "standardNumber": 10,
+      "titleAm": "የተሰጠ ተግባርና ኃላፊነት አፈጻጸም ተደገፈ ተከታተለ እና ግብረ-መልስ ተሰጠ",
+      "titleEn": "Committee performance supported, monitored and given feedback",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "10.3",
+      "standardNumber": 10,
+      "titleAm": "የትምህርት ቤት መሻሻያ ኮሚቴ እቅድ አፈጻጸም ተከታተለ",
+      "titleEn": "School improvement committee plan performance monitored",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "10.4",
+      "standardNumber": 10,
+      "titleAm": "አመራሩ ማህበረሰብ የሚያሳትፍ የችግር መፍቻ ስርዓት ዘርግቷል",
+      "titleEn": "Leader established inclusive problem-solving system",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "11.1",
+      "standardNumber": 11,
+      "titleAm": "አመራሩ የውስጥ ሱፐርቪዥን ስርዓት በመዘርጋት ለመምህራን ሙያዊ ድጋፍ ሰጥቷል",
+      "titleEn": "Leader provides professional support through internal supervision",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "11.2",
+      "standardNumber": 11,
+      "titleAm": "መምህራን ከ75% በላይ የክፍል ውስጥ ምልከታ እርስ በርስ ያደርጋሉ",
+      "titleEn": "Teachers conduct peer classroom observation at least 75%",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "DOCUMENT_REVIEW"
+      ]
+    },
+    {
+      "code": "11.3",
+      "standardNumber": 11,
+      "titleAm": "መምህራን ተከታታይ ምዘና እና ግብረ-መልስ መስጠታቸውን ደገፈ",
+      "titleEn": "Teachers supported continuous assessment and feedback",
+      "maxPoints": 1,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "11.4",
+      "standardNumber": 11,
+      "titleAm": "የመምህራንና ተማሪዎችን የአመራር ክህልት ለማሳደግ ስርዓት ተግባራዊ ሆኗል",
+      "titleEn": "Leadership skill development system for teachers and students implemented",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "DOCUMENT_REVIEW"
+      ]
+    },
+    {
+      "code": "12.1",
+      "standardNumber": 12,
+      "titleAm": "የት/ቤቱ አመራር ስኬታማ ግለሰቦችን በመጋበዝ ሙያዊ ተሞክሮዎችን እንዲያካፍሉ አድርጓል",
+      "titleEn": "Leadership invited successful professionals to share experience",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "12.2",
+      "standardNumber": 12,
+      "titleAm": "ለመምህራን ምቹ የስራ አካባቢ ተፈጥሯል",
+      "titleEn": "Convenient work environment created for teachers",
+      "maxPoints": 1,
+      "dataSources": [
+        "O",
+        "B",
+        "S",
+        "E",
+        "R",
+        "V",
+        "A",
+        "T",
+        "I",
+        "O",
+        "N"
+      ]
+    },
+    {
+      "code": "12.3",
+      "standardNumber": 12,
+      "titleAm": "የተሻለ አፈጻጸም ያላቸው መምህራን የሚበረታቱበት ግብርና ስርዓት ተግባራዊ ሆኗል",
+      "titleEn": "Merit recognition system for high-performing teachers implemented",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "12.4",
+      "standardNumber": 12,
+      "titleAm": "ሁሉም መምህራን በእኩልነት/ውሳኔ ሰጪነት የሚሳተፉበት ስርዓት ተግባራዊ ሆኗል",
+      "titleEn": "System for equal/decision-making participation of all teachers implemented",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "13.1",
+      "standardNumber": 13,
+      "titleAm": "ሁሉም መምህራን በሰለጠኑበት የሙያ መስክ ተመድበዋል",
+      "titleEn": "All teachers assigned in their trained subject field",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "13.2",
+      "standardNumber": 13,
+      "titleAm": "ሁሉም የአስተዳደር ሰራተኞች በሰለጠኑበት የሙያ መስክ ተመድበዋል",
+      "titleEn": "All admin staff assigned in their trained field",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "13.3",
+      "standardNumber": 13,
+      "titleAm": "መምህራንና አስተዳደር ሰራተኞች በስራ ቦታ እና ሰዓት ተገኝተው ኃላፊነታቸውን ይወጣሉ",
+      "titleEn": "Staff present at workplace and fulfill responsibilities",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "13.4",
+      "standardNumber": 13,
+      "titleAm": "የተጠያቂነት አሰራርና ስርዓት ተግባራዊ ሆኗል",
+      "titleEn": "Accountability system implemented",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "14.1",
+      "standardNumber": 14,
+      "titleAm": "የተሰበሰበውን የፊይናንስ ሀብት ቅድሚያ ተግባራት ላይ ተዋል",
+      "titleEn": "Mobilized financial resources allocated to priority activities",
+      "maxPoints": 1,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "14.2",
+      "standardNumber": 14,
+      "titleAm": "አመራሩ ቁሳቁስና መሰረተ ልማት በአግባቡ አስተዳድሯል",
+      "titleEn": "Leader appropriately manages assets and infrastructure",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "14.3",
+      "standardNumber": 14,
+      "titleAm": "የንብረትና ፊይናንስ ቁጥጥር ስርዓት ተግባራዊ ሆኗል",
+      "titleEn": "Property and financial control system implemented",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "15.1",
+      "standardNumber": 15,
+      "titleAm": "ተማሪዎች የትምህርት ቁሳቁሶችን አሟሉተው ለትምህርት ዝግጁ ናቸው",
+      "titleEn": "Students are ready for learning with complete materials",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "15.2",
+      "standardNumber": 15,
+      "titleAm": "ተማሪዎች በሰዓቱ በትምህርት ቤትና በክፍል ውስጥ ይገኛሉ",
+      "titleEn": "Students attend school and class on time",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "OBSERVATION",
+        "DOCUMENT_REVIEW"
+      ]
+    },
+    {
+      "code": "15.3",
+      "standardNumber": 15,
+      "titleAm": "ተማሪዎች በክፍል ውስጥና ውጭ ተግባራትን በንቃት ይሳተፋሉ",
+      "titleEn": "Students actively participate in in-class and out-of-class activities",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "15.4",
+      "standardNumber": 15,
+      "titleAm": "ተማሪዎች ጥያቄዎችን መጠየቅና መልስ መስጠት ይሳተፋሉ",
+      "titleEn": "Students participate in asking and answering questions",
+      "maxPoints": 1,
+      "dataSources": [
+        "O",
+        "B",
+        "S",
+        "E",
+        "R",
+        "V",
+        "A",
+        "T",
+        "I",
+        "O",
+        "N"
+      ]
+    },
+    {
+      "code": "15.5",
+      "standardNumber": 15,
+      "titleAm": "ተማሪዎች በተለያዩ ክlubs በንቁ ተሳትፈዋል",
+      "titleEn": "Students actively participate in organized clubs",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "OBSERVATION",
+        "DOCUMENT_REVIEW"
+      ]
+    },
+    {
+      "code": "15.6",
+      "standardNumber": 15,
+      "titleAm": "ተማሪዎች አዲስ ነገር መፍጠርና ችግር መፍታት ይሞክራሉ",
+      "titleEn": "Students attempt innovation and problem-solving",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "15.7",
+      "standardNumber": 15,
+      "titleAm": "ተማሪዎች የስራና ተግባር ትምህርትን በስራ ማሳያ ክፍል ይጠቀማሉ",
+      "titleEn": "Students use work education in demonstration workshops",
+      "maxPoints": 1,
+      "dataSources": [
+        "O",
+        "B",
+        "S",
+        "E",
+        "R",
+        "V",
+        "A",
+        "T",
+        "I",
+        "O",
+        "N"
+      ]
+    },
+    {
+      "code": "16.1",
+      "standardNumber": 16,
+      "titleAm": "መምህራን የተማሪዎችን አቀራ-ባል መሰረት በማድረግ የትምህርት እቅድ በአግባቡ አዘጅተዋል",
+      "titleEn": "Teachers adequately plan lessons based on student context",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "DOCUMENT_REVIEW"
+      ]
+    },
+    {
+      "code": "16.2",
+      "standardNumber": 16,
+      "titleAm": "መምህራን የምዘና ዘዴ እና መርጃ መሳሪያዎችን በእቅድ ውስጥ ቀድተዋል",
+      "titleEn": "Teachers plan assessment methods and teaching aids",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "DOCUMENT_REVIEW"
+      ]
+    },
+    {
+      "code": "17.1",
+      "standardNumber": 17,
+      "titleAm": "መምህራን ተማሪዎችን በጥንድ፣ በቡድን እና በግል አሳታፋዊ ዘዴዎችን ይጠቀማሉ",
+      "titleEn": "Teachers use pair, group and individual participatory methods",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "O",
+        "B",
+        "S",
+        "E",
+        "R",
+        "V",
+        "A",
+        "T",
+        "I",
+        "O",
+        "N"
+      ]
+    },
+    {
+      "code": "17.2",
+      "standardNumber": 17,
+      "titleAm": "መምህራን ቴክኖሎጂ (ሬዲዮ፣ ቴልቪዥን፣ ኮምፒውተር) በመጠቀም ትምህርት ይሰጣሉ",
+      "titleEn": "Teachers use technology in teaching",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "O",
+        "B",
+        "S",
+        "E",
+        "R",
+        "V",
+        "A",
+        "T",
+        "I",
+        "O",
+        "N"
+      ]
+    },
+    {
+      "code": "17.3",
+      "standardNumber": 17,
+      "titleAm": "መምህራን መርጃ መሳሪያዎችን በማዘጋጀት ጥቅም ላይ ይውላሉ",
+      "titleEn": "Teachers prepare and use teaching aids",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "O",
+        "B",
+        "S",
+        "E",
+        "R",
+        "V",
+        "A",
+        "T",
+        "I",
+        "O",
+        "N"
+      ]
+    },
+    {
+      "code": "17.4",
+      "standardNumber": 17,
+      "titleAm": "መምህራን ሳይንስ ኪት፣ ቤተ-ሙከራ እና Workshop በመጠቀም ትምህርት ይሰጣሉ",
+      "titleEn": "Teachers use science kits, labs and workshops",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "O",
+        "B",
+        "S",
+        "E",
+        "R",
+        "V",
+        "A",
+        "T",
+        "I",
+        "O",
+        "N"
+      ]
+    },
+    {
+      "code": "17.5",
+      "standardNumber": 17,
+      "titleAm": "መምህራን ተማሪዎችን የፈጠራ/ሳይንስ ስራ እንዲሰሩ ያበረታታሉ",
+      "titleEn": "Teachers encourage creative/science project work",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "O",
+        "B",
+        "S",
+        "E",
+        "R",
+        "V",
+        "A",
+        "T",
+        "I",
+        "O",
+        "N"
+      ]
+    },
+    {
+      "code": "17.6",
+      "standardNumber": 17,
+      "titleAm": "መምህሩ ባለሙያዎችን በመጋበዝ በመማር-ማስተማር ሂደት ይሳተፋል",
+      "titleEn": "Teacher invites experts into teaching-learning",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "OBSERVATION",
+        "DOCUMENT_REVIEW"
+      ]
+    },
+    {
+      "code": "17.7",
+      "standardNumber": 17,
+      "titleAm": "መምህራን ችግሮችን ለመፍታት ተግባራዊ ጥናት/ምርምር ያካሂዳሉ",
+      "titleEn": "Teachers conduct action research to solve problems",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "17.8",
+      "standardNumber": 17,
+      "titleAm": "መምህራን ትምህርት ይዘትንና ቁልፍ ጽንሰ-ሀሳቦችን በተገቢ ቋንቋ ያቀርባሉ",
+      "titleEn": "Teachers present content and key concepts in appropriate language",
+      "maxPoints": 1,
+      "dataSources": [
+        "O",
+        "B",
+        "S",
+        "E",
+        "R",
+        "V",
+        "A",
+        "T",
+        "I",
+        "O",
+        "N"
+      ]
+    },
+    {
+      "code": "18.1",
+      "standardNumber": 18,
+      "titleAm": "መምህራን ምዘናን በስርዓተ-ትምህርት እና Table of Specifications መሰረት ያዘጋጃሉ",
+      "titleEn": "Teachers prepare assessment based on curriculum and table of specifications",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "OBSERVATION"
+      ]
+    },
+    {
+      "code": "18.2",
+      "standardNumber": 18,
+      "titleAm": "መምህራን ተማሪዎችን በMLC መሰረት ተከታታይ ምዘና ይሰጣሉ",
+      "titleEn": "Teachers give continuous assessment based on MLC",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "18.3",
+      "standardNumber": 18,
+      "titleAm": "መምህራን ተከታታይ ምዘናን በመጠቀም ግብረ-መልስ ይሰጣሉ",
+      "titleEn": "Teachers use continuous assessment to give feedback",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "18.4",
+      "standardNumber": 18,
+      "titleAm": "መምህራን ዝቅተኛ ውጤት ያላቸውን ተማሪዎች ተጨማሪ ድጋፍ ይሰጣሉ",
+      "titleEn": "Teachers give additional support to low achievers",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "18.5",
+      "standardNumber": 18,
+      "titleAm": "መምህራን በሴሚስተር አጋማሽ ውጤትን ለወላጆች በማሳወቅ ግብረ-መልስ ይቀበላሉ",
+      "titleEn": "Teachers share semester results with parents and receive feedback",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "19.1",
+      "standardNumber": 19,
+      "titleAm": "መምህራን የስርዓተ-ትምህርት/ሰነዶችን በግልና በቡድን ገምግመው ግብረ-መልስ ይሰጣሉ እና ከት/ጽ/ቤት ግምገማ አስተያየት ይቀበላሉ",
+      "titleEn": "Teachers review curriculum materials collaboratively and receive textbook office evaluation feedback",
+      "maxPoints": 2,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "19.3",
+      "standardNumber": 19,
+      "titleAm": "መምህራን በጋራ Lesson study/planning ተግባራትን አከናውኗል",
+      "titleEn": "Teachers conducted collaborative lesson study/planning",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "20.1",
+      "standardNumber": 20,
+      "titleAm": "አዲስ ጀማሪ መምህራን Induction ተግባራዊ አድርገዋል ነባር መምህራን CPD ተግብረዋል",
+      "titleEn": "New teachers completed induction; existing teachers completed CPD",
+      "maxPoints": 1.5,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "20.2",
+      "standardNumber": 20,
+      "titleAm": "የት/ቤት አመራሮች CPD ተግባራዊ አድርገዋል",
+      "titleEn": "School leaders implemented CPD",
+      "maxPoints": 1.5,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "21.1",
+      "standardNumber": 21,
+      "titleAm": "ትምህርት ቤቱ ከተማሪ ወላጆች ጋር ቋሚ የግንኙነት ጊዜ ፈጥሮ ተግባራዊ አድርጓል",
+      "titleEn": "School established and implements regular parent communication",
+      "maxPoints": 2,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "21.2",
+      "standardNumber": 21,
+      "titleAm": "ወላጆች በኮሚቴዎች፣ አደረጃጀቶች እና መድረኮች በንቃት ይሳተፋሉ",
+      "titleEn": "Parents actively participate in committees and forums",
+      "maxPoints": 2,
+      "dataSources": [
+        "INTERVIEW",
+        "DOCUMENT_REVIEW"
+      ]
+    },
+    {
+      "code": "22.1",
+      "standardNumber": 22,
+      "titleAm": "ወላጆች በገንዘብ፣ በአይነት፣ በእውቀትና በጉልበት ለትምህርት ቤቱ ድጋፍ አድርገዋል",
+      "titleEn": "Parents contribute cash, in-kind, knowledge and labour",
+      "maxPoints": 3,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "22.2",
+      "standardNumber": 22,
+      "titleAm": "ከማህበረሰብ፣ ቀደም ተማሪዎች እና ተቋማት ለትምህርት ቤቱ ድጋፍ ተሰጥቷል",
+      "titleEn": "Community, alumni and institutions contributed to the school",
+      "maxPoints": 3,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "23.1",
+      "standardNumber": 23,
+      "titleAm": "ትምህርት ቤቱ ለማህበረሰብ አገልግሎት የሚያስችል ስርዓት ዘርጎ ተግባራዊ አድርጓል",
+      "titleEn": "School established community service system",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "23.2",
+      "standardNumber": 23,
+      "titleAm": "ትምህርት ቤቱ ለማህበረሰብ የመማማሪያ/መመከሪያ/ልምድ-መแลก ማዕከል ሆኗል",
+      "titleEn": "School serves as community learning/counselling/experience centre",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "24.1",
+      "standardNumber": 24,
+      "titleAm": "ወላጆች ለልጆቻቸው ውጤት መሻሻያ ድጋፍ አድርገዋል",
+      "titleEn": "Parents support children's learning improvement",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "INTERVIEW",
+        "DOCUMENT_REVIEW"
+      ]
+    },
+    {
+      "code": "24.2",
+      "standardNumber": 24,
+      "titleAm": "ወላጆች ልጆቻቸው በትምህርት ገበታ ላይ እንዲገኙ ተከታተለ",
+      "titleEn": "Parents monitor children's attendance at learning",
+      "maxPoints": 1,
+      "dataSources": [
+        "I",
+        "N",
+        "T",
+        "E",
+        "R",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "24.3",
+      "standardNumber": 24,
+      "titleAm": "ወላጆች ለልጆቻቸው ባህሪ መሻሻያ የድርሻቸውን ይወጣሉ",
+      "titleEn": "Parents fulfill role in behaviour improvement",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "I",
+        "N",
+        "T",
+        "E",
+        "R",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "24.4",
+      "standardNumber": 24,
+      "titleAm": "የተማሪ ወላጅ-መምህር ግንኙነት ጠንካራ ሆኗል",
+      "titleEn": "Parent-teacher relationship strengthened",
+      "maxPoints": 1,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "25.1",
+      "standardNumber": 25,
+      "titleAm": "ትምህርት ቤቱ መጠነ-ማቋረጥ በዕቅድ ቀንሷል",
+      "titleEn": "School reduced dropout rate per plan",
+      "maxPoints": 0.5,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "25.2",
+      "standardNumber": 25,
+      "titleAm": "ትምህርት ቤቱ መጠነ-መደገም በዕቅድ ቀንሷል",
+      "titleEn": "School reduced repetition rate per plan",
+      "maxPoints": 1.5,
+      "dataSources": [
+        "DOCUMENT_REVIEW",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "25.3",
+      "standardNumber": 25,
+      "titleAm": "ትምህርት ቤቱ መጠነ-ማርፍድ በዕቅድ ቀንሷል",
+      "titleEn": "School reduced wastage rate per plan",
+      "maxPoints": 1,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "25.4",
+      "standardNumber": 25,
+      "titleAm": "የትምህርት ቤቱ የማሳለፍ ምጣኔ ጨምሯል/ተሻሽሏል",
+      "titleEn": "School promotion rate increased/improved",
+      "maxPoints": 1.5,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "26.1",
+      "standardNumber": 26,
+      "titleAm": "ሁሉም ተማሪዎች በክፍል ፈተና በእያንዳንዱ የትምህርት ዓይነት 50% እና በላይ",
+      "titleEn": "All students score 50%+ in each subject on class exams",
+      "maxPoints": 1.5,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "26.2",
+      "standardNumber": 26,
+      "titleAm": "ሁሉም ተማሪዎች በ6ኛ ክፍል ክሊኒክ ፈተና 50%+",
+      "titleEn": "All students score 50%+ on grade 6 clinical exam",
+      "maxPoints": 1.5,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "26.3",
+      "standardNumber": 26,
+      "titleAm": "ሁሉም ተማሪዎች በ8ኛ ክፍል ፈተና 50%+",
+      "titleEn": "All students score 50%+ on grade 8 exam",
+      "maxPoints": 1.5,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "26.4",
+      "standardNumber": 26,
+      "titleAm": "በትምህርት ቤቱ ተከታታይ የተሻሻለ የተማሪ ውጤት ምዝገባ ልምድ ተዲብሯል",
+      "titleEn": "Culture of recording improving student results established",
+      "maxPoints": 1,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "26.5",
+      "standardNumber": 26,
+      "titleAm": "ለሴት ተማሪዎች በልዩ ድጋፍ 50%+ ውጤት",
+      "titleEn": "Female students score 50%+ with special support",
+      "maxPoints": 1,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "26.6",
+      "standardNumber": 26,
+      "titleAm": "ልዩ የትምህርት ፍላጎት ተማሪዎች በልዩ ድጋፍ 50%+",
+      "titleEn": "Special needs students score 50%+ with special support",
+      "maxPoints": 1,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "26.7",
+      "standardNumber": 26,
+      "titleAm": "ሁሉም ተማሪዎች በተግባር ፈተና በሰለጠኑበት መስክ ብቁ ናቸው",
+      "titleEn": "All students competent in practical exam for trained field",
+      "maxPoints": 1,
+      "dataSources": [
+        "D",
+        "O",
+        "C",
+        "U",
+        "M",
+        "E",
+        "N",
+        "T",
+        "_",
+        "R",
+        "E",
+        "V",
+        "I",
+        "E",
+        "W"
+      ]
+    },
+    {
+      "code": "27.1",
+      "standardNumber": 27,
+      "titleAm": "ተማሪዎች የሚፈጸም ኩረጃ ፀያፍ መሆኑን ተገንዝበው በተግባር ያሳያሉ",
+      "titleEn": "Students reject cheating culture and demonstrate integrity",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "27.2",
+      "standardNumber": 27,
+      "titleAm": "በተማሪዎች መካከል በጎ ፍቃደ-መረዳዳት ባህል ተዲብሯል",
+      "titleEn": "Culture of peer support established",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "27.3",
+      "standardNumber": 27,
+      "titleAm": "የተማሪዎች የመከባበር ባህል ተዲብሯል",
+      "titleEn": "Student respect culture developed",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "27.4",
+      "standardNumber": 27,
+      "titleAm": "ተማሪዎች ሃሳባቸውን በራስ-መተማመን ይግለጻሉ",
+      "titleEn": "Students express ideas with self-confidence",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "28.1",
+      "standardNumber": 28,
+      "titleAm": "በትምህርት ቤቱ የተዘጋጀው መተዳደሪያ መንግስት አጋዥነት ሰላማዊ አካባቢ ፈጥሯል",
+      "titleEn": "Prepared regulatory framework supports peaceful school environment",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "INTERVIEW"
+      ]
+    },
+    {
+      "code": "28.2",
+      "standardNumber": 28,
+      "titleAm": "በትምህርት ማህበረሰብ የመረዳዳት/መከባበር ባህል ተዲብሯል",
+      "titleEn": "Mutual support/respect culture in school community developed",
+      "maxPoints": 1,
+      "dataSources": [
+        "OBSERVATION",
+        "DOCUMENT_REVIEW"
+      ]
+    },
+    {
+      "code": "28.3",
+      "standardNumber": 28,
+      "titleAm": "ተማሪዎች ትምህርት ቤታቸውንና አካባቢያቸውን ይንከባከባሉ",
+      "titleEn": "Students care for school and environment",
+      "maxPoints": 1,
+      "dataSources": [
+        "O",
+        "B",
+        "S",
+        "E",
+        "R",
+        "V",
+        "A",
+        "T",
+        "I",
+        "O",
+        "N"
+      ]
+    }
+  ],
+  "criteria": [
+    {
+      "indicatorCode": "1.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "1.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "1.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "1.1",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 6,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 7,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 8,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 9,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 10,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 11,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.2",
+      "number": 12,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0833
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 6,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 7,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 8,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 9,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 10,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 11,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 12,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 13,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 14,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 15,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 16,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 17,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.3",
+      "number": 18,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "1.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "1.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "1.4",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "1.5",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "1.6",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "1.6",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "1.6",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "1.6",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 6,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 7,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 8,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 9,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 10,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 11,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 12,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.1",
+      "number": 13,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0769
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 6,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 7,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 8,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 9,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 10,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 11,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 12,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 13,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 14,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 15,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 16,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 17,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.2",
+      "number": 18,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.0556
+    },
+    {
+      "indicatorCode": "2.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "2.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "2.3",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "2.3",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "3.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "3.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "3.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "3.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "3.2",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "3.2",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "3.2",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "3.2",
+      "number": 6,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "4.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "4.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "4.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "4.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "5.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "5.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "5.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "6.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "6.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "6.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "6.1",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "6.1",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "6.1",
+      "number": 6,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "6.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "6.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "6.2",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "6.2",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "6.2",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "6.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "6.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "6.3",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "6.3",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "6.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "6.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "7.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "7.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "7.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "7.1",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "8.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "8.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "8.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "8.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "8.2",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "8.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "8.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "8.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "8.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "9.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "9.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "9.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "9.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "9.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "9.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "10.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "10.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "10.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "10.2",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "10.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "10.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "10.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1
+    },
+    {
+      "indicatorCode": "10.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1
+    },
+    {
+      "indicatorCode": "10.4",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1
+    },
+    {
+      "indicatorCode": "10.4",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1
+    },
+    {
+      "indicatorCode": "10.4",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1
+    },
+    {
+      "indicatorCode": "11.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "11.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "11.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "11.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "11.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "11.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "11.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "12.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "12.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "12.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "12.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "12.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "12.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "12.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "13.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "13.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "13.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "13.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "13.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "13.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "14.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "14.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "14.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "14.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "14.2",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "14.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.125
+    },
+    {
+      "indicatorCode": "14.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.125
+    },
+    {
+      "indicatorCode": "14.3",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.125
+    },
+    {
+      "indicatorCode": "14.3",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.125
+    },
+    {
+      "indicatorCode": "15.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "15.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "15.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "15.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "15.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "15.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.125
+    },
+    {
+      "indicatorCode": "15.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.125
+    },
+    {
+      "indicatorCode": "15.3",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.125
+    },
+    {
+      "indicatorCode": "15.3",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.125
+    },
+    {
+      "indicatorCode": "15.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "15.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "15.5",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "15.5",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "15.6",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "15.6",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "15.6",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "15.7",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "15.7",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "15.7",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "15.7",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "15.7",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "16.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "16.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "16.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "16.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "16.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "17.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "17.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "17.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "17.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "17.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "17.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "17.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "17.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "17.4",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "17.5",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "17.5",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "17.6",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "17.6",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "17.7",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "17.7",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "17.7",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "17.7",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "17.7",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "17.7",
+      "number": 6,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "17.8",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "18.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "18.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "18.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "18.1",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "18.1",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "18.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "18.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "18.2",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "18.2",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "18.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "18.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "18.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "18.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "18.4",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "18.5",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "18.5",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "18.5",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.1667
+    },
+    {
+      "indicatorCode": "19.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "19.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "19.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "19.1",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "19.1",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "19.1",
+      "number": 6,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "19.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "19.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "20.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "20.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "20.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "20.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "21.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.6667
+    },
+    {
+      "indicatorCode": "21.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.6667
+    },
+    {
+      "indicatorCode": "21.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.6667
+    },
+    {
+      "indicatorCode": "21.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.6667
+    },
+    {
+      "indicatorCode": "21.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.6667
+    },
+    {
+      "indicatorCode": "21.2",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.6667
+    },
+    {
+      "indicatorCode": "22.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "22.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "22.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "22.1",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "22.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "22.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "22.2",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "22.2",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.75
+    },
+    {
+      "indicatorCode": "23.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "23.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "23.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "23.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "23.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "24.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "24.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "24.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "24.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "24.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "24.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "24.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "24.4",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "24.4",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.25
+    },
+    {
+      "indicatorCode": "25.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "25.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.5
+    },
+    {
+      "indicatorCode": "25.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "25.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "25.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "25.4",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "26.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.5
+    },
+    {
+      "indicatorCode": "26.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.5
+    },
+    {
+      "indicatorCode": "26.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.5
+    },
+    {
+      "indicatorCode": "26.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "26.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "26.5",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "26.6",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "26.7",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 1.0
+    },
+    {
+      "indicatorCode": "27.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "27.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "27.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "27.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "27.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "27.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "27.3",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "27.3",
+      "number": 4,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "27.3",
+      "number": 5,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.2
+    },
+    {
+      "indicatorCode": "27.4",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "27.4",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "28.1",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "28.1",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "28.1",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "28.2",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "28.2",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.5
+    },
+    {
+      "indicatorCode": "28.3",
+      "number": 1,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "28.3",
+      "number": 2,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    },
+    {
+      "indicatorCode": "28.3",
+      "number": 3,
+      "titleAm": "titleAm",
+      "titleEn": "titleEn",
+      "maxPoints": 0.3333
+    }
+  ]
+}

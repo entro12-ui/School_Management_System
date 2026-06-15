@@ -13,5 +13,6 @@ export const BRANCH_NAV: NavItemConfig[] = [
   { href: "/registrar/records", label: "Enrollment sheet", icon: "ClipboardList" },
   { href: "/branch/registrations", label: "Staff applications", icon: "ClipboardList" },
   { href: "/branch/audit", label: "Audit log", icon: "FileText" },
+  { href: "/branch/inspection", label: "Inspection", icon: "ClipboardCheck" },
   { href: "/branch/reports", label: "Reports", icon: "Download" },
 ];
