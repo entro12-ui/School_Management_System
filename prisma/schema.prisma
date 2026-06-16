@@ -18,6 +18,7 @@ enum UserRole {
   FINANCE_OFFICER
   LIBRARIAN
   HR_OFFICER
+  INVENTORY_OFFICER
   PARENT
   STUDENT
 }
@@ -273,6 +274,14 @@ model Branch {
   hrJobPosts           HrJobPost[]
   hrEmployeeIdCards    HrEmployeeIdCard[]
   inspectionRuns       InspectionRun[]
+  imsCategories        ImsCategory[]
+  imsLocations         ImsLocation[]
+  imsItems             ImsItem[]
+  imsAssets            ImsAsset[]
+  imsTransactions      ImsTransaction[]
+  imsRequests          ImsRequest[]
+  imsSuppliers         ImsSupplier[]
+  imsPurchaseOrders    ImsPurchaseOrder[]
 }
 
 model AcademicYear {
@@ -340,6 +349,12 @@ model User {
   inspectionRunsLed           InspectionRun[]       @relation("InspectionInspector")
   inspectionRunsSupervised      InspectionRun[]       @relation("InspectionSupervisor")
   inspectionEvidenceUploaded    InspectionEvidence[]  @relation("InspectionEvidenceUploader")
+  imsTransactionsPerformed      ImsTransaction[]      @relation("ImsTransactionActor")
+  imsRequestsSubmitted          ImsRequest[]          @relation("ImsRequester")
+  imsRequestsApproved           ImsRequest[]          @relation("ImsApprover")
+  imsAssetAssignments           ImsAssetAssignment[]  @relation("ImsAssetAssigner")
+  imsPurchaseOrdersCreated      ImsPurchaseOrder[]    @relation("ImsPoCreator")
+  imsPurchaseOrdersApproved     ImsPurchaseOrder[]    @relation("ImsPoApprover")
 
   @@index([role])
   @@index([branchId])
@@ -400,6 +415,7 @@ model StaffProfile {
   staffSubjects          StaffSubject[]
   classSchedules         ClassScheduleEntry[] @relation("ClassScheduleTeacher")
   preparedClassSchedules ClassScheduleEntry[] @relation("ClassSchedulePreparer")
+  imsAssetAssignments    ImsAssetAssignment[]
 
   @@unique([branchId, employeeId])
   @@index([branchId, isScheduleUnitLeader])
@@ -448,6 +464,7 @@ model Class {
   schedules    ClassScheduleEntry[]
   assessments  Assessment[]
   attendance   AttendanceRecord[]
+  imsAssetAssignments ImsAssetAssignment[]
 
   @@unique([branchId, academicYearId, name])
   @@index([gradeBand])
@@ -1406,4 +1423,292 @@ model InspectionEvidence {
   uploadedBy     User                      @relation("InspectionEvidenceUploader", fields: [uploadedById], references: [id])
 
   @@index([runId])
+}
+
+// ─── Inventory Management System (IMS) ───────────────────────────────────────
+
+enum ImsItemType {
+  CONSUMABLE
+  NON_CONSUMABLE
+}
+
+enum ImsTransactionType {
+  PURCHASE
+  DONATION
+  TRANSFER_IN
+  TRANSFER_OUT
+  USAGE
+  ISSUANCE
+  DAMAGE
+  LOSS
+  ADJUSTMENT
+  RETURN
+}
+
+enum ImsAssetStatus {
+  ACTIVE
+  DAMAGED
+  MAINTENANCE
+  DISPOSED
+}
+
+enum ImsRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FULFILLED
+}
+
+enum ImsPurchaseOrderStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  RECEIVED
+  CANCELLED
+}
+
+enum ImsAssignmentTarget {
+  STAFF
+  CLASSROOM
+  DEPARTMENT
+}
+
+model ImsCategory {
+  id          String   @id @default(cuid())
+  branchId    String
+  name        String
+  parentId    String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  branch   Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  parent   ImsCategory?  @relation("ImsCategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children ImsCategory[] @relation("ImsCategoryHierarchy")
+  items    ImsItem[]
+
+  @@unique([branchId, name, parentId])
+  @@index([branchId, parentId])
+}
+
+model ImsLocation {
+  id          String   @id @default(cuid())
+  branchId    String
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  branch       Branch            @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  balances     ImsStockBalance[]
+  transactions ImsTransaction[]
+  assets       ImsAsset[]
+
+  @@unique([branchId, name])
+}
+
+model ImsItem {
+  id          String      @id @default(cuid())
+  branchId    String
+  categoryId  String?
+  name        String
+  sku         String
+  unit        String
+  itemType    ImsItemType
+  minStock    Int         @default(0)
+  description String?
+  expiryDate  DateTime?   @db.Date
+  unitCost    Decimal?    @db.Decimal(10, 2)
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  branch       Branch                 @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  category     ImsCategory?           @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  balances     ImsStockBalance[]
+  assets       ImsAsset[]
+  transactions ImsTransaction[]
+  requestLines ImsRequestLine[]
+  poLines      ImsPurchaseOrderLine[]
+
+  @@unique([branchId, sku])
+  @@index([branchId, itemType])
+  @@index([branchId, categoryId])
+}
+
+model ImsStockBalance {
+  id         String   @id @default(cuid())
+  itemId     String
+  locationId String
+  quantity   Int      @default(0)
+  updatedAt  DateTime @updatedAt
+
+  item     ImsItem     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  location ImsLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, locationId])
+  @@index([locationId])
+}
+
+model ImsAsset {
+  id           String         @id @default(cuid())
+  branchId     String
+  itemId       String
+  assetCode    String
+  serialNumber String?
+  status       ImsAssetStatus @default(ACTIVE)
+  locationId   String?
+  purchaseDate DateTime?      @db.Date
+  purchaseCost Decimal?       @db.Decimal(10, 2)
+  notes        String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  branch       Branch                 @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  item         ImsItem                @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  location     ImsLocation?           @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  assignments  ImsAssetAssignment[]
+  transactions ImsTransaction[]
+
+  @@unique([branchId, assetCode])
+  @@index([branchId, status])
+  @@index([itemId])
+}
+
+model ImsAssetAssignment {
+  id             String              @id @default(cuid())
+  assetId        String
+  targetType     ImsAssignmentTarget
+  staffProfileId String?
+  classId        String?
+  departmentName String?
+  assignedAt     DateTime            @default(now())
+  returnedAt     DateTime?
+  assignedById   String
+  notes          String?
+
+  asset        ImsAsset      @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  staffProfile StaffProfile? @relation(fields: [staffProfileId], references: [id], onDelete: SetNull)
+  class        Class?        @relation(fields: [classId], references: [id], onDelete: SetNull)
+  assignedBy   User          @relation("ImsAssetAssigner", fields: [assignedById], references: [id])
+
+  @@index([assetId])
+  @@index([staffProfileId])
+}
+
+model ImsTransaction {
+  id              String             @id @default(cuid())
+  branchId        String
+  itemId          String
+  locationId      String
+  assetId         String?
+  transactionType ImsTransactionType
+  quantity        Int
+  balanceAfter    Int
+  reference       String?
+  notes           String?
+  performedById   String
+  createdAt       DateTime           @default(now())
+
+  branch      Branch      @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  item        ImsItem     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  location    ImsLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  asset       ImsAsset?   @relation(fields: [assetId], references: [id], onDelete: SetNull)
+  performedBy User        @relation("ImsTransactionActor", fields: [performedById], references: [id])
+
+  @@index([branchId, createdAt])
+  @@index([itemId, createdAt])
+}
+
+model ImsRequest {
+  id           String           @id @default(cuid())
+  branchId     String
+  requesterId  String
+  status       ImsRequestStatus @default(PENDING)
+  purpose      String?
+  approvedById String?
+  approvedAt   DateTime?
+  rejectReason String?
+  fulfilledAt  DateTime?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  branch    Branch           @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  requester User             @relation("ImsRequester", fields: [requesterId], references: [id])
+  approver  User?            @relation("ImsApprover", fields: [approvedById], references: [id])
+  lines     ImsRequestLine[]
+
+  @@index([branchId, status])
+  @@index([requesterId])
+}
+
+model ImsRequestLine {
+  id           String  @id @default(cuid())
+  requestId    String
+  itemId       String
+  quantity     Int
+  fulfilledQty Int     @default(0)
+  notes        String?
+
+  request ImsRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  item    ImsItem    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([requestId])
+}
+
+model ImsSupplier {
+  id            String   @id @default(cuid())
+  branchId      String
+  name          String
+  contactPerson String?
+  email         String?
+  phone         String?
+  address       String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  branch         Branch             @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  purchaseOrders ImsPurchaseOrder[]
+
+  @@unique([branchId, name])
+}
+
+model ImsPurchaseOrder {
+  id           String                 @id @default(cuid())
+  branchId     String
+  supplierId   String
+  poNumber     String
+  status       ImsPurchaseOrderStatus @default(DRAFT)
+  totalAmount  Decimal                @default(0) @db.Decimal(12, 2)
+  notes        String?
+  financeNote  String?
+  createdById  String
+  approvedById String?
+  approvedAt   DateTime?
+  receivedAt   DateTime?
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+
+  branch     Branch                 @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  supplier   ImsSupplier            @relation(fields: [supplierId], references: [id])
+  createdBy  User                   @relation("ImsPoCreator", fields: [createdById], references: [id])
+  approvedBy User?                  @relation("ImsPoApprover", fields: [approvedById], references: [id])
+  lines      ImsPurchaseOrderLine[]
+
+  @@unique([branchId, poNumber])
+  @@index([branchId, status])
+}
+
+model ImsPurchaseOrderLine {
+  id              String  @id @default(cuid())
+  purchaseOrderId String
+  itemId          String
+  quantity        Int
+  unitPrice       Decimal @db.Decimal(10, 2)
+  receivedQty     Int     @default(0)
+
+  purchaseOrder ImsPurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  item          ImsItem          @relation(fields: [itemId], references: [id])
+
+  @@index([purchaseOrderId])
 }

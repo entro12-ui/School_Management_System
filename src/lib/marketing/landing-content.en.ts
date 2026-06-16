@@ -29,11 +29,11 @@ export const EN_CONTENT: LandingContent = {
     eyebrow: "School management · KG–12",
     titleLine1: "Your whole school,",
     titleLine2: "one calm workspace",
-    lead: "Enrollment, attendance, fees, report cards, and parent updates — connected for administrators, teachers, and families across every branch.",
+    lead: "Enrollment, attendance, fees, report cards, inventory, facility inspections, and parent updates — connected for administrators, teachers, and families across every branch.",
     bullets: [
-      "Dedicated portal for every role",
+      "Dedicated portal for every role — including store & compliance",
       "Multi-branch from a single central office",
-      "Parent message drafts in English and Amharic",
+      "Inventory, procurement, and inspection checklists built in",
     ],
     cardBranch: "Monday · Addis branch",
     cardView: "Staff morning view",
@@ -41,13 +41,13 @@ export const EN_CONTENT: LandingContent = {
     highlights: [
       { title: "Academics", desc: "Grades & transcripts" },
       { title: "Finance", desc: "Fees & payments" },
-      { title: "Library", desc: "Catalog & loans" },
-      { title: "Attendance", desc: "Daily records" },
+      { title: "Inventory", desc: "Stock & assets" },
+      { title: "Inspection", desc: "Facility compliance" },
     ],
     todayItems: [
+      { title: "3 items below minimum stock", desc: "Store manager alerted · reorder pending" },
+      { title: "Inspection checklist 78% complete", desc: "Branch admin review due Friday" },
       { title: "Grade 8B — attendance slipping", desc: "Homeroom teacher notified" },
-      { title: "12 fee reminders ready to send", desc: "Finance can review first" },
-      { title: "4 classes still need weekly marks", desc: "Visible on teacher dashboard" },
     ],
     sceneCards: [
       {
@@ -86,7 +86,7 @@ export const EN_CONTENT: LandingContent = {
   },
   stats: {
     items: [
-      { value: "10+", label: "Integrated modules" },
+      { value: "12+", label: "Integrated modules" },
       { value: "KG–12", label: "Grade coverage" },
       { value: "2", label: "Languages" },
       { value: "∞", label: "Branches supported" },
@@ -99,6 +99,7 @@ export const EN_CONTENT: LandingContent = {
       "Multi-branch networks",
       "Central office oversight",
       "Ministry-ready exports",
+      "Inventory & facility inspection tools",
     ],
   },
   portalDemos: {
@@ -221,7 +222,7 @@ export const EN_CONTENT: LandingContent = {
   experience: {
     eyebrow: "Experience",
     title: "Designed for how schools actually run",
-    lead: "Administrators, teachers, finance, HR, library staff, and families each get a workspace that fits their job — all tied to the same student records.",
+    lead: "Administrators, teachers, finance, HR, store managers, and families each get a workspace that fits their job — all tied to the same student records and operational data.",
     inPractice: "In practice",
     outcomesEyebrow: "What you gain",
     experiences: [
@@ -238,7 +239,8 @@ export const EN_CONTENT: LandingContent = {
         ],
         actions: [
           "Enrollment and collections per branch in one dashboard.",
-          "Students who need follow-up surface before grades fall further.",
+          "Track inventory levels, purchase orders, and low-stock alerts.",
+          "Run facility inspection checklists with evidence and export-ready reports.",
           "Export-ready data for ministry or board meetings.",
         ],
       },
@@ -291,8 +293,12 @@ export const EN_CONTENT: LandingContent = {
         description: "Absences visible to staff and families before they escalate.",
       },
       {
+        title: "Operations control",
+        description: "Stock, assets, procurement, and facility inspection scores in one place.",
+      },
+      {
         title: "One record",
-        description: "GPA, transcripts, and fees share the same student profile.",
+        description: "GPA, transcripts, fees, and audit logs share the same student profile.",
       },
       {
         title: "Parent messages",
@@ -365,13 +371,15 @@ export const EN_CONTENT: LandingContent = {
     ],
     coverageEyebrow: "Coverage",
     coverageTitle: "Full platform coverage",
-    coverageLead: "Registrar, finance, library, HR, and family portals — not just assistants.",
+    coverageLead: "Registrar, finance, library, inventory, inspection, HR, and family portals — not just assistants.",
     coverageItems: [
       "Multi-branch dashboards for central office",
       "Enrollment, records, ID cards, and transcripts",
       "Teacher rosters, grading, and attendance",
       "Fees, payments, receipts, and finance reports",
       "Library catalog, loans, reservations, and fines",
+      "Inventory — stock, assets, procurement, requests & alerts",
+      "Facility inspection checklists — scoring, evidence & exports",
       "HR, payroll, leave, and recruitment",
       "Parent and student portals (English & Amharic message drafts)",
       "Role-based access and audit logs",
@@ -400,6 +408,7 @@ export const EN_CONTENT: LandingContent = {
       "Teacher",
       "Finance Officer",
       "Librarian",
+      "Store Manager",
       "HR Officer",
     ],
     gradeBandsHeading: "Grade bands",
@@ -434,6 +443,7 @@ export const EN_CONTENT: LandingContent = {
       { label: "Teacher", description: "Grading, weekly attendance, class rosters" },
       { label: "Finance Officer", description: "Semester fees, payments, financial reports" },
       { label: "Librarian", description: "Catalog, issue/return, fines" },
+      { label: "Store Manager", description: "Inventory, stock, assets & procurement" },
       { label: "HR Officer", description: "Employees, payroll, leave, recruitment" },
     ],
     family: [
@@ -473,7 +483,7 @@ export const EN_CONTENT: LandingContent = {
   modules: {
     eyebrow: "Modules",
     title: "One student record, every department",
-    lead: "Academic, attendance, finance, library, HR, and AI — one student record every department shares.",
+    lead: "Academic, attendance, finance, library, inventory, inspection, HR, and AI — one student record every department shares.",
     items: [
       {
         id: "academic",
@@ -536,6 +546,18 @@ export const EN_CONTENT: LandingContent = {
         items: ["Payroll", "Leave", "Recruitment"],
       },
       {
+        id: "inventory",
+        title: "Inventory",
+        description: "Stock, assets & procurement",
+        items: ["Multi-location stock", "Asset assignment", "Purchase orders & alerts"],
+      },
+      {
+        id: "inspection",
+        title: "Inspection",
+        description: "Facility compliance checklists",
+        items: ["Criterion scoring", "Photo evidence", "PDF / CSV export"],
+      },
+      {
         id: "security",
         title: "Security",
         description: "Role-based system protection",
@@ -561,7 +583,7 @@ export const EN_CONTENT: LandingContent = {
           "1 branch to start, add more anytime",
           "Academics, attendance & report cards",
           "Parent & student portals",
-          "Finance, library & HR modules",
+          "Finance, library, HR, inventory & inspection",
           "Leadership dashboards & audit logs",
           "Core modules — AI not included",
           "Email support",
@@ -580,7 +602,7 @@ export const EN_CONTENT: LandingContent = {
           "Full AI support — tutor, lesson planner & reports",
           "Smart parent message drafts (English & Amharic)",
           "Unlimited branches after activation",
-          "Finance, library & HR modules",
+          "Finance, library, HR, inventory & inspection",
           "Leadership dashboards & audit logs",
           "Priority onboarding & support",
         ],
@@ -634,6 +656,11 @@ export const EN_CONTENT: LandingContent = {
           "Starter is 30 ETB per student per month after your free first month — core modules without AI. Growth is 50 ETB per student per month and includes full AI support. Enterprise is custom pricing for large networks.",
       },
       {
+        question: "Can we track school inventory and facility inspections?",
+        answer:
+          "Yes. The inventory module covers stock, assets, procurement, staff requests, and low-stock alerts. The inspection module supports facility checklists with criterion scoring, photo evidence, and export-ready reports for ministry reviews.",
+      },
+      {
         question: "Is our data secure?",
         answer:
           "Role-based access, audit logs, and secure sign-in protect every portal. Each user only sees the data their job requires.",
@@ -643,7 +670,7 @@ export const EN_CONTENT: LandingContent = {
   footer: {
     tagline: "Entro Ethiopia",
     description:
-      "School management for KG–12 — enrollment, academics, finance, library, HR, and family portals in one secure system.",
+      "School management for KG–12 — enrollment, academics, finance, library, inventory, inspection, HR, and family portals in one secure system.",
     location: "Designed and built in Ethiopia",
     linksHeading: "Links",
     signIn: "Sign in",

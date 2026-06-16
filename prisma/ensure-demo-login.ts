@@ -84,6 +84,14 @@ const DEMO_USERS: DemoUser[] = [
     department: "Library",
   },
   {
+    email: "inventory.addis@school.et",
+    firstName: "Mekdes",
+    lastName: "Haile",
+    role: UserRole.INVENTORY_OFFICER,
+    branchCode: "ADDIS",
+    department: "Store",
+  },
+  {
     email: "hr.addis@school.et",
     firstName: "Selam",
     lastName: "Tadesse",
@@ -128,6 +136,8 @@ function staffPrefix(role: UserRole): string {
       return "F";
     case UserRole.LIBRARIAN:
       return "L";
+    case UserRole.INVENTORY_OFFICER:
+      return "I";
     case UserRole.HR_OFFICER:
       return "HR";
     default:
@@ -351,6 +361,7 @@ async function main() {
         case UserRole.TEACHER:
         case UserRole.FINANCE_OFFICER:
         case UserRole.LIBRARIAN:
+        case UserRole.INVENTORY_OFFICER:
           await ensureStaffProfile(user.id, branchId, demo.role, demo.department);
           break;
         case UserRole.HR_OFFICER:

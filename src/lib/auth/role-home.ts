@@ -8,6 +8,7 @@ export const ROLE_HOME: Record<string, string> = {
   FINANCE_OFFICER: "/finance",
   LIBRARIAN: "/library",
   HR_OFFICER: "/hr",
+  INVENTORY_OFFICER: "/inventory",
   PARENT: "/parent",
   STUDENT: "/student",
 };

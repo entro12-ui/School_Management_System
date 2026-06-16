@@ -30,11 +30,11 @@ export const AM_CONTENT: LandingContent = {
     eyebrow: "የትምህርት ቤት አስተዳደር · KG–12",
     titleLine1: "መላ ትምህርት ቤትዎ፣",
     titleLine2: "አንድ ሰላማዊ የስራ ቦታ",
-    lead: "ምዝገባ፣ ቅጥያ፣ ክፍያ፣ የውጤት ካርድ እና የወላጅ ማሳወቂያ — ለአስተዳዳሪዎች፣ መምህራን እና ቤተሰቦች በሁሉም ቅርንጫፎች የተገናኘ።",
+    lead: "ምዝገባ፣ ቅጥያ፣ ክፍያ፣ የውጤት ካርድ፣ የእቃ አስተዳደር፣ የመሠሪያ ቤት Inspection እና የወላጅ ማሳወቂያ — ለአስተዳዳሪዎች፣ መምህራን እና ቤተሰቦች በሁሉም ቅርንጫፎች የተገናኘ።",
     bullets: [
-      "ለእያንዳንዱ ሚና ልዩ መግቢያ",
+      "ለእያንዳንዱ ሚና ልዩ መግቢያ — መጋዘን እና ተገዢነትን ጨምሮ",
       "ከአንድ ማዕከላዊ ቢሮ ብዙ ቅርንጫፎች",
-      "የወላጅ መልዕክት ረቂቆች በእንግሊዝኛ እና በአማርኛ",
+      "የእቃ አስተዳደር፣ ግዥ እና የInspection ምክር ተሰራጭ",
     ],
     cardBranch: "ሰኞ · የአዲስ ቅርንጫፍ",
     cardView: "የሰራተኞች የጠዋት እይታ",
@@ -42,13 +42,13 @@ export const AM_CONTENT: LandingContent = {
     highlights: [
       { title: "ትምህርት", desc: "ውጤቶች እና ትራንስክሪፕት" },
       { title: "ፋይናንስ", desc: "ክፍያዎች እና ገንዘብ" },
-      { title: "ቤተ-መጽሐፍት", desc: "ካታሎግ እና ብድር" },
-      { title: "ቅጥያ", desc: "ዕለታዊ መዝገቦች" },
+      { title: "እቃ", desc: "ክምችት እና ንብረት" },
+      { title: "Inspection", desc: "የመሠሪያ ቤት ተገዢነት" },
     ],
     todayItems: [
+      { title: "3 እቃዎች ከዝቅተኛ ክምችት በታች", desc: "የእቃ ማኔጀር ተመልክቷል · እንደገና መግዛት በመጠባበቅ" },
+      { title: "Inspection ምክር 78% ተጠናቋል", desc: "የቅርንጫፍ አስተዳዳሪ ግምገማ በዓርብ" },
       { title: "8ኛ ቢ — ቅጥያ እየቀነሰ ነው", desc: "የክፍል መምህር ተሳተፈ" },
-      { title: "12 የክፍያ ማስታወሻዎች ለመላክ ዝግጁ", desc: "ፋይናንስ መጀመሪያ ማረጋገጥ ይችላል" },
-      { title: "4 ክፍሎች አሁንም ሳምንታዊ ውጤት ይፈልጋሉ", desc: "በመምህር ዳሽቦርድ ላይ ይታያል" },
     ],
     sceneCards: [
       {
@@ -87,7 +87,7 @@ export const AM_CONTENT: LandingContent = {
   },
   stats: {
     items: [
-      { value: "10+", label: "የተዋሃዱ ሞጁሎች" },
+      { value: "12+", label: "የተዋሃዱ ሞጁሎች" },
       { value: "KG–12", label: "የክፍል ሽፋን" },
       { value: "2", label: "ቋንቋዎች" },
       { value: "∞", label: "የሚደገፉ ቅርንጫፎች" },
@@ -100,6 +100,7 @@ export const AM_CONTENT: LandingContent = {
       "ብዙ ቅርንጫፍ ያላቸው አውታሮች",
       "የማዕከላዊ ቢሮ ቁጥጥር",
       "ለሚኒስትሪ ዝግጁ ማውጣቶች",
+      "የእቃ አስተዳደር እና Inspection መሳሪያዎች",
     ],
   },
   portalDemos: {
@@ -222,7 +223,7 @@ export const AM_CONTENT: LandingContent = {
   experience: {
     eyebrow: "ተሞክሮ",
     title: "ትምህርት ቤቶች እንዴት እንደሚሰሩ ተዘጋጅቷል",
-    lead: "አስተዳዳሪዎች፣ መምህራን፣ ፋይናንስ፣ HR፣ የቤተ-መጽሐፍት ሰራተኞች እና ቤተሰቦች ለስራቸው የሚስማማ የስራ ቦታ ያገኛሉ — ሁሉም በተመሳሳይ የተማሪ መዝገቦች ላይ የተገናኙ።",
+    lead: "አስተዳዳሪዎች፣ መምህራን፣ ፋይናንስ፣ HR፣ የእቃ ማኔጀሮች እና ቤተሰቦች ለስራቸው የሚስማማ የስራ ቦታ ያገኛሉ — ሁሉም በተመሳሳይ የተማሪ መዝገቦች እና የስራ ውሂብ ላይ የተገናኙ።",
     inPractice: "በተግባር",
     outcomesEyebrow: "የሚያገኙት",
     experiences: [
@@ -239,7 +240,8 @@ export const AM_CONTENT: LandingContent = {
         ],
         actions: [
           "በአንድ ዳሽቦርድ ላይ በቅርንጫፍ ምዝገባ እና ገቢ።",
-          "የተከታተል ፍላጎት ያላቸው ተማሪዎች ውጤት ከመቀነስ በፊት ይታያሉ።",
+          "የእቃ ደረጃ፣ የግዥ ትዕዛዞች እና ዝቅተኛ ክምችት ማስጠንቀቂያዎችን ይከታተሉ።",
+          "የመሠሪያ ቤት Inspection ምክር — ማስረጃ እና ማስረከቢያ ጨምሮ።",
           "ለሚኒስትሪ ወይም ቦርድ ስብሰባ የሚላኩ ውሂቦች።",
         ],
       },
@@ -292,8 +294,12 @@ export const AM_CONTENT: LandingContent = {
         description: "ጥፋቶች ከመጨመር በፊት ለሰራተኞች እና ቤተሰቦች ይታያሉ።",
       },
       {
+        title: "የስራ ቁጥጥር",
+        description: "ክምችት፣ ንብረት፣ ግዥ እና Inspection ውጤቶች በአንድ ቦታ።",
+      },
+      {
         title: "አንድ መዝገብ",
-        description: "GPA፣ ትራንስክሪፕት እና ክፍያዎች ተመሳሳይ የተማሪ መገለጫ ያጋራሉ።",
+        description: "GPA፣ ትራንስክሪፕት፣ ክፍያዎች እና ኦዲት መዝገቦች ተመሳሳይ የተማሪ መገለጫ ያጋራሉ።",
       },
       {
         title: "የወላጅ መልዕክቶች",
@@ -366,15 +372,17 @@ export const AM_CONTENT: LandingContent = {
     ],
     coverageEyebrow: "ሽፋን",
     coverageTitle: "ሙሉ የመድረክ ሽፋን",
-    coverageLead: "ምዝገባ፣ ፋይናንስ፣ ቤተ-መጽሐፍት፣ HR እና የቤተሰብ መግቢያዎች — ረዳቶች ብቻ አይደሉም።",
+    coverageLead: "ምዝገባ፣ ፋይናንስ፣ ቤተ-መጽሐፍት፣ እቃ አስተዳደር፣ Inspection፣ HR እና የቤተሰብ መግቢያዎች — ረዳቶች ብቻ አይደሉም።",
     coverageItems: [
       "ለማዕከላዊ ቢሮ ብዙ ቅርንጫፍ ዳሽቦርዶች",
       "ምዝገባ፣ መዝገቦች፣ መታወቂያ ካርድ እና ትራንስክሪፕት",
       "የመምህር ዝርዝር፣ ውጤት እና ቅጥያ",
       "ክፍያዎች፣ ገንዘብ፣ ደረሰኞች እና የፋይናንስ ሪፖርቶች",
       "የቤተ-መጽሐፍት ካታሎግ፣ ብድር፣ ማስያዝ እና ቅጣት",
+      "እቃ አስተዳደር — ክምችት፣ ንብረት፣ ግዥ፣ ጥያቄዎች እና ማስጠንቀቂያ",
+      "የመሠሪያ ቤት Inspection — ውጤት፣ ማስረጃ እና ማስረከቢያ",
       "HR፣ ደመወዝ፣ ፈቃድ እና ምልመና",
-      "የወላጅ እና የተማሪ መግቢያዎች (እንግሊዝኛ እና አማርኛ የመልዕክት ረቂቆች)",
+      "የወላጅ እና የተማሪ መግቢያዎች (እንግሊዝኛ እና አማርኛ)",
       "በሚና የተመሰረተ መዳረሻ እና ኦዲት መዝገቦች",
     ],
   },
@@ -401,6 +409,7 @@ export const AM_CONTENT: LandingContent = {
       "Teacher",
       "Finance Officer",
       "Librarian",
+      "Store Manager",
       "HR Officer",
     ],
     gradeBandsHeading: "የክፍል ቡድኖች",
@@ -435,6 +444,7 @@ export const AM_CONTENT: LandingContent = {
       { label: "Teacher", description: "ውጤት፣ ሳምንታዊ ቅጥያ፣ የክፍል ዝርዝር" },
       { label: "Finance Officer", description: "የሴሚስተር ክፍያ፣ ገንዘብ፣ የፋይናንስ ሪፖርቶች" },
       { label: "Librarian", description: "ካታሎግ፣ ማስረከብ/መመለስ፣ ቅጣት" },
+      { label: "Store Manager", description: "እቃ፣ ክምችት፣ ንብረት እና ግዥ" },
       { label: "HR Officer", description: "ሰራተኞች፣ ደመወዝ፣ ፈቃድ፣ ምልመና" },
     ],
     family: [
@@ -474,7 +484,7 @@ export const AM_CONTENT: LandingContent = {
   modules: {
     eyebrow: "ሞጁሎች",
     title: "አንድ የተማሪ መዝገብ፣ ሁሉም ክፍል",
-    lead: "ትምህርት፣ ቅጥያ፣ ፋይናንስ፣ ቤተ-መጽሐፍት፣ HR እና AI — አንድ የተማሪ መዝገብ ሁሉም ክፍል ይጋራል።",
+    lead: "ትምህርት፣ ቅጥያ፣ ፋይናንስ፣ ቤተ-መጽሐፍት፣ እቃ አስተዳደር፣ Inspection፣ HR እና AI — አንድ የተማሪ መዝገብ ሁሉም ክፍል ይጋራል።",
     items: [
       {
         id: "academic",
@@ -537,6 +547,18 @@ export const AM_CONTENT: LandingContent = {
         items: ["ደመወዝ", "ፈቃድ", "ምልመና"],
       },
       {
+        id: "inventory",
+        title: "እቃ አስተዳደር",
+        description: "ክምችት፣ ንብረት እና ግዥ",
+        items: ["በብዙ ቦታ ክምችት", "የንብረት መመደብ", "የግዥ ትዕዛዝ እና ማስጠንቀቂያ"],
+      },
+      {
+        id: "inspection",
+        title: "Inspection",
+        description: "የመሠሪያ ቤት ተገዢነት ምክር",
+        items: ["የመስፈርት ውጤት", "የፎቶ ማስረጃ", "PDF / CSV ማስረከቢያ"],
+      },
+      {
         id: "security",
         title: "ደህንነት",
         description: "በሚና የተመሰረተ የስርዓት ጥበቃ",
@@ -562,7 +584,7 @@ export const AM_CONTENT: LandingContent = {
           "1 ቅርንጫፍ ለመጀመር፣ ተጨማሪ በማንኛውም ጊዜ",
           "ትምህርት፣ ቅጥያ እና የውጤት ካርድ",
           "የወላጅ እና የተማሪ መግቢያ",
-          "ፋይናንስ፣ ቤተ-መጽሐፍት እና HR ሞጁሎች",
+          "ፋይናንስ፣ ቤተ-መጽሐፍት፣ HR፣ እቃ እና Inspection",
           "የአመራር ዳሽቦርድ እና ኦዲት መዝገቦች",
           "ዋና ሞጁሎች — AI አይካተትም",
           "የኢሜይል ድጋፍ",
@@ -581,7 +603,7 @@ export const AM_CONTENT: LandingContent = {
           "ሙሉ AI ድጋፍ — ተጋሩ፣ እቅድ እና ሪፖርት",
           "ዘመናዊ የወላጅ መልዕክት ረቂቆች (እንግሊዝኛ እና አማርኛ)",
           "ከተግባሩ በኋላ ያልተገደበ ቅርንጫፍ",
-          "ፋይናንስ፣ ቤተ-መጽሐፍት እና HR ሞጁሎች",
+          "ፋይናንስ፣ ቤተ-መጽሐፍት፣ HR፣ እቃ እና Inspection",
           "የአመራር ዳሽቦርድ እና ኦዲት መዝገቦች",
           "ቅድሚያ የመጀመሪያ ምዝገባ እና ድጋፍ",
         ],
@@ -625,6 +647,11 @@ export const AM_CONTENT: LandingContent = {
         answer: "Starter ከፈቀዱ በኋላ 1ኛ ወር ነፃ፣ ከዚያ በተማሪ 30 ብር/ወር — AI ሳይካተት። Growth በተማሪ 50 ብር/ወር ሙሉ AI ድጋፍ ያካትታል። Enterprise ለዓቢይ አውታሮች ብጁ ዋጋ።",
       },
       {
+        question: "የትምህርት ቤት እቃ እና Inspection መከታተል ይቻላል?",
+        answer:
+          "አዎ። የእቃ አስተዳደር ሞጁል ክምችት፣ ንብረት፣ ግዥ፣ የሰራተኞች ጥያቄዎች እና ዝቅተኛ ክምችት ማስጠንቀቂያዎችን ይሸፍናል። Inspection ሞጁል የመሠሪያ ቤት ምክር፣ ውጤት፣ የፎቶ ማስረጃ እና ለሚኒስትሪ ማስረከቢያ ይደግፋል።",
+      },
+      {
         question: "ውሂባችን ደህንነቱ የተጠበቀ ነው?",
         answer: "በሚና የተመሠረተ መዳረሻ፣ ኦዲት መዝገቦች እና ደህንነቱ የተጠበቀ መግቢያ ሁሉንም መግቢያዎች ይጠብቃል።",
       },
@@ -640,7 +667,7 @@ export const AM_CONTENT: LandingContent = {
   footer: {
     tagline: "Entro Ethiopia",
     description:
-      "ለ KG–12 የትምህርት ቤት አስተዳደር — ምዝገባ፣ ትምህርት፣ ፋይናንስ፣ ቤተ-መጽሐፍት፣ HR እና የቤተሰብ መግቢያዎች በአንድ ደህንነቱ የተጠበቀ ስርዓት።",
+      "ለ KG–12 የትምህርት ቤት አስተዳደር — ምዝገባ፣ ትምህርት፣ ፋይናንስ፣ ቤተ-መጽሐፍት፣ እቃ አስተዳደር፣ Inspection፣ HR እና የቤተሰብ መግቢያዎች በአንድ ደህንነቱ የተጠበቀ ስርዓት።",
     location: "በኢትዮጵያ ተዘጋጅቶ ተሰራ",
     linksHeading: "አገናኞች",
     signIn: "ግባ",

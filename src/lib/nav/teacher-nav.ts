@@ -8,4 +8,5 @@ export const TEACHER_NAV: NavItemConfig[] = [
   { href: "/teacher/schedule", label: "Schedule", icon: "Calendar" },
   { href: "/teacher/reports", label: "Report cards", icon: "FileText" },
   { href: "/teacher/library", label: "Library", icon: "BookOpen" },
+  { href: "/inventory/requests", label: "Item requests", icon: "Package" },
 ];

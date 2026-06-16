@@ -8,6 +8,7 @@ import {
   PaymentStatus,
   AssessmentType,
   AcademicTerm,
+  ImsItemType,
 } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { SUBJECT_CATALOG } from "../src/lib/academic-catalog";
@@ -23,6 +24,18 @@ const hash = () => bcrypt.hash(password, 10);
 
 async function main() {
   await prisma.auditLog.deleteMany();
+  await prisma.imsPurchaseOrderLine.deleteMany();
+  await prisma.imsPurchaseOrder.deleteMany();
+  await prisma.imsRequestLine.deleteMany();
+  await prisma.imsRequest.deleteMany();
+  await prisma.imsTransaction.deleteMany();
+  await prisma.imsAssetAssignment.deleteMany();
+  await prisma.imsAsset.deleteMany();
+  await prisma.imsStockBalance.deleteMany();
+  await prisma.imsItem.deleteMany();
+  await prisma.imsLocation.deleteMany();
+  await prisma.imsCategory.deleteMany();
+  await prisma.imsSupplier.deleteMany();
   await prisma.gradeRecord.deleteMany();
   await prisma.assessment.deleteMany();
   await prisma.attendanceRecord.deleteMany();
@@ -193,6 +206,17 @@ async function main() {
     },
   });
 
+  const inventoryAddis = await prisma.user.create({
+    data: {
+      email: "inventory.addis@school.et",
+      passwordHash: await hash(),
+      firstName: "Mekdes",
+      lastName: "Haile",
+      role: UserRole.INVENTORY_OFFICER,
+      branchId: branchAddis.id,
+    },
+  });
+
   const teacherBish = await prisma.user.create({
     data: {
       email: "teacher.bishoftu@school.et",
@@ -261,6 +285,12 @@ async function main() {
         branchId: branchAddis.id,
         employeeId: "L-ADD-001",
         department: "Library",
+      },
+      {
+        userId: inventoryAddis.id,
+        branchId: branchAddis.id,
+        employeeId: "I-ADD-001",
+        department: "Store",
       },
       {
         userId: teacherBish.id,
@@ -575,6 +605,7 @@ async function main() {
     skipDuplicates: true,
   });
 
+  await seedImsModule(branchAddis.id, inventoryAddis.id);
   await seedHrModule(branchAddis.id, hrAddis.id);
 
   await prisma.auditLog.create({
@@ -593,10 +624,175 @@ async function main() {
     teacher: teacherAddis.email,
     finance: financeAddis.email,
     librarian: librarianAddis.email,
+    inventory: inventoryAddis.email,
     hr: hrAddis.email,
     parent: parentUser.email,
     student: studentUser.email,
     studentGrade10: studentGrade10User.email,
+  });
+}
+
+async function seedImsModule(branchId: string, actorId: string) {
+  const furniture = await prisma.imsCategory.create({
+    data: { branchId, name: "Furniture" },
+  });
+  const electronics = await prisma.imsCategory.create({
+    data: { branchId, name: "Electronics" },
+  });
+  const books = await prisma.imsCategory.create({
+    data: { branchId, name: "Books" },
+  });
+  await prisma.imsCategory.createMany({
+    data: [
+      { branchId, name: "Chairs", parentId: furniture.id },
+      { branchId, name: "Computers", parentId: electronics.id },
+      { branchId, name: "Textbooks", parentId: books.id },
+    ],
+  });
+
+  const mainStore = await prisma.imsLocation.create({
+    data: { branchId, name: "Main Store", description: "Central warehouse" },
+  });
+  const lab = await prisma.imsLocation.create({
+    data: { branchId, name: "Science Lab", description: "Lab consumables" },
+  });
+  const library = await prisma.imsLocation.create({
+    data: { branchId, name: "Library Store", description: "Book storage" },
+  });
+
+  const chairCat = await prisma.imsCategory.findFirst({
+    where: { branchId, name: "Chairs" },
+  });
+  const computerCat = await prisma.imsCategory.findFirst({
+    where: { branchId, name: "Computers" },
+  });
+  const textbookCat = await prisma.imsCategory.findFirst({
+    where: { branchId, name: "Textbooks" },
+  });
+
+  const chair = await prisma.imsItem.create({
+    data: {
+      branchId,
+      categoryId: chairCat?.id,
+      name: "Student Chair",
+      sku: "CHR-001",
+      unit: "pcs",
+      itemType: ImsItemType.CONSUMABLE,
+      minStock: 20,
+      unitCost: 850,
+    },
+  });
+  const paper = await prisma.imsItem.create({
+    data: {
+      branchId,
+      name: "A4 Copy Paper",
+      sku: "PAP-A4",
+      unit: "box",
+      itemType: ImsItemType.CONSUMABLE,
+      minStock: 10,
+      unitCost: 450,
+    },
+  });
+  const laptopItem = await prisma.imsItem.create({
+    data: {
+      branchId,
+      categoryId: computerCat?.id,
+      name: "Laptop",
+      sku: "LAP-001",
+      unit: "pcs",
+      itemType: ImsItemType.NON_CONSUMABLE,
+      minStock: 2,
+      unitCost: 45000,
+    },
+  });
+  const textbook = await prisma.imsItem.create({
+    data: {
+      branchId,
+      categoryId: textbookCat?.id,
+      name: "Grade 5 Math Textbook",
+      sku: "BK-MATH5",
+      unit: "pcs",
+      itemType: ImsItemType.CONSUMABLE,
+      minStock: 30,
+      unitCost: 120,
+    },
+  });
+
+  await prisma.imsStockBalance.createMany({
+    data: [
+      { itemId: chair.id, locationId: mainStore.id, quantity: 45 },
+      { itemId: paper.id, locationId: mainStore.id, quantity: 8 },
+      { itemId: textbook.id, locationId: library.id, quantity: 120 },
+      { itemId: paper.id, locationId: lab.id, quantity: 5 },
+    ],
+  });
+
+  await prisma.imsAsset.create({
+    data: {
+      branchId,
+      itemId: laptopItem.id,
+      assetCode: "AST-LAP-001",
+      serialNumber: "SN123456",
+      locationId: mainStore.id,
+      purchaseCost: 45000,
+    },
+  });
+
+  const supplier = await prisma.imsSupplier.create({
+    data: {
+      branchId,
+      name: "Addis Office Supplies",
+      contactPerson: "Tesfaye Bekele",
+      email: "sales@addisoffice.et",
+      phone: "+251-911-000-001",
+      address: "Megenagna, Addis Ababa",
+    },
+  });
+
+  await prisma.imsPurchaseOrder.create({
+    data: {
+      branchId,
+      supplierId: supplier.id,
+      poNumber: "PO-2026-001",
+      status: "APPROVED",
+      totalAmount: 4500,
+      financeNote: "Operations budget — Q1 supplies",
+      createdById: actorId,
+      approvedById: actorId,
+      approvedAt: new Date(),
+      lines: {
+        create: {
+          itemId: paper.id,
+          quantity: 10,
+          unitPrice: 450,
+        },
+      },
+    },
+  });
+
+  await prisma.imsTransaction.createMany({
+    data: [
+      {
+        branchId,
+        itemId: chair.id,
+        locationId: mainStore.id,
+        transactionType: "PURCHASE",
+        quantity: 50,
+        balanceAfter: 45,
+        performedById: actorId,
+        reference: "PO-2025-100",
+      },
+      {
+        branchId,
+        itemId: paper.id,
+        locationId: mainStore.id,
+        transactionType: "USAGE",
+        quantity: -2,
+        balanceAfter: 8,
+        performedById: actorId,
+        notes: "Admin office usage",
+      },
+    ],
   });
 }
 

@@ -112,6 +112,23 @@ export const authEdgeConfig = {
         !["HR_OFFICER", "BRANCH_ADMIN", "SUPER_ADMIN"].includes(role)
       )
         return false;
+      if (path.startsWith("/inventory")) {
+        const manageRoles = ["INVENTORY_OFFICER", "BRANCH_ADMIN", "SUPER_ADMIN"];
+        const requestRoles = ["TEACHER", "HR_OFFICER", "REGISTRAR", "FINANCE_OFFICER", "LIBRARIAN"];
+        const reportRoles = ["FINANCE_OFFICER"];
+        if (path.startsWith("/inventory/requests")) {
+          return [...manageRoles, ...requestRoles].includes(role);
+        }
+        if (path.startsWith("/inventory/reports")) {
+          return [...manageRoles, ...reportRoles].includes(role);
+        }
+        return manageRoles.includes(role);
+      }
+      if (
+        path.startsWith("/teacher/inventory-requests") &&
+        !["TEACHER", "HR_OFFICER", "REGISTRAR", "FINANCE_OFFICER", "LIBRARIAN", "INVENTORY_OFFICER", "BRANCH_ADMIN", "SUPER_ADMIN"].includes(role)
+      )
+        return false;
       if (path.startsWith("/parent") && role !== "PARENT") return false;
       if (path.startsWith("/student") && role !== "STUDENT") return false;
 

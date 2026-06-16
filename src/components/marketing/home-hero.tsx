@@ -4,12 +4,10 @@ import Link from "next/link";
 import {
   ArrowRight,
   BellRing,
-  BookOpen,
-  CalendarDays,
   Check,
-  ClipboardList,
+  ClipboardCheck,
   GraduationCap,
-  MessageSquare,
+  Package,
   Wallet,
 } from "lucide-react";
 import { HeroIllustration } from "@/components/marketing/hero-illustrations";
@@ -17,8 +15,8 @@ import { MarketingEyebrow, landingPageWrapClass } from "@/components/marketing/m
 import { useLandingLanguage } from "@/lib/marketing/landing-language-context";
 import { cn } from "@/lib/utils";
 
-const HIGHLIGHT_ICONS = [GraduationCap, Wallet, BookOpen, CalendarDays] as const;
-const TODAY_ICONS = [BellRing, MessageSquare, ClipboardList] as const;
+const HIGHLIGHT_ICONS = [GraduationCap, Wallet, Package, ClipboardCheck] as const;
+const TODAY_ICONS = [Package, ClipboardCheck, BellRing] as const;
 
 export function HomeHero({
   dashboardHref,

@@ -34,7 +34,8 @@
     "db:setup": "prisma db push && tsx prisma/seed.ts && tsx prisma/ensure-demo-login.ts",
     "db:payment-proofs": "prisma db push && prisma generate",
     "db:studio": "prisma studio",
-    "generate:framework": "python3 scripts/generate_framework_json.py"
+    "generate:framework": "python3 scripts/generate_framework_json.py",
+    "test": "tsx --test src/lib/inventory/stock.test.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.9.0",

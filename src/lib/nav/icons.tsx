@@ -14,8 +14,10 @@ import {
   LayoutDashboard,
   MessageSquare,
   Network,
+  Package,
   Settings,
   Shield,
+  Truck,
   UserCheck,
   Users,
   Wallet,
@@ -43,6 +45,8 @@ export const NAV_ICONS: Record<string, LucideIcon> = {
   Download,
   Settings,
   Shield,
+  Package,
+  Truck,
 };
 
 export type NavItemConfig = {

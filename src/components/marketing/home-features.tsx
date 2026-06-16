@@ -4,10 +4,12 @@ import {
   BarChart3,
   BookOpen,
   Bot,
+  ClipboardCheck,
   ClipboardList,
   FileText,
   Library,
   MessageSquare,
+  Package,
   Shield,
   Sparkles,
   UserCheck,
@@ -28,6 +30,8 @@ const MODULE_ICONS: Record<string, typeof BookOpen> = {
   "assistive-tools": Sparkles,
   registrar: FileText,
   hr: Users,
+  inventory: Package,
+  inspection: ClipboardCheck,
   security: Shield,
 };
 

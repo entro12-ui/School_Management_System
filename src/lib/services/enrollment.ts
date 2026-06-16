@@ -49,6 +49,8 @@ function staffPrefix(role: EnrollableRole): string | null {
       return "F";
     case UserRole.LIBRARIAN:
       return "L";
+    case UserRole.INVENTORY_OFFICER:
+      return "I";
     default:
       return null;
   }

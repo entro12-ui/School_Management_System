@@ -2,10 +2,12 @@
 
 import {
   ClipboardCheck,
+  ClipboardList,
   FileText,
   IdCard,
   Library,
   MessageSquareText,
+  Package,
   ShieldCheck,
   UserCheck,
   UsersRound,
@@ -19,6 +21,8 @@ const COVERAGE_ICONS = [
   ClipboardCheck,
   FileText,
   Library,
+  Package,
+  ClipboardList,
   UserCheck,
   MessageSquareText,
   ShieldCheck,

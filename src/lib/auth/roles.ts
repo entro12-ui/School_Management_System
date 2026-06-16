@@ -10,6 +10,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   FINANCE_OFFICER: "Finance Officer",
   LIBRARIAN: "Librarian",
   HR_OFFICER: "HR Officer",
+  INVENTORY_OFFICER: "Store Manager",
   PARENT: "Parent",
   STUDENT: "Student",
 };
@@ -25,6 +26,7 @@ export const STAFF_ROLES: UserRole[] = [
   UserRole.FINANCE_OFFICER,
   UserRole.LIBRARIAN,
   UserRole.HR_OFFICER,
+  UserRole.INVENTORY_OFFICER,
 ];
 
 export function canAccessBranch(

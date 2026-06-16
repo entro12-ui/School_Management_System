@@ -7,6 +7,7 @@ import {
   ClipboardList,
   Crown,
   GraduationCap,
+  Package,
   Shield,
   Users,
   Wallet,
@@ -14,7 +15,7 @@ import {
 import { MarketingSectionHeader } from "@/components/marketing/marketing-primitives";
 import { useLandingLanguage } from "@/lib/marketing/landing-language-context";
 
-const BRANCH_ICONS = [Shield, ClipboardList, GraduationCap, Wallet, BookOpen, Users] as const;
+const BRANCH_ICONS = [Shield, ClipboardList, GraduationCap, Wallet, BookOpen, Package, Users] as const;
 
 export function HomePortalsGrid() {
   const { content } = useLandingLanguage();

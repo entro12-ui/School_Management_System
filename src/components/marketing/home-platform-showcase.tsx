@@ -9,6 +9,7 @@ import {
   GraduationCap,
   LineChart,
   MessageSquare,
+  Package,
   ShieldCheck,
   Users,
 } from "lucide-react";
@@ -23,7 +24,7 @@ const EXPERIENCE_ICONS = {
   families: Users,
 } as const;
 
-const OUTCOME_ICONS = [LineChart, FileText, BellRing, CalendarCheck, MessageSquare] as const;
+const OUTCOME_ICONS = [LineChart, FileText, BellRing, Package, CalendarCheck, MessageSquare] as const;
 
 export function HomePlatformShowcase() {
   const { content } = useLandingLanguage();
@@ -99,7 +100,7 @@ export function HomePlatformShowcase() {
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-premium-ink/45">
               {experience.inPractice}
             </p>
-            <ul className="mt-3 grid gap-2 sm:grid-cols-3">
+            <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
               {active.actions.map((action) => (
                 <li
                   key={action}
@@ -115,7 +116,7 @@ export function HomePlatformShowcase() {
 
         <div className="mt-6 border-t border-premium-ink/8 pt-6">
           <MarketingEyebrow>{experience.outcomesEyebrow}</MarketingEyebrow>
-          <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {experience.outcomes.map((outcome, index) => {
               const Icon = OUTCOME_ICONS[index] ?? LineChart;
               return (
