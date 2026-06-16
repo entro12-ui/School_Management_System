@@ -45,9 +45,17 @@ export function Label({
   );
 }
 
-export function Field({ label, children }: { label: string; children: React.ReactNode }) {
+export function Field({
+  label,
+  children,
+  className,
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div>
+    <div className={className}>
       <Label>{label}</Label>
       <div className="mt-1">{children}</div>
     </div>

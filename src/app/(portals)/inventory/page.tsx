@@ -6,7 +6,6 @@ import { auth } from "@/lib/auth";
 import { INVENTORY_NAV } from "@/lib/nav/inventory-nav";
 import {
   canManageInventory,
-  getInventoryAlerts,
   getInventoryDashboardStats,
   getInventoryPageBranch,
   getInventoryTransactions,
@@ -46,9 +45,8 @@ export default async function InventoryDashboardPage({
   }
 
   const q = isSuperAdmin ? `?branchId=${branchId}` : "";
-  const [stats, alerts, recentTx] = await Promise.all([
+  const [stats, recentTx] = await Promise.all([
     getInventoryDashboardStats(branchId),
-    getInventoryAlerts(branchId),
     getInventoryTransactions(branchId, 5),
   ]);
 
