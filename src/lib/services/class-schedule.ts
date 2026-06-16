@@ -149,6 +149,7 @@ export async function getClassScheduleSetup(branchId: string) {
         id: true,
         employeeId: true,
         department: true,
+        isScheduleUnitLeader: true,
         user: { select: { firstName: true, lastName: true, email: true } },
         staffSubjects: { select: { subjectId: true } },
       },
@@ -186,7 +187,7 @@ export async function getClassScheduleSetup(branchId: string) {
     name: `${teacher.user.firstName} ${teacher.user.lastName}`,
     email: teacher.user.email,
     department: teacher.department,
-    isScheduleUnitLeader: false,
+    isScheduleUnitLeader: teacher.isScheduleUnitLeader,
     subjectIds: teacher.staffSubjects.map((subject) => subject.subjectId),
   }));
 
@@ -262,6 +263,7 @@ export async function getTeacherSchedule(userId: string) {
     select: {
       id: true,
       branchId: true,
+      isScheduleUnitLeader: true,
       branch: { select: { id: true, name: true } },
       user: { select: { firstName: true, lastName: true } },
     },
@@ -278,10 +280,7 @@ export async function getTeacherSchedule(userId: string) {
   });
 
   return {
-    teacher: {
-      ...teacher,
-      isScheduleUnitLeader: false,
-    },
+    teacher,
     entries: sortScheduleEntries(entries.map(mapEntry)),
   };
 }

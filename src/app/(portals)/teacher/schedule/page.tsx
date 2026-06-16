@@ -62,7 +62,11 @@ export default async function TeacherSchedulePage() {
               mode="teacher"
               title="Teacher weekly schedule sheet"
               subtitle={`${data.teacher.user.firstName} ${data.teacher.user.lastName} · ${data.teacher.branch.name}`}
-              emptyMessage="No class schedule has been assigned to you yet."
+              emptyMessage={
+                data.teacher.isScheduleUnitLeader
+                  ? "No lessons assigned to you yet. Use Prepare branch schedules below, or ask the registrar to add slots."
+                  : "No class schedule has been assigned to you yet. Contact the registrar if you expected lessons here."
+              }
             />
           </div>
         </section>
