@@ -7,6 +7,7 @@ const ROLE_PREFIX: Partial<Record<UserRole, string>> = {
   FINANCE_OFFICER: "F",
   REGISTRAR: "R",
   HR_OFFICER: "HR",
+  INVENTORY_OFFICER: "IM",
   BRANCH_ADMIN: "BA",
 };
 

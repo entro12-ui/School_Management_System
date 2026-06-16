@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 export async function logImsAudit(input: {
@@ -15,7 +16,7 @@ export async function logImsAudit(input: {
       action: input.action,
       entity: input.entity ?? "ims",
       entityId: input.entityId ?? null,
-      metadata: input.metadata ?? undefined,
+      metadata: (input.metadata ?? undefined) as Prisma.InputJsonValue | undefined,
     },
   });
 }

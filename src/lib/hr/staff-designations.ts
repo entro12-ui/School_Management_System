@@ -33,6 +33,7 @@ export const STAFF_DESIGNATION_BY_ROLE: Record<
   LIBRARIAN: "Librarian",
   FINANCE_OFFICER: "Finance Officer",
   HR_OFFICER: "HR Officer",
+  INVENTORY_OFFICER: "Store Manager",
 };
 
 export const DEPARTMENT_FOR_PORTAL_ROLE: Partial<Record<UserRole, string>> = {
@@ -41,6 +42,7 @@ export const DEPARTMENT_FOR_PORTAL_ROLE: Partial<Record<UserRole, string>> = {
   LIBRARIAN: "Administration",
   FINANCE_OFFICER: "Administration",
   HR_OFFICER: "Administration",
+  INVENTORY_OFFICER: "Administration",
   BRANCH_ADMIN: "Administration",
 };
 
