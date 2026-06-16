@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { ClipboardCheck, FileSpreadsheet } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,8 +20,6 @@ export function GradingModeTabs({
   subjectId?: string;
   classId?: string;
 }) {
-  const searchParams = useSearchParams();
-
   function href(tab: GradingTab) {
     const params = new URLSearchParams();
     if (subjectId) params.set("subjectId", subjectId);

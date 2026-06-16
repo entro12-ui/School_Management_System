@@ -32,14 +32,6 @@ export const CLASS_SCHEDULE_DAY_LABELS: Record<ClassScheduleDay, string> = {
 const DAY_ORDER = new Map(CLASS_SCHEDULE_DAYS.map((day, index) => [day, index]));
 const SCHEDULE_GRADE_LEVELS = Array.from({ length: 13 }, (_, index) => index);
 
-function resolveScheduleBranchId(
-  user: BranchScopeUser,
-  overrideBranchId?: string
-): string | undefined {
-  if (user.role === UserRole.SUPER_ADMIN) return overrideBranchId;
-  return user.branchId ?? undefined;
-}
-
 export async function getSchedulePageBranch(user: BranchScopeUser, searchBranchId?: string) {
   return resolveOrganizationPageBranch(user, searchBranchId);
 }

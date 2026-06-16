@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { X } from "lucide-react";
-import { CancelChapaCheckoutButton } from "@/components/fees/cancel-chapa-checkout-button";
 import {
   confirmChapaPayment,
   cancelPendingChapaPayment,

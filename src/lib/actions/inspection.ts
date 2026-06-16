@@ -6,7 +6,6 @@ import { auth } from "@/lib/auth";
 import { assertSuperAdminCanAccessBranch } from "@/lib/auth/super-admin-scope";
 import { loadFrameworkFromFile } from "@/lib/inspection/framework-server";
 import {
-  computeInspectionScores,
   identifyStrengthsAndGaps,
 } from "@/lib/inspection/scoring";
 import { buildCriterionKey } from "@/lib/inspection/types";
@@ -32,10 +31,7 @@ type InspectionAuthSession = {
 
 type AccessResult = { ok: true; session: InspectionAuthSession } | { ok: false; error: string };
 
-async function assertInspectionAccess(
-  branchId: string,
-  requireEdit = false
-): Promise<AccessResult> {
+async function assertInspectionAccess(branchId: string): Promise<AccessResult> {
   const session = await auth();
   if (!session?.user) return { ok: false, error: "Unauthorized" };
 
@@ -80,7 +76,7 @@ export async function createInspectionRun(input: {
   inspectionDate: string;
   supervisorId?: string | null;
 }): Promise<ActionResult & { runId?: string }> {
-  const access = await assertInspectionAccess(input.branchId, true);
+  const access = await assertInspectionAccess(input.branchId);
   if (!access.ok) return { success: false, error: access.error };
 
   const inspectionDate = new Date(input.inspectionDate);
@@ -136,7 +132,7 @@ export async function saveCriterionScore(input: {
     return { success: false, error: "This inspection is finalized and cannot be edited." };
   }
 
-  const access = await assertInspectionAccess(run.branchId, true);
+  const access = await assertInspectionAccess(run.branchId);
   if (!access.ok) return { success: false, error: access.error };
 
   if (input.score != null) {
@@ -212,7 +208,7 @@ export async function saveInspectionNarrative(input: {
     return { success: false, error: "This inspection is finalized." };
   }
 
-  const access = await assertInspectionAccess(run.branchId, true);
+  const access = await assertInspectionAccess(run.branchId);
   if (!access.ok) return { success: false, error: access.error };
 
   await prisma.inspectionRun.update({
@@ -236,7 +232,7 @@ export async function submitInspectionRun(runId: string): Promise<ActionResult> 
   });
   if (!run) return { success: false, error: "Inspection not found." };
 
-  const access = await assertInspectionAccess(run.branchId, true);
+  const access = await assertInspectionAccess(run.branchId);
   if (!access.ok) return { success: false, error: access.error };
 
   const detail = await getInspectionRunDetail(runId);
@@ -331,7 +327,7 @@ export async function uploadInspectionEvidence(
     return { success: false, error: "Cannot add evidence to a finalized inspection." };
   }
 
-  const access = await assertInspectionAccess(run.branchId, true);
+  const access = await assertInspectionAccess(run.branchId);
   if (!access.ok) return { success: false, error: access.error };
 
   let criterionScoreId: string | null = null;

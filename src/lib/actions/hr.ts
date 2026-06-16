@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 import { auth } from "@/lib/auth";
 import {
-  HR_MANAGER_ROLE_NAME,
   HR_PERMISSIONS,
   type HrPermissionName,
 } from "@/lib/hr/permissions";
@@ -453,20 +452,6 @@ async function createPortalUserForHrEmployee(input: {
   }
 
   throw new Error(`Unsupported portal role: ${input.portalRole}`);
-}
-
-async function assignHrInternalRole(userId: string, hrRoleName?: string) {
-  await ensureHrRbacDefaults();
-  const role = await prisma.hrRole.findUnique({
-    where: { name: hrRoleName || HR_MANAGER_ROLE_NAME },
-  });
-  if (role) {
-    await prisma.hrUserRole.upsert({
-      where: { userId_roleId: { userId, roleId: role.id } },
-      create: { userId, roleId: role.id },
-      update: {},
-    });
-  }
 }
 
 export async function deleteHrEmployee(id: string): Promise<ActionResult> {

@@ -24,7 +24,6 @@ import {
 import {
   buildQuizQuestions,
   formatQuizQuestionMeta,
-  type QuizQuestion,
 } from "@/lib/ai/quiz-bank";
 import {
   TUTOR_KNOWLEDGE_MODE_OPTIONS,

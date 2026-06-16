@@ -181,6 +181,7 @@ export function InventoryStockManager({
         <DataTable
           data={transactions}
           columns={txColumns}
+          rowKey={(r) => r.id}
           searchPlaceholder="Search transactions…"
           getSearchText={(r) =>
             `${r.itemName} ${r.locationName} ${r.transactionType} ${r.performedBy}`

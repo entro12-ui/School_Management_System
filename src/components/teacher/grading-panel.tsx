@@ -105,7 +105,10 @@ export function GradingPanel({
   const [highlightSavedId, setHighlightSavedId] = useState<string | null>(null);
 
   const classes = classesBySubject[subjectId] ?? [];
-  const students = classId ? (studentsByClass[`${subjectId}:${classId}`] ?? []) : [];
+  const students = useMemo(
+    () => (classId ? (studentsByClass[`${subjectId}:${classId}`] ?? []) : []),
+    [classId, studentsByClass, subjectId]
+  );
   const comboKey = classId ? `${subjectId}:${classId}` : "";
   const savedForClass = comboKey ? (singleAssessmentsByClass[comboKey] ?? []) : [];
 

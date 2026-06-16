@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { AcademicTerm, GradeBand } from "@prisma/client";
+import { GradeBand } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select } from "@/components/ui/input";
 import {
@@ -30,7 +30,7 @@ export function FeeStructuresManager({
   matrix: BandSemesterFees[];
   showBranchPicker: boolean;
 }) {
-  const [branchId, setBranchId] = useState(initialBranchId);
+  const branchId = initialBranchId;
   const [rows, setRows] = useState(() => matrixToForm(initialMatrix));
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);

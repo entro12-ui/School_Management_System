@@ -249,6 +249,7 @@ export function InventoryAssetsManager({
         <DataTable
           data={assets}
           columns={columns}
+          rowKey={(r) => r.id}
           searchPlaceholder="Search assets…"
           getSearchText={(r) =>
             `${r.assetCode} ${r.itemName} ${r.serialNumber ?? ""} ${r.assignee ?? ""}`

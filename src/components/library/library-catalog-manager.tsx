@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { BookStatus } from "@prisma/client";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,22 @@ export function LibraryCatalogManager({
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+
+  const handleDelete = useCallback(
+    (id: string, title: string) => {
+      if (!confirm(`Remove "${title}" from the catalog?`)) return;
+      setMessage(null);
+      setError(null);
+      startTransition(async () => {
+        const result = await deleteLibraryBook(id, branchId);
+        if (result.success) {
+          setMessage(result.message);
+          router.refresh();
+        } else setError(result.error);
+      });
+    },
+    [branchId, router]
+  );
 
   const columns = useMemo<DataTableColumn<LibraryBookRow>[]>(
     () => [
@@ -122,7 +138,7 @@ export function LibraryCatalogManager({
         ),
       },
     ],
-    [pending]
+    [pending, handleDelete]
   );
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -140,19 +156,6 @@ export function LibraryCatalogManager({
       } else {
         setError(result.error);
       }
-    });
-  }
-
-  function handleDelete(id: string, title: string) {
-    if (!confirm(`Remove "${title}" from the catalog?`)) return;
-    setMessage(null);
-    setError(null);
-    startTransition(async () => {
-      const result = await deleteLibraryBook(id, branchId);
-      if (result.success) {
-        setMessage(result.message);
-        router.refresh();
-      } else setError(result.error);
     });
   }
 

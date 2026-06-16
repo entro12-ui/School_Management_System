@@ -21,7 +21,6 @@ import { Field, Label, Select } from "@/components/ui/input";
 import { cn, formatCurrency } from "@/lib/utils";
 import { ContentLanguagePicker } from "@/components/parent/content-language-picker";
 import {
-  PARENT_COMMUNICATION_LANGUAGE_LABELS,
   PARENT_COMMUNICATION_MESSAGE_TYPE_LABELS,
   PARENT_COMMUNICATION_MESSAGE_TYPES,
   PARENT_COMMUNICATION_TONE_LABELS,

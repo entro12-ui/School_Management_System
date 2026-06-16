@@ -185,6 +185,7 @@ export function InventoryRequestsManager({
       <DataTable
         data={requests}
         columns={columns}
+        rowKey={(r) => r.id}
         searchPlaceholder="Search requests…"
         getSearchText={(r) =>
           `${r.requesterName} ${r.itemSummary} ${r.purpose ?? ""} ${r.status}`

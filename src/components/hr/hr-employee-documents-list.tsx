@@ -14,13 +14,11 @@ export type EmployeeDocumentItem = {
 };
 
 export function HrEmployeeDocumentsList({
-  employeeId,
   employeeName,
   documents,
   canWrite,
   onDeleted,
 }: {
-  employeeId: string;
   employeeName: string;
   documents: EmployeeDocumentItem[];
   canWrite: boolean;

@@ -1,6 +1,5 @@
 import type { GradeBand, UserRole } from "@prisma/client";
 import {
-  BookReservationStatus,
   BookStatus,
   LibraryBorrowerType,
   LibraryFineStatus,

@@ -16,10 +16,8 @@ type Row = {
 };
 
 export function LibraryReservationsManager({
-  branchId,
   reservations,
 }: {
-  branchId: string;
   reservations: Row[];
 }) {
   const [pending, startTransition] = useTransition();

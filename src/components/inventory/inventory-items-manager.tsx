@@ -177,6 +177,7 @@ export function InventoryItemsManager({
       <DataTable
         data={items}
         columns={columns}
+        rowKey={(r) => r.id}
         filters={filters}
         searchPlaceholder="Search items…"
         getSearchText={(r) => `${r.name} ${r.sku} ${r.categoryName ?? ""}`}

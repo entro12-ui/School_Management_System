@@ -22,7 +22,7 @@ export default async function LibraryReservationsPage({
   if (!session?.user || !canAccessLibrary(session.user.role)) redirect("/login");
 
   const params = await searchParams;
-  const { branchId, branches, branch, isSuperAdmin } = await getLibraryPageBranch(session.user, params.branchId);
+  const { branchId, branches, isSuperAdmin } = await getLibraryPageBranch(session.user, params.branchId);
   if (!branchId) redirect("/library");
 
   const reservations = await getLibraryReservations(branchId);
@@ -39,7 +39,7 @@ export default async function LibraryReservationsPage({
       {isSuperAdmin && (
         <LibraryBranchPicker branchId={branchId} branches={branches} basePath="/library/reservations" />
       )}
-      <LibraryReservationsManager branchId={branchId} reservations={reservations} />
+      <LibraryReservationsManager reservations={reservations} />
     </PortalShell>
   );
 }

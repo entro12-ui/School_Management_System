@@ -26,7 +26,7 @@ export default async function HrSettingsPage({
   await ensureHrRbacDefaults();
 
   const params = await searchParams;
-  const { branchId, branches, branch, isSuperAdmin } = await getHrPageBranch(session.user, params.branchId);
+  const { branchId, branches, isSuperAdmin } = await getHrPageBranch(session.user, params.branchId);
 
   const [{ roles, hrUsers }, access] = await Promise.all([
     getHrRolesAndUsers(branchId ?? undefined),

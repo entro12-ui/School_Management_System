@@ -69,7 +69,7 @@ export function computeInspectionScores(
   const scoredCriteria = scores.filter((s) => s.score != null).length;
   const totalCriteria = framework.criteria.length;
 
-  const { sectionByStandard, sectionDomain, domainMap } =
+  const { sectionByStandard, sectionDomain } =
     getStandardDomainWeights(framework);
 
   const domainEarned = new Map<string, number>();
